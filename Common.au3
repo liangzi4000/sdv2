@@ -128,8 +128,8 @@ Func GetTaskListPosition()
 	Local $winpos = GetWinPosition()
 	Local $ctrlpos = GetCtrlPosition()
 	Local $result[2] ;
-	$result[0] = $winpos[0] + $ctrlpos[0] + 691
-	$result[1] = $winpos[1] + $ctrlpos[1] + 345
+	$result[0] = $winpos[0] + $ctrlpos[0] + $ctrlpos[2] + 16
+	$result[1] = $winpos[1] + $ctrlpos[1] + 368
 	Return $result
 EndFunc   ;==>GetTaskListPosition
 

@@ -83,7 +83,8 @@ EndFunc
 Func EnterUIDandPWD()
 	Local $acctinfo = ExecDBQuery("[dbo].[SP_GetNextRecord] '"&$activewindow&"'")
 	If Not IsValidResult($acctinfo) Then
-		; To do on error handler
+		WriteLog("Invalid database record: " & $acctinfo, $v_exception)
+		Exit
 		Return False
 	EndIf
 	Assign("acctinfo"&$activewindow,$acctinfo,2)
