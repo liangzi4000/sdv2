@@ -8,6 +8,7 @@ _ArrayAdd($firstrun,"StartScreen")
 _ArrayAdd($firstrun,"OpenLoginUI")
 _ArrayAdd($firstrun,"ClickBtnLianDongZiLiang")
 _ArrayAdd($firstrun,"ChooseUserIDLogin")
+_ArrayAdd($firstrun,"GetNextRecord")
 _ArrayAdd($firstrun,"Wrapper_EnterUIDandPWD_LianDong")
 _ArrayAdd($firstrun,"Wrapper_StartScreen_ClickOnCenter_DoItLater")
 _ArrayAdd($firstrun,"Wrapper_ClickUntilNotification_CloseNotification_CompleteLogin")
@@ -17,6 +18,7 @@ _ArrayAdd($steps,"ClickMenuOthers")
 _ArrayAdd($steps,"ClickBtnGameLink")
 _ArrayAdd($steps,"ClickBtnLianDongZiLiangV2")
 _ArrayAdd($steps,"ChooseUserIDLoginV2")
+_ArrayAdd($steps,"GetNextRecord")
 _ArrayAdd($steps,"Wrapper_EnterUIDandPWD_LianDongV2")
 _ArrayAdd($steps,"Wrapper_StartScreen_ClickOnCenter_DoItLater")
 _ArrayAdd($steps,"Wrapper_ClickUntilNotification_CloseNotification_CompleteLogin")
@@ -27,6 +29,8 @@ _ArrayAdd($lastrun,"CloseApp")
 Func ExecStep($index)
 	For $x = 0 To UBound($v_windows)-1
 		$activewindow = $v_windows[$x]
+		If _ArraySearch($inactivewindows, $activewindow) <> -1 Then ContinueLoop
+
 		WinActivate($activewindow)
 		WriteLog("Before execute "&$index)
 		Call($index)
@@ -80,14 +84,20 @@ Func Wrapper_EnterUIDandPWD_LianDongV2()
 	LianDongV2()
 EndFunc
 
-Func EnterUIDandPWD()
+Func GetNextRecord()
 	Local $acctinfo = ExecDBQuery("[dbo].[SP_GetNextRecord] '"&$activewindow&"'")
 	If Not IsValidResult($acctinfo) Then
 		WriteLog("Invalid database record: " & $acctinfo, $v_exception)
-		Exit
+		_ArrayAdd($inactivewindows,$activewindow)
+		CloseApp()
 		Return False
 	EndIf
 	Assign("acctinfo"&$activewindow,$acctinfo,2)
+	Return True
+EndFunc
+
+Func EnterUIDandPWD()
+	Local $acctinfo = Eval("acctinfo"&$activewindow)
 	Local $acctinfoarr = StringSplit($acctinfo, "|")
 	_ClipBoard_SetData($acctinfoarr[1]) ; 读取UID到粘贴板
 	ClickPosUntilScreen($txt_uid,"btn_queding.bmp")

@@ -28,9 +28,10 @@ Func Terminate()
 EndFunc
 
 Func Main()
-	Local $total = 200
-	For $m = 0 To $total-1
-		If $m = 0 Then
+	Local $firstrunflag = True
+	While UBound($inactivewindows) <> UBound($v_windows)
+		If $firstrunflag Then
+			$firstrunflag = False
 			For $x=0 To UBound($firstrun)-1
 				ExecStep($firstrun[$x])
 			Next
@@ -39,13 +40,7 @@ Func Main()
 		For $x=0 To UBound($steps)-1
 			ExecStep($steps[$x])
 		Next
-
-		If $m = $total - 1 Then
-			For $x=0 To UBound($lastrun)-1
-				ExecStep($lastrun[$x])
-			Next
-		EndIf
-	Next
+	WEnd
 	Exit
 EndFunc
 

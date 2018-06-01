@@ -1,5 +1,6 @@
 #include-once
 Global $activewindow = ""
+Global $inactivewindows = [] ; To store the inactive windows
 Global $debug = True
 
 Global $v_winctrlclassname = "subWin1"
