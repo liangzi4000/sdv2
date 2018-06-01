@@ -10,7 +10,7 @@ _ArrayAdd($firstrun,"ClickBtnLianDongZiLiang")
 _ArrayAdd($firstrun,"ChooseUserIDLogin")
 _ArrayAdd($firstrun,"GetNextRecord")
 _ArrayAdd($firstrun,"Wrapper_EnterUIDandPWD_LianDong")
-_ArrayAdd($firstrun,"Wrapper_StartScreen_ClickOnCenter_DoItLater")
+_ArrayAdd($firstrun,"Wrapper_StartScreen_DoItLater")
 _ArrayAdd($firstrun,"Wrapper_ClickUntilNotification_CloseNotification_CompleteLogin")
 _ArrayAdd($firstrun,"CloseBPInfo")
 _ArrayAdd($firstrun,"GetGift")
@@ -25,7 +25,7 @@ _ArrayAdd($steps,"ClickBtnLianDongZiLiangV2")
 _ArrayAdd($steps,"ChooseUserIDLoginV2")
 _ArrayAdd($steps,"GetNextRecord")
 _ArrayAdd($steps,"Wrapper_EnterUIDandPWD_LianDongV2")
-_ArrayAdd($steps,"Wrapper_StartScreen_ClickOnCenter_DoItLater")
+_ArrayAdd($steps,"Wrapper_StartScreen_DoItLater")
 _ArrayAdd($steps,"Wrapper_ClickUntilNotification_CloseNotification_CompleteLogin")
 _ArrayAdd($steps,"CloseBPInfo")
 _ArrayAdd($steps,"GetGift")
@@ -161,24 +161,15 @@ Func ClickBtnOKV2()
 EndFunc
 #EndRegion
 
-#Region Wrapper_StartScreen_ClickOnCenter_DoItLater
-Func Wrapper_StartScreen_ClickOnCenter_DoItLater()
+#Region Wrapper_StartScreen_DoItLater
+Func Wrapper_StartScreen_DoItLater()
 	StartScreen()
-	ClickOnCenter()
+	;ClickOnCenter()
 	DoItLater()
 EndFunc
 
 Func StartScreen()
-	If WaitImage("ui_startscreen.bmp") = 1 Then
-	Else
-		WriteLog("Uanble to find ui_startscreen.bmp",$v_exception)
-		; To do on error handler
-	EndIf
-EndFunc
-
-Func ClickOnCenter()
-	Local $ctrlcenter = GetCtrlCenter()
-	ClickOnRelative($ctrlcenter)
+	ClickImage("ui_startscreen.bmp",True)
 EndFunc
 
 Func DoItLater()
@@ -256,4 +247,9 @@ EndFunc
 
 Func CheckExit()
 	If $exit Then Exit
+EndFunc
+
+Func ClickOnCenter()
+	Local $ctrlcenter = GetCtrlCenter()
+	ClickOnRelative($ctrlcenter)
 EndFunc
