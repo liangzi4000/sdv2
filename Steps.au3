@@ -125,11 +125,21 @@ Func EnterUIDandPWD()
 EndFunc
 
 Func ClickJueDing()
-	ClickImage("btn_login_jueding.bmp",True)
+	ClickImage("btn_login_jueding.bmp",True,5,"JueDingTimeout")
+EndFunc
+
+Func JueDingTimeout()
+	EnterUIDandPWD()
+	ClickJueDing()
 EndFunc
 
 Func ClickJueDingV2()
-	ClickImage("btn_login_jueding_v2.bmp",True)
+	ClickImage("btn_login_jueding_v2.bmp",True,5,"JueDingTimeoutV2")
+EndFunc
+
+Func JueDingTimeoutV2()
+	EnterUIDandPWD()
+	ClickJueDingV2()
 EndFunc
 
 Func LianDong()
