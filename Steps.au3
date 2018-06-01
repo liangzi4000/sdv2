@@ -164,11 +164,15 @@ EndFunc
 #Region Wrapper_StartScreen_DoItLater
 Func Wrapper_StartScreen_DoItLater()
 	StartScreen()
-	;ClickOnCenter()
+	ClickOnStartScreen()
 	DoItLater()
 EndFunc
 
 Func StartScreen()
+	WaitImage("ui_startscreen.bmp")
+EndFunc
+
+Func ClickOnStartScreen()
 	ClickImage("ui_startscreen.bmp",True)
 EndFunc
 
@@ -247,9 +251,4 @@ EndFunc
 
 Func CheckExit()
 	If $exit Then Exit
-EndFunc
-
-Func ClickOnCenter()
-	Local $ctrlcenter = GetCtrlCenter()
-	ClickOnRelative($ctrlcenter)
 EndFunc
