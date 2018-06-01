@@ -40,7 +40,7 @@ Func OpenApp()
 EndFunc
 
 Func OpenLoginUI()
-	ClickOnConvert($btn_liandong)
+	ClickOnRelative($btn_liandong)
 EndFunc
 
 #Region ClickBtnLianDongZiLiang, ClickBtnLianDongZiLiangV2
@@ -56,7 +56,7 @@ EndFunc
 #Region ChooseUserIDLogin, ChooseUserIDLoginV2
 Func ChooseUserIDLogin()
 	If WaitImage("btn_close_login.bmp") = 1 Then
-		ClickOnConvert($btn_uidpwd)
+		ClickOnRelative($btn_uidpwd)
 	Else
 		WriteLog("Uanble to find btn_close_login.bmp",$v_exception)
 		_ArrayAdd($inactivewindows,$activewindow)
@@ -65,7 +65,7 @@ EndFunc
 
 Func ChooseUserIDLoginV2()
 	If WaitImage("btn_close_switch.bmp") = 1 Then
-		ClickOnConvert($btn_uidpwd)
+		ClickOnRelative($btn_uidpwd)
 	Else
 		WriteLog("Uanble to find btn_close_switch.bmp",$v_exception)
 		_ArrayAdd($inactivewindows,$activewindow)
@@ -101,14 +101,19 @@ EndFunc
 Func EnterUIDandPWD()
 	Local $acctinfo = Eval("acctinfo"&$activewindow)
 	Local $acctinfoarr = StringSplit($acctinfo, "|")
+
 	_ClipBoard_SetData($acctinfoarr[1]) ; 读取UID到粘贴板
 	ClickPosUntilScreen($txt_uid,"btn_queding.bmp")
+	Local $textboxpos = GetImageCenterPos("btn_queding.bmp")
+	$textboxpos[0] = $textboxpos[0] - 200
+	ClickOn($textboxpos) ; Ensure curosr on textbox
 	SendPasteKeys(); 黏贴
 	ClickImage("btn_queding.bmp") ;点击确定
 	Sleep(500)
 
 	_ClipBoard_SetData($acctinfoarr[2]) ; 读取password到粘贴板
 	ClickPosUntilScreen($txt_pwd,"btn_queding.bmp")
+	ClickOn($textboxpos) ; Ensure curosr on textbox
 	SendPasteKeys(); 黏贴
 	ClickImage("btn_queding.bmp") ;点击确定
 	Sleep(300)
@@ -158,7 +163,7 @@ EndFunc
 
 Func ClickOnCenter()
 	Local $ctrlcenter = GetCtrlCenter()
-	ClickOnConvert($ctrlcenter)
+	ClickOnRelative($ctrlcenter)
 EndFunc
 
 Func DoItLater()

@@ -133,14 +133,14 @@ Func GetTaskListPosition()
 	Return $result
 EndFunc   ;==>GetTaskListPosition
 
-Func ConvertControlCoordsToWindowPosition($ctrlcoords)
+Func ConvertRelativePosToAbsolutePos($ctrlcoords)
 	Local $winpos = GetWinPosition()
 	Local $ctrlpos = GetCtrlPosition()
 	Local $result[2] ;
 	$result[0] = $winpos[0] + $ctrlpos[0] + $ctrlcoords[0]
 	$result[1] = $winpos[1] + $ctrlpos[1] + $ctrlcoords[1]
 	Return $result
-EndFunc   ;==>ConvertControlCoordsToWindowPosition
+EndFunc   ;==>ConvertRelativePosToAbsolutePos
 #EndRegion Position Helper
 
 #Region Fundamental Operation (e.g ClickOn, SearchImage, SendPasteKeys, Slide, Drag)
@@ -149,17 +149,17 @@ Func ClickOn($pos)
 	If $debug Then WriteLog("ClickOn [" & $pos[0] & "," & $pos[1] & "]")
 EndFunc   ;==>ClickOn
 
-Func ClickOnConvert($pos)
-	Local $targetpos = ConvertControlCoordsToWindowPosition($pos)
+Func ClickOnRelative($pos)
+	Local $targetpos = ConvertRelativePosToAbsolutePos($pos)
 	ClickOn($targetpos)
-	If $debug Then WriteLog("ClickOnConvert [" & $pos[0] & "," & $pos[1] & "]")
-EndFunc   ;==>ClickOnConvert
+	If $debug Then WriteLog("ClickOnRelative [" & $pos[0] & "," & $pos[1] & "]")
+EndFunc   ;==>ClickOnRelative
 
 #comments-start
 	The $x and $y are absolute screen coordinates, no need to convert
 	Todo: set PixelCoordMode to return relative coords to defined window
 #comments-end
-Func SearchImage($image, ByRef $x, ByRef $y, $tolerance=20, $HBMP=0)
+Func SearchImage($image, ByRef $x, ByRef $y, $tolerance = 20, $HBMP = 0)
 	Local $winpos = GetWinPosition()
 	Local $ctrlpos = GetCtrlPosition()
 	Local $area[4]
@@ -172,6 +172,12 @@ Func SearchImage($image, ByRef $x, ByRef $y, $tolerance=20, $HBMP=0)
 	Return $result ; return 1 or 0
 EndFunc   ;==>SearchImage
 
+Func GetImageCenterPos($image)
+	Local $pos = [0, 0]
+	SearchImage($image, $pos[0], $pos[1])
+	Return $pos
+EndFunc   ;==>GetImageCenterPos
+
 Func SendPasteKeys()
 	Send("^v")
 	If $debug Then WriteLog("Press Ctrl+V to paste")
@@ -183,12 +189,12 @@ Func Slide($x1, $y1, $x2, $y2)
 EndFunc   ;==>Slide
 
 Func Drag($x1, $y1, $x2, $y2, $delay = 500)
-	Opt("MouseClickDragDelay",$delay)
+	Opt("MouseClickDragDelay", $delay)
 	MouseClickDrag($MOUSE_CLICK_LEFT, $x1, $y1, $x2, $y2)
-	Opt("MouseClickDragDelay",250) ; restore to default 250 milliseconds
+	Opt("MouseClickDragDelay", 250) ; restore to default 250 milliseconds
 	If $debug Then WriteLog("Drag from " & $x1 & "," & $y1 & " to " & $x2 & "," & $y2)
 EndFunc   ;==>Drag
-#EndRegion Fundamental Operation (e.g ClickOn, SearchImage, SendPasteKeys, Slide)
+#EndRegion Fundamental Operation (e.g ClickOn, SearchImage, SendPasteKeys, Slide, Drag)
 
 #Region Advanced Image Operation
 ;Return 1: clicked; 0: not click due to time out
@@ -203,7 +209,7 @@ Func ClickImage($image, $sureclick = False, $timeout = 20, $timeoutcall = "")
 		EndIf
 	EndIf
 
-	If WaitImage($image) = 1 Then
+	If WaitImage($image, $timeout, $timeoutcall, False) = 1 Then
 		Local $pos = [0, 0]
 		While SearchImage($image, $pos[0], $pos[1]) = 1
 			ClickOn($pos)
@@ -258,7 +264,7 @@ Func ClickImageUntilScreen($waitimage, $untilimage, $interval = 700, $timeout = 
 EndFunc   ;==>ClickImageUntilScreen
 
 Func ClickPosUntilScreen($pos, $untilimage, $interval = 700, $timeout = 20, $timeoutcall = "", $convertposition = True)
-	Local $mypos = $convertposition = True ? ConvertControlCoordsToWindowPosition($pos) : $pos
+	Local $mypos = $convertposition = True ? ConvertRelativePosToAbsolutePos($pos) : $pos
 	Local $x = 0, $y = 0
 	Local $hTimer = TimerInit()
 	While SearchImage($untilimage, $x, $y) = 0
@@ -288,7 +294,7 @@ Func DragImage($image, $to_x, $to_y)
 	Else
 		WriteLog("Drag unable to find image " & $image, $v_exception)
 	EndIf
-EndFunc   ;==>Drag
+EndFunc   ;==>DragImage
 #EndRegion Advanced Image Operation
 
 #Region Advanced Pixel Operation
