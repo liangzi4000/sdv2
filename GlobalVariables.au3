@@ -7,12 +7,12 @@ Global $exit = False ; Terminate script flag
 Global $v_winctrlclassname = "subWin1"
 Global Const $v_imagepath = @ScriptDir & "\Assets\identifier\"
 
-Global Const $btn_liandong[2] = [141,28] ; 资料连动
-Global Const $btn_uidpwd[2] = [334,131] ; 输入用户名和密码
-Global Const $txt_uid[2] = [334,180] ; 用户名输入文本框
-Global Const $txt_pwd[2] = [334,236] ; 密码输入文本框
-Global Const $btn_ignore[2] = [625,25] ; 忽略
-Global Const $side_gift[2] = [635,84] ; 礼物
+Global $btn_liandong[2] = [141,28] ; 资料连动
+Global $btn_uidpwd[2] = [334,131] ; 输入用户名和密码
+Global $txt_uid[2] = [334,180] ; 用户名输入文本框
+Global $txt_pwd[2] = [334,236] ; 密码输入文本框
+Global $btn_ignore[2] = [625,25] ; 忽略
+Global $side_gift[2] = [635,84] ; 礼物
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 Global Const $v_room_screenshot = @ScriptDir & "\db\privateroom.jpg"
