@@ -12,6 +12,8 @@ _ArrayAdd($firstrun,"GetNextRecord")
 _ArrayAdd($firstrun,"Wrapper_EnterUIDandPWD_LianDong")
 _ArrayAdd($firstrun,"Wrapper_StartScreen_ClickOnCenter_DoItLater")
 _ArrayAdd($firstrun,"Wrapper_ClickUntilNotification_CloseNotification_CompleteLogin")
+_ArrayAdd($firstrun,"GetGift")
+_ArrayAdd($firstrun,"PerformTask1")
 
 Global $steps = []
 _ArrayAdd($steps,"ClickMenuOthers")
@@ -22,6 +24,8 @@ _ArrayAdd($steps,"GetNextRecord")
 _ArrayAdd($steps,"Wrapper_EnterUIDandPWD_LianDongV2")
 _ArrayAdd($steps,"Wrapper_StartScreen_ClickOnCenter_DoItLater")
 _ArrayAdd($steps,"Wrapper_ClickUntilNotification_CloseNotification_CompleteLogin")
+_ArrayAdd($steps,"GetGift")
+_ArrayAdd($steps,"PerformTask1")
 
 Func ExecStep($index)
 	For $x = 0 To UBound($v_windows)-1
@@ -75,13 +79,13 @@ EndFunc
 
 Func GetNextRecord()
 	Local $acctinfo = ExecDBQuery("[dbo].[SP_GetNextRecord] '"&$activewindow&"'")
+	Assign("acctinfo"&$activewindow,$acctinfo,2)
 	If Not IsValidResult($acctinfo) Then
 		WriteLog("Invalid database record: " & $acctinfo, $v_exception)
 		_ArrayAdd($inactivewindows,$activewindow)
 		CloseApp()
 		Return False
 	EndIf
-	Assign("acctinfo"&$activewindow,$acctinfo,2)
 	Return True
 EndFunc
 
@@ -211,4 +215,20 @@ Func CloseApp()
 	Local $pos = [0,0]
 	SearchImage("app_icon_tasklist.bmp",$pos[0],$pos[1])
 	Slide($pos[0],$pos[1],$pos[0],0)
+EndFunc
+
+Func GetGift()
+	Local $acctinfo = Eval("acctinfo"&$activewindow)
+	Local $acctinfoarr = StringSplit($acctinfo, "|")
+	If $acctinfoarr[5] = 1 Then
+
+	EndIf
+EndFunc
+
+Func PerformTask1()
+	Local $acctinfo = Eval("acctinfo"&$activewindow)
+	Local $acctinfoarr = StringSplit($acctinfo, "|")
+	If $acctinfoarr[3] = 0 Then
+
+	EndIf
 EndFunc

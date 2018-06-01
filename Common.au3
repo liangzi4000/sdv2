@@ -13,58 +13,6 @@
 #include <Database.au3>
 #include <CaptureScreenshot.au3>
 
-Func WaitForImage($image, $triggerclick = False, $clicks = 1, $speed = 10, $timeoutcall = "")
-	Sleep(200)
-	Local $imagepath = $v_imagepath
-	Local $y = 0, $x = 0
-	Local $list = []
-	Local $found = 0
-	If VarGetType($image) = "String" Then
-		_ArrayAdd($list, $image)
-	EndIf
-	If VarGetType($image) = "Array" Then
-		For $i = 0 To UBound($image) - 1
-			_ArrayAdd($list, $image[$i])
-		Next
-	EndIf
-	WriteLog("Waiting for image " & $imagepath & _ArrayToString($list))
-	Local $count = 50 ; 10 seconds = 50 * 200 million seconds
-	While ($count > 0 Or $timeoutcall = "")
-		For $i = 1 To UBound($list) - 1
-			Local $search = _ImageSearch($imagepath & $list[$i], 1, $x, $y, 0)
-			If $search = 1 Then
-				WriteLog("Found image " & $imagepath & $list[$i])
-				If $triggerclick = True Then
-					MouseClick($MOUSE_CLICK_LEFT, $x, $y, $clicks)
-					WriteLog("Click on image " & $imagepath & $list[$i])
-				EndIf
-				$found = $i
-				ExitLoop
-			EndIf
-		Next
-		If $found > 0 Then ExitLoop
-		Sleep(200)
-		$count = $count - 1
-	WEnd
-	If $count <= 0 And $timeoutcall <> "" Then
-		WriteLog("Timeout - Waiting for image " & $imagepath & _ArrayToString($list))
-		Call($timeoutcall)
-		Call("WaitForImage", $image, $triggerclick, $clicks, $speed, $timeoutcall)
-	EndIf
-	Return $found - 1
-EndFunc   ;==>WaitForImage
-
-Func CheckImage($image, $file = "")
-	WriteLog("Check image " & $image, $file)
-	Local $imagepath = $v_imagepath
-	Local $y = 0, $x = 0
-	Return _ImageSearch($imagepath & $image, 1, $x, $y, 0) ; return 1 or 0
-EndFunc   ;==>CheckImage
-
-Func WaitForImageTimeout($image, $timeoutcall, $triggerclick = False)
-	WaitForImage($image, $triggerclick, 1, 10, $timeoutcall)
-EndFunc   ;==>WaitForImageTimeout
-
 Func WaitForPixel($pixinfo, $triggerclick = True)
 	WriteLog("Waiting for pixel " & _ArrayToString($pixinfo))
 	While 1
@@ -221,24 +169,46 @@ Func ClickImage($image, $sureclick = False, $timeout = 20, $timeoutcall = "")
 	EndIf
 EndFunc   ;==>ClickImage
 
-;Return 1: found; 0: not found due to time out
+#comments-start
+	$image: single image file or mutiple image files seperated by comma
+	return value:
+	0 				- not found
+	1 				- found when $image is single file
+	index number 	- found when $image is multiple files, it starts from 1
+#comments-end
 Func WaitImage($image, $timeout = 20, $timeoutcall = "", $click = False)
 	Local $hTimer = TimerInit()
 	Local $pos = [0, 0]
-	While SearchImage($image, $pos[0], $pos[1]) = 0
+	Local $list = StringSplit($image,",")
+	Local $found = 0
+
+	While 1
+		For $i = 1 To $list[0]
+			If SearchImage($list[$i], $pos[0], $pos[1]) = 1 Then
+				$found = $i
+				ExitLoop
+			EndIf
+		Next
+
 		If TimerDiff($hTimer) > $timeout * 1000 Then
 			WriteLog("WaitImage time out after " & $timeout & " seconds waiting for image " & $image & ", $timeoutcall=" & $timeoutcall, $v_exception)
 			If $timeoutcall <> "" Then Call($timeoutcall)
-			Return 0
+			ExitLoop
 		EndIf
+
+		If $found <> 0 Then
+			If $debug Then WriteLog("WaitImage found image " & $list[$found])
+			ExitLoop
+		EndIf
+
 		Sleep(200)
 	WEnd
-	If $debug Then WriteLog("WaitImage found image " & $image)
+
 	If $pos[0] <> 0 And $pos[1] <> 0 Then
 		If $click Then ClickOn($pos)
-		Return 1
 	EndIf
-	Return 0
+
+	Return $found
 EndFunc   ;==>WaitImage
 
 Func ClickImageUntilScreen($waitimage, $untilimage, $interval = 700, $timeout = 20, $timeoutcall = "")
