@@ -13,47 +13,47 @@
 #include <Database.au3>
 #include <CaptureScreenshot.au3>
 
-Func WaitForPixel($pixinfo, $triggerclick = True)
-	WriteLog("Waiting for pixel " & _ArrayToString($pixinfo))
-	While 1
-		Local $aCoord = PixelSearch($pixinfo[0], $pixinfo[1], $pixinfo[2], $pixinfo[3], $pixinfo[4])
-		If Not @error Then
-			WriteLog("Found pixel " & _ArrayToString($pixinfo))
-			If $triggerclick = True Then
-				MouseClick($MOUSE_CLICK_LEFT, $aCoord[0], $aCoord[1])
-				WriteLog("Click on pixel " & _ArrayToString($pixinfo))
-			EndIf
-			ExitLoop
-		EndIf
-	WEnd
-EndFunc   ;==>WaitForPixel
+;~ Func WaitForPixel($pixinfo, $triggerclick = True)
+;~ 	WriteLog("Waiting for pixel " & _ArrayToString($pixinfo))
+;~ 	While 1
+;~ 		Local $aCoord = PixelSearch($pixinfo[0], $pixinfo[1], $pixinfo[2], $pixinfo[3], $pixinfo[4])
+;~ 		If Not @error Then
+;~ 			WriteLog("Found pixel " & _ArrayToString($pixinfo))
+;~ 			If $triggerclick = True Then
+;~ 				MouseClick($MOUSE_CLICK_LEFT, $aCoord[0], $aCoord[1])
+;~ 				WriteLog("Click on pixel " & _ArrayToString($pixinfo))
+;~ 			EndIf
+;~ 			ExitLoop
+;~ 		EndIf
+;~ 	WEnd
+;~ EndFunc   ;==>WaitForPixel
 
-Func WaitForPixelVariant($pixinfo)
-	WriteLog("Waiting for pixel " & _ArrayToString($pixinfo))
-	While 1
-		Local $aCoord = PixelSearch($pixinfo[0], $pixinfo[1], $pixinfo[2], $pixinfo[3], $pixinfo[4], $pixinfo[5])
-		If Not @error Then
-			WriteLog("Found pixel " & _ArrayToString($pixinfo))
-			ExitLoop
-		EndIf
-	WEnd
-EndFunc   ;==>WaitForPixelVariant
+;~ Func WaitForPixelVariant($pixinfo)
+;~ 	WriteLog("Waiting for pixel " & _ArrayToString($pixinfo))
+;~ 	While 1
+;~ 		Local $aCoord = PixelSearch($pixinfo[0], $pixinfo[1], $pixinfo[2], $pixinfo[3], $pixinfo[4], $pixinfo[5])
+;~ 		If Not @error Then
+;~ 			WriteLog("Found pixel " & _ArrayToString($pixinfo))
+;~ 			ExitLoop
+;~ 		EndIf
+;~ 	WEnd
+;~ EndFunc   ;==>WaitForPixelVariant
 
-Func ClickPosUntilScreenByPixel($checkpoint, $clickx, $clicky, $interval = 300)
-	Local $imagepath = $v_imagepath
-	Local $y = 0, $x = 0
-	WriteLog("Waiting for pixel [" & $checkpoint[0] & "," & $checkpoint[1] & "]=" & $checkpoint[2])
-	While 1
-		Local $search = Hex(PixelGetColor($checkpoint[0], $checkpoint[1]), 6)
-		If $search = $checkpoint[2] Then
-			WriteLog("Found pixel [" & $checkpoint[0] & "," & $checkpoint[1] & "]=" & $checkpoint[2])
-			ExitLoop
-		Else
-			MouseClick($MOUSE_CLICK_LEFT, $clickx, $clicky)
-		EndIf
-		Sleep($interval)
-	WEnd
-EndFunc   ;==>ClickPosUntilScreenByPixel
+;~ Func ClickPosUntilScreenByPixel($checkpoint, $clickx, $clicky, $interval = 300)
+;~ 	Local $imagepath = $v_imagepath
+;~ 	Local $y = 0, $x = 0
+;~ 	WriteLog("Waiting for pixel [" & $checkpoint[0] & "," & $checkpoint[1] & "]=" & $checkpoint[2])
+;~ 	While 1
+;~ 		Local $search = Hex(PixelGetColor($checkpoint[0], $checkpoint[1]), 6)
+;~ 		If $search = $checkpoint[2] Then
+;~ 			WriteLog("Found pixel [" & $checkpoint[0] & "," & $checkpoint[1] & "]=" & $checkpoint[2])
+;~ 			ExitLoop
+;~ 		Else
+;~ 			MouseClick($MOUSE_CLICK_LEFT, $clickx, $clicky)
+;~ 		EndIf
+;~ 		Sleep($interval)
+;~ 	WEnd
+;~ EndFunc   ;==>ClickPosUntilScreenByPixel
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -284,6 +284,36 @@ Func CheckPixel($pixelinfo)
 		Return False
 	EndIf
 EndFunc   ;==>CheckPixel
+
+;~ Func WaitPixel($pixelinfo, $timeout = 20, $timeoutcall = "", $click = False)
+
+;~ 	While 1
+;~ 		If CheckPixel($pixelinfo) Then
+;~ 			If $debug Then WriteLog("WaitPixel found " & _ArrayToString($pixelinfo))
+
+;~ 			If $click Then
+
+;~ 			EndIf
+
+;~ 			ExitLoop
+;~ 		EndIf
+;~ 		Sleep(200)
+;~ 	WEnd
+
+
+;~ 	WriteLog("Waiting for pixel " & _ArrayToString($pixelinfo))
+;~ 	While 1
+;~ 		Local $aCoord = PixelSearch($pixelinfo[0], $pixelinfo[1], $pixelinfo[2], $pixelinfo[3], $pixelinfo[4])
+;~ 		If Not @error Then
+;~ 			WriteLog("Found pixel " & _ArrayToString($pixelinfo))
+;~ 			If $triggerclick = True Then
+;~ 				MouseClick($MOUSE_CLICK_LEFT, $aCoord[0], $aCoord[1])
+;~ 				WriteLog("Click on pixel " & _ArrayToString($pixelinfo))
+;~ 			EndIf
+;~ 			ExitLoop
+;~ 		EndIf
+;~ 	WEnd
+;~ EndFunc
 
 #comments-start
 	Determine which pixel exist given an array of pixels
