@@ -12,6 +12,7 @@ _ArrayAdd($firstrun,"GetNextRecord")
 _ArrayAdd($firstrun,"Wrapper_EnterUIDandPWD_LianDong")
 _ArrayAdd($firstrun,"Wrapper_StartScreen_ClickOnCenter_DoItLater")
 _ArrayAdd($firstrun,"Wrapper_ClickUntilNotification_CloseNotification_CompleteLogin")
+_ArrayAdd($firstrun,"CloseBPInfo")
 _ArrayAdd($firstrun,"GetGift")
 _ArrayAdd($firstrun,"PerformTask1")
 
@@ -24,6 +25,7 @@ _ArrayAdd($steps,"GetNextRecord")
 _ArrayAdd($steps,"Wrapper_EnterUIDandPWD_LianDongV2")
 _ArrayAdd($steps,"Wrapper_StartScreen_ClickOnCenter_DoItLater")
 _ArrayAdd($steps,"Wrapper_ClickUntilNotification_CloseNotification_CompleteLogin")
+_ArrayAdd($steps,"CloseBPInfo")
 _ArrayAdd($steps,"GetGift")
 _ArrayAdd($steps,"PerformTask1")
 
@@ -107,20 +109,16 @@ Func EnterUIDandPWD()
 	Local $acctinfoarr = StringSplit($acctinfo, "|")
 
 	_ClipBoard_SetData($acctinfoarr[1]) ; 读取UID到粘贴板
-	ClickPosUntilScreen($txt_uid,"btn_queding.bmp")
-	Local $textboxpos = GetImageCenterPos("btn_queding.bmp")
-	$textboxpos[0] = $textboxpos[0] - 200
-	ClickOn($textboxpos) ; Ensure curosr on textbox
+	ClickPosUntilScreen($txt_uid,"btn_queding.bmp",800)
 	SendPasteKeys(); 黏贴
 	ClickImage("btn_queding.bmp") ;点击确定
-	Sleep(500)
+	Sleep(800)
 
 	_ClipBoard_SetData($acctinfoarr[2]) ; 读取password到粘贴板
-	ClickPosUntilScreen($txt_pwd,"btn_queding.bmp")
-	ClickOn($textboxpos) ; Ensure curosr on textbox
+	ClickPosUntilScreen($txt_pwd,"btn_queding.bmp",800)
 	SendPasteKeys(); 黏贴
 	ClickImage("btn_queding.bmp") ;点击确定
-	Sleep(300)
+	Sleep(700)
 EndFunc
 
 Func ClickJueDing()
@@ -132,12 +130,12 @@ Func ClickJueDingV2()
 EndFunc
 
 Func LianDong()
-	ClickImageUntilScreen("btn_liandong.bmp","btn_ok.bmp")
+	ClickImageUntilScreen("btn_liandong.bmp","btn_ok.bmp",900)
 	ClickBtnOK()
 EndFunc
 
 Func LianDongV2()
-	ClickImageUntilScreen("btn_liandong_v2.bmp","btn_ok_v2.bmp")
+	ClickImageUntilScreen("btn_liandong_v2.bmp","btn_ok_v2.bmp",900)
 	ClickBtnOKV2()
 EndFunc
 
@@ -188,6 +186,10 @@ EndFunc
 
 Func CloseNotification()
 	ClickImage("btn_close.bmp")
+EndFunc
+
+Func CloseBPInfo()
+	ClickImage("btn_ok_bp.bmp",True)
 EndFunc
 
 Func CompleteLogin()

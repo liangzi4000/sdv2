@@ -127,6 +127,7 @@ Func GetImageCenterPos($image)
 EndFunc   ;==>GetImageCenterPos
 
 Func SendPasteKeys()
+	Sleep(100)
 	Send("^v")
 	If $debug Then WriteLog("Press Ctrl+V to paste")
 EndFunc   ;==>SendPasteKeys
