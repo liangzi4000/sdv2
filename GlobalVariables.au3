@@ -2,6 +2,7 @@
 Global $activewindow = ""
 Global $inactivewindows = [] ; To store the inactive windows
 Global $debug = True
+Global $exit = False ; Terminate script flag
 
 Global $v_winctrlclassname = "subWin1"
 Global Const $v_imagepath = @ScriptDir & "\Assets\identifier\"
@@ -11,6 +12,7 @@ Global Const $btn_uidpwd[2] = [334,131] ; 输入用户名和密码
 Global Const $txt_uid[2] = [334,180] ; 用户名输入文本框
 Global Const $txt_pwd[2] = [334,236] ; 密码输入文本框
 Global Const $btn_ignore[2] = [625,25] ; 忽略
+Global Const $side_gift[2] = [635,84] ; 礼物
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 Global Const $v_room_screenshot = @ScriptDir & "\db\privateroom.jpg"
@@ -102,6 +104,6 @@ Global $jinhuaover = [1374,416,1378,420,0xF9F7E6,5]
 
 
 Global $stationdesktop = False ; PC station flag
-Global $exit = False ; Script control flag
+
 
 #include <Configuration.au3>

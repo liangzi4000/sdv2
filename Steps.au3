@@ -15,6 +15,8 @@ _ArrayAdd($firstrun,"Wrapper_ClickUntilNotification_CloseNotification_CompleteLo
 _ArrayAdd($firstrun,"CloseBPInfo")
 _ArrayAdd($firstrun,"GetGift")
 _ArrayAdd($firstrun,"PerformTask1")
+_ArrayAdd($firstrun,"CheckExit")
+
 
 Global $steps = []
 _ArrayAdd($steps,"ClickMenuOthers")
@@ -28,6 +30,7 @@ _ArrayAdd($steps,"Wrapper_ClickUntilNotification_CloseNotification_CompleteLogin
 _ArrayAdd($steps,"CloseBPInfo")
 _ArrayAdd($steps,"GetGift")
 _ArrayAdd($steps,"PerformTask1")
+_ArrayAdd($steps,"CheckExit")
 
 Func ExecStep($index)
 	For $x = 0 To UBound($v_windows)-1
@@ -185,7 +188,7 @@ Func ClickUntilNotification()
 EndFunc
 
 Func CloseNotification()
-	ClickImage("btn_close.bmp")
+	ClickImage("btn_close.bmp",True)
 EndFunc
 
 Func CloseBPInfo()
@@ -223,7 +226,13 @@ Func GetGift()
 	Local $acctinfo = Eval("acctinfo"&$activewindow)
 	Local $acctinfoarr = StringSplit($acctinfo, "|")
 	If $acctinfoarr[5] = 1 Then
-
+		ClickPosUntilScreen($side_gift,"btn_back.bmp")
+		Local $img = WaitImage("btn_getall_gifts.bmp,btn_getall_gifts_greyout.bmp")
+		If $img = 1 Then
+			ClickImage("btn_getall_gifts.bmp",True)
+			ClickImage("btn_lingqu.bmp",True)
+			ClickImage("btn_ok_lingqu.bmp",True)
+		EndIf
 	EndIf
 EndFunc
 
@@ -233,4 +242,8 @@ Func PerformTask1()
 	If $acctinfoarr[3] = 0 Then
 
 	EndIf
+EndFunc
+
+Func CheckExit()
+	If $exit Then Exit
 EndFunc

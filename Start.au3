@@ -1,4 +1,5 @@
 #AutoIt3Wrapper_UseX64 = Y
+#RequireAdmin
 #include <Common.au3>
 #include <Steps.au3>
 
@@ -28,6 +29,8 @@ Func Terminate()
 EndFunc
 
 Func Main()
+	BlockInput($BI_DISABLE)
+	ExecDBQuery("[dbo].[SP_ResetDailyTaskStatus] '"&$v_windows[0]&"'")
 	Local $firstrunflag = True
 	While UBound($inactivewindows) <> UBound($v_windows)
 		If $firstrunflag Then
