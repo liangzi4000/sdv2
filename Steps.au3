@@ -23,9 +23,6 @@ _ArrayAdd($steps,"Wrapper_EnterUIDandPWD_LianDongV2")
 _ArrayAdd($steps,"Wrapper_StartScreen_ClickOnCenter_DoItLater")
 _ArrayAdd($steps,"Wrapper_ClickUntilNotification_CloseNotification_CompleteLogin")
 
-Global $lastrun = []
-_ArrayAdd($lastrun,"CloseApp")
-
 Func ExecStep($index)
 	For $x = 0 To UBound($v_windows)-1
 		$activewindow = $v_windows[$x]
@@ -46,6 +43,7 @@ Func OpenLoginUI()
 	ClickOnConvert($btn_liandong)
 EndFunc
 
+#Region ClickBtnLianDongZiLiang, ClickBtnLianDongZiLiangV2
 Func ClickBtnLianDongZiLiang()
 	ClickImage("btn_liandongziliao.bmp")
 EndFunc
@@ -53,13 +51,15 @@ EndFunc
 Func ClickBtnLianDongZiLiangV2()
 	ClickImage("btn_liandongziliao_v2.bmp")
 EndFunc
+#EndRegion
 
+#Region ChooseUserIDLogin, ChooseUserIDLoginV2
 Func ChooseUserIDLogin()
 	If WaitImage("btn_close_login.bmp") = 1 Then
 		ClickOnConvert($btn_uidpwd)
 	Else
-		WriteLog("Uanble to find btn_close_login.bmp")
-		; To do on error handler
+		WriteLog("Uanble to find btn_close_login.bmp",$v_exception)
+		_ArrayAdd($inactivewindows,$activewindow)
 	EndIf
 EndFunc
 
@@ -67,22 +67,11 @@ Func ChooseUserIDLoginV2()
 	If WaitImage("btn_close_switch.bmp") = 1 Then
 		ClickOnConvert($btn_uidpwd)
 	Else
-		WriteLog("Uanble to find btn_close_switch.bmp")
-		; To do on error handler
+		WriteLog("Uanble to find btn_close_switch.bmp",$v_exception)
+		_ArrayAdd($inactivewindows,$activewindow)
 	EndIf
 EndFunc
-
-Func Wrapper_EnterUIDandPWD_LianDong()
-	EnterUIDandPWD()
-	ClickJueDing()
-	LianDong()
-EndFunc
-
-Func Wrapper_EnterUIDandPWD_LianDongV2()
-	EnterUIDandPWD()
-	ClickJueDingV2()
-	LianDongV2()
-EndFunc
+#EndRegion
 
 Func GetNextRecord()
 	Local $acctinfo = ExecDBQuery("[dbo].[SP_GetNextRecord] '"&$activewindow&"'")
@@ -94,6 +83,19 @@ Func GetNextRecord()
 	EndIf
 	Assign("acctinfo"&$activewindow,$acctinfo,2)
 	Return True
+EndFunc
+
+#Region Wrapper_EnterUIDandPWD_LianDong, Wrapper_EnterUIDandPWD_LianDongV2
+Func Wrapper_EnterUIDandPWD_LianDong()
+	EnterUIDandPWD()
+	ClickJueDing()
+	LianDong()
+EndFunc
+
+Func Wrapper_EnterUIDandPWD_LianDongV2()
+	EnterUIDandPWD()
+	ClickJueDingV2()
+	LianDongV2()
 EndFunc
 
 Func EnterUIDandPWD()
@@ -114,32 +116,32 @@ EndFunc
 
 Func ClickJueDing()
 	ClickImage("btn_login_jueding.bmp",True)
-	;ClickImageUntilScreen("btn_login_jueding.bmp","btn_liandong.bmp")
 EndFunc
 
 Func ClickJueDingV2()
 	ClickImage("btn_login_jueding_v2.bmp",True)
-	;ClickImageUntilScreen("btn_login_jueding_v2.bmp","btn_liandong_v2.bmp")
 EndFunc
 
 Func LianDong()
 	ClickImageUntilScreen("btn_liandong.bmp","btn_ok.bmp")
-;~ 	ClickImage("btn_liandong.bmp")
-;~ 	Sleep(200)
-;~ 	ClickImage("btn_liandong.bmp")
-;~ 	Sleep(500)
 	ClickBtnOK()
 EndFunc
 
 Func LianDongV2()
 	ClickImageUntilScreen("btn_liandong_v2.bmp","btn_ok_v2.bmp")
-;~ 	ClickImage("btn_liandong_v2.bmp")
-;~ 	Sleep(200)
-;~ 	ClickImage("btn_liandong_v2.bmp")
-;~ 	Sleep(500)
 	ClickBtnOKV2()
 EndFunc
 
+Func ClickBtnOK()
+	ClickImage("btn_ok.bmp",True)
+EndFunc
+
+Func ClickBtnOKV2()
+	ClickImage("btn_ok_v2.bmp",True)
+EndFunc
+#EndRegion
+
+#Region Wrapper_StartScreen_ClickOnCenter_DoItLater
 Func Wrapper_StartScreen_ClickOnCenter_DoItLater()
 	StartScreen()
 	ClickOnCenter()
@@ -162,7 +164,9 @@ EndFunc
 Func DoItLater()
 	ClickImage("btn_doitlater.bmp",True)
 EndFunc
+#EndRegion
 
+#Region Wrapper_ClickUntilNotification_CloseNotification_CompleteLogin
 Func Wrapper_ClickUntilNotification_CloseNotification_CompleteLogin()
 	ClickUntilNotification()
 	CloseNotification()
@@ -185,6 +189,7 @@ Func CompleteLogin()
 	If $debug Then WriteLog($uid)
 	ExecDBQuery("[dbo].[SP_CompleteDailyTask] '"&$uid&"'")
 EndFunc
+#EndRegion
 
 Func ClickMenuOthers()
 	ClickImageUntilScreen("menu_others.bmp","btn_youxiziliaoliandong.bmp")
@@ -192,14 +197,6 @@ EndFunc
 
 Func ClickBtnGameLink()
 	ClickImageUntilScreen("btn_youxiziliaoliandong.bmp","btn_liandongziliao_v2.bmp")
-EndFunc
-
-Func ClickBtnOK()
-	ClickImage("btn_ok.bmp",True)
-EndFunc
-
-Func ClickBtnOKV2()
-	ClickImage("btn_ok_v2.bmp",True)
 EndFunc
 
 Func CloseApp()
