@@ -34,6 +34,8 @@ _ArrayAdd($steps,"PerformTask1")
 _ArrayAdd($steps,"CheckExit")
 
 Func ExecStep($index)
+	If $index = "" Then Return
+
 	For $x = 0 To UBound($v_windows)-1
 		$activewindow = $v_windows[$x]
 		If _ArraySearch($inactivewindows, $activewindow) <> -1 Then
