@@ -32,17 +32,18 @@ Func Main()
 	;BlockInput($BI_DISABLE)
 	ExecDBQuery("[dbo].[SP_ResetDailyTaskStatus] '"&$v_windows[0]&"'")
 	Local $firstrunflag = True
-	While UBound($inactivewindows) <> UBound($v_windows)
+	While UBound($inactivewindows)-1 <> UBound($v_windows)
+		WriteLog("UBound($inactivewindows)="&UBound($inactivewindows)&" vs UBound($v_windows)="&UBound($v_windows))
 		If $firstrunflag Then
 			$firstrunflag = False
 			For $x=0 To UBound($firstrun)-1
 				ExecStep($firstrun[$x])
 			Next
+		Else
+			For $x=0 To UBound($steps)-1
+				ExecStep($steps[$x])
+			Next
 		EndIf
-
-		For $x=0 To UBound($steps)-1
-			ExecStep($steps[$x])
-		Next
 	WEnd
 	Exit
 EndFunc

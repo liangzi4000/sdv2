@@ -36,7 +36,10 @@ _ArrayAdd($steps,"CheckExit")
 Func ExecStep($index)
 	For $x = 0 To UBound($v_windows)-1
 		$activewindow = $v_windows[$x]
-		If _ArraySearch($inactivewindows, $activewindow) <> -1 Then ContinueLoop
+		If _ArraySearch($inactivewindows, $activewindow) <> -1 Then
+			WriteLog("Skip execute "&$index&" for window "&$activewindow)
+			ContinueLoop
+		EndIf
 
 		WinActivate($activewindow)
 		WriteLog("Before execute "&$index)
@@ -91,7 +94,7 @@ Func ChooseUserIDLogin()
 		ClickOnRelative($btn_uidpwd)
 	Else
 		WriteLog("Uanble to find btn_close_login.bmp",$v_exception)
-		_ArrayAdd($inactivewindows,$activewindow)
+		AddArrayElem($inactivewindows,$activewindow)
 	EndIf
 EndFunc
 
@@ -100,7 +103,7 @@ Func ChooseUserIDLoginV2()
 		ClickOnRelative($btn_uidpwd)
 	Else
 		WriteLog("Uanble to find btn_close_switch.bmp",$v_exception)
-		_ArrayAdd($inactivewindows,$activewindow)
+		AddArrayElem($inactivewindows,$activewindow)
 	EndIf
 EndFunc
 #EndRegion
@@ -110,7 +113,7 @@ Func GetNextRecord()
 	Assign("acctinfo"&$activewindow,$acctinfo,2)
 	If Not IsValidResult($acctinfo) Then
 		WriteLog("Invalid database record: " & $acctinfo, $v_exception)
-		_ArrayAdd($inactivewindows,$activewindow)
+		AddArrayElem($inactivewindows,$activewindow)
 		CloseApp()
 		Return False
 	EndIf

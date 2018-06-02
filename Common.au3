@@ -376,4 +376,10 @@ Func CopyArrayData(ByRef $arr1, Const ByRef $arr2)
 		$arr1[$i] = $arr2[$i]
 	Next
 EndFunc   ;==>CopyArrayData
+
+Func AddArrayElem(ByRef $arr1, $elem)
+	If _ArraySearch($arr1, $elem) = -1 Then
+		_ArrayAdd($arr1, $elem)
+	EndIf
+EndFunc
 #EndRegion Misc Helper
