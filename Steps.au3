@@ -5,6 +5,7 @@
 Global $firstrun = []
 _ArrayAdd($firstrun,"OpenApp")
 _ArrayAdd($firstrun,"StartScreen")
+_ArrayAdd($firstrun,"MoveWindow")
 _ArrayAdd($firstrun,"OpenLoginUI")
 _ArrayAdd($firstrun,"ClickBtnLianDongZiLiang")
 _ArrayAdd($firstrun,"ChooseUserIDLogin")
@@ -42,6 +43,26 @@ Func ExecStep($index)
 		Call($index)
 		WriteLog("After execute "&$index)
 	Next
+EndFunc
+
+Func MoveWindow()
+	Local $toolbarpos = GetHideToolBarPosition()
+	Local $ctrlpos = GetCtrlPosition()
+	ClickOn($toolbarpos)
+	Sleep(500)
+	If Not $winleftready Then
+		WinMove($activewindow,"",0,0)
+		$winleftready = True
+		Sleep(500)
+		Local $winleftheaderpos = [($ctrlpos[0]+$ctrlpos[2])/2,10]
+		ClickOn($winleftheaderpos)
+	ElseIf Not $winrightready Then
+		WinMove($activewindow,"",$ctrlpos[0]+$ctrlpos[2]+5,0)
+		$winrightready = True
+		Sleep(500)
+		Local $winrightheaderpos = [($ctrlpos[0]+$ctrlpos[2])*3/2,10]
+		ClickOn($winrightheaderpos)
+	EndIf
 EndFunc
 
 Func OpenApp()
@@ -169,7 +190,7 @@ Func Wrapper_StartScreen_DoItLater()
 EndFunc
 
 Func StartScreen()
-	WaitImage("ui_startscreen.bmp")
+	WaitImage("ui_startscreen.bmp",60)
 EndFunc
 
 Func ClickOnStartScreen()
@@ -219,8 +240,9 @@ Func ClickBtnGameLink()
 EndFunc
 
 Func CloseApp()
-	Local $tasklistpos = GetTaskListPosition()
-	ClickOn($tasklistpos)
+	;Local $tasklistpos = GetTaskListPosition()
+	;ClickOn($tasklistpos)
+	Send("{PGUP}")
 	WaitImage("app_icon_tasklist.bmp")
 	Local $pos = [0,0]
 	SearchImage("app_icon_tasklist.bmp",$pos[0],$pos[1])

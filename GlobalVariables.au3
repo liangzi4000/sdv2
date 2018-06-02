@@ -3,6 +3,8 @@ Global $activewindow = ""
 Global $inactivewindows = [] ; To store the inactive windows
 Global $debug = True
 Global $exit = False ; Terminate script flag
+Global $winleftready = False
+Global $winrightready = False
 
 Global $v_winctrlclassname = "subWin1"
 Global Const $v_imagepath = @ScriptDir & "\Assets\identifier\"
