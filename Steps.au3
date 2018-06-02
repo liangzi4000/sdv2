@@ -55,12 +55,14 @@ Func MoveWindow()
 		$winleftready = True
 		Sleep(500)
 		Local $winleftheaderpos = [($ctrlpos[0]+$ctrlpos[2])/2,10]
+		WinActivate($activewindow)
 		ClickOn($winleftheaderpos)
 	ElseIf Not $winrightready Then
 		WinMove($activewindow,"",$ctrlpos[0]+$ctrlpos[2]+5,0)
 		$winrightready = True
 		Sleep(500)
 		Local $winrightheaderpos = [($ctrlpos[0]+$ctrlpos[2])*3/2,10]
+		WinActivate($activewindow)
 		ClickOn($winrightheaderpos)
 	EndIf
 EndFunc
@@ -240,12 +242,11 @@ Func ClickBtnGameLink()
 EndFunc
 
 Func CloseApp()
-	;Local $tasklistpos = GetTaskListPosition()
-	;ClickOn($tasklistpos)
-	Send("{PGUP}")
-	WaitImage("app_icon_tasklist.bmp")
 	Local $pos = [0,0]
-	SearchImage("app_icon_tasklist.bmp",$pos[0],$pos[1])
+	Do
+		Send("{PGUP}")
+		Sleep(3000)
+	Until SearchImage("app_icon_tasklist.bmp",$pos[0],$pos[1]) = 1
 	Slide($pos[0],$pos[1],$pos[0],0)
 EndFunc
 
