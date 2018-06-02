@@ -193,7 +193,7 @@ Func WaitImage($image, $timeout = 20, $timeoutcall = "", $click = False)
 
 		If TimerDiff($hTimer) > $timeout * 1000 Then
 			WriteLog("WaitImage time out after " & $timeout & " seconds waiting for image " & $image & ", $timeoutcall=" & $timeoutcall, $v_exception)
-			If $timeoutcall <> "" Then Call($timeoutcall)
+			If $timeoutcall <> "" Then Exit ;Call($timeoutcall)
 			ExitLoop
 		EndIf
 
@@ -241,7 +241,7 @@ Func ClickPosUntilScreen($pos, $untilimage, $interval = 700, $timeout = 20, $tim
 	While SearchImage($untilimage, $x, $y) = 0
 		If TimerDiff($hTimer) > $timeout * 1000 Then
 			WriteLog("ClickPosUntilScreen time out after " & $timeout & " seconds waiting for image " & $untilimage & ", $timeoutcall=" & $timeoutcall, $v_exception)
-			If $timeoutcall <> "" Then Call($timeoutcall)
+			If $timeoutcall <> "" Then Exit ;Call($timeoutcall)
 			Return 0
 		EndIf
 		ClickOn($mypos)
