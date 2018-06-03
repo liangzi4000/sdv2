@@ -15,6 +15,20 @@ Global $txt_uid[2] = [334,180] ; 用户名输入文本框
 Global $txt_pwd[2] = [334,236] ; 密码输入文本框
 Global $btn_ignore[2] = [625,25] ; 忽略
 Global $side_gift[2] = [635,84] ; 礼物
+Global $ico_bin[2] = [98,37] ; 回收站
+Global $area_startscreen[4] = [0, 340, 60, 60] ; 开始屏幕图标
+Global $btn_change_lang[2] = [500,113] ; change language
+Global $opt_lang_cht[2] = [334,260] ; 繁体中文
+Global $txt_username[2] = [334,202] ; 用户昵称
+Global $btn_skipvideo[2] = [650,23] ; skip video
+Global $sld_card1[4] = [334,313,334,5] ; 交换第一张卡
+Global $sld_card2[4] = [496,313,496,5] ; 交换第二张卡
+Global $btn_fight_confirm[2] = [611,204] ; 决定
+Global $opt_zhuxian[2] = [215,200] ; 主线剧情
+Global $btn_setpwd[2] = [334,244] ; 设定连动密码
+Global $txt_setpwd[2] = [334,126] ; password
+Global $txt_setpwd_confirm[2] = [334,205] ; confirm password
+Global $chk_agreeprivacy[2] = [405,290] ; 同意隐私政策
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 Global Const $v_room_screenshot = @ScriptDir & "\db\privateroom.jpg"
@@ -32,23 +46,20 @@ Global $btn_jdacct[2] = [666,534] ; 决定
 Global $sld_close_app[4] = [1167,447,1167,110] ; 关闭app
 Global $btn_createcombination = [285,199] ; 创建新牌组
 Global $screencenter[2] = [666,377] ; 屏幕中心点
+Global $btn_install_next[2] = [304,654] ; 下一步，安装
 
-Global $btn_install_next[2] = [973,692] ; 下一步，安装
-Global $btn_change_lang[2] = [961,216] ; change language
-Global $opt_lang_cht[2] = [666,486] ; 繁体中文
-Global $txt_username[2] = [666,378] ; 用户昵称
+
+
+
 Global $btn_confirm[2] = [666,533] ; 大弹窗确定按钮
-Global $sld_card1[4] = [666,578,666,122] ; 交换第一张卡
-Global $sld_card2[4] = [940,578,940,122] ; 交换第二张卡
-Global $btn_fight_confirm[2] = [1167,384] ; 决定
+
+
 Global $btn_zhuzhanzhe_confirm[2] = [1183,516] ; 决定
 Global $btn_reward_ok[2] = [666,445] ; 登录奖励 ok
-Global $opt_zhuxian[2] = [285,285] ; 主线剧情
-Global $btn_setpwd[2] = [666,456] ; 设定连动密码
-Global $txt_setpwd[2] = [666,240] ; password
-Global $txt_setpwd_confirm[2] = [666,385] ; confirm password
-Global $chk_agreeprivacy[2] = [788,544] ; 同意隐私政策
-Global $ico_bin[2] = [93,87] ; 回收站
+
+
+
+
 Global $opt_privatefight[3] = [1069,411,"E7E7E7"] ; 私人对战
 Global $meu_duizhan[2] = [504,678] ; 对战菜单
 Global $btn_liwu[6] = [1194,139,1202,147,0xE6E6D5,0] ; 礼物

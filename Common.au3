@@ -72,14 +72,15 @@ Func GetCtrlCenter()
 	Return $result
 EndFunc   ;==>GetCtrlCenter
 
-Func GetTaskListPosition()
-	Local $winpos = GetWinPosition()
-	Local $ctrlpos = GetCtrlPosition()
-	Local $result[2] ;
-	$result[0] = $winpos[0] + $ctrlpos[0] + $ctrlpos[2] + 16
-	$result[1] = $winpos[1] + $ctrlpos[1] + 368
-	Return $result
-EndFunc   ;==>GetTaskListPosition
+; Below function has been replaced with keyboard shortcut
+;~ Func GetTaskListPosition()
+;~ 	Local $winpos = GetWinPosition()
+;~ 	Local $ctrlpos = GetCtrlPosition()
+;~ 	Local $result[2] ;
+;~ 	$result[0] = $winpos[0] + $ctrlpos[0] + $ctrlpos[2] + 16
+;~ 	$result[1] = $winpos[1] + $ctrlpos[1] + 368
+;~ 	Return $result
+;~ EndFunc   ;==>GetTaskListPosition
 
 Func GetHideToolBarPosition()
 	Local $winpos = GetWinPosition()
@@ -88,7 +89,7 @@ Func GetHideToolBarPosition()
 	$result[0] = $winpos[0] + $ctrlpos[0] + $ctrlpos[2] + 16
 	$result[1] = $winpos[1] + $ctrlpos[1] + 10
 	Return $result
-EndFunc	 ;==>GetHideToolBarPosition
+EndFunc   ;==>GetHideToolBarPosition
 
 Func ConvertRelativePosToAbsolutePos($ctrlcoords)
 	Local $winpos = GetWinPosition()
@@ -116,15 +117,22 @@ EndFunc   ;==>ClickOnRelative
 	The $x and $y are absolute screen coordinates, no need to convert
 	Todo: set PixelCoordMode to return relative coords to defined window
 #comments-end
-Func SearchImage($image, ByRef $x, ByRef $y, $tolerance = 20, $HBMP = 0)
+Func SearchImage($image, ByRef $x, ByRef $y, $tolerance = 20, $area_x = 0, $area_y = 0, $area_width = 0, $area_height = 0)
+	Local $area[4]
 	Local $winpos = GetWinPosition()
 	Local $ctrlpos = GetCtrlPosition()
-	Local $area[4]
-	$area[0] = $winpos[0] + $ctrlpos[0]
-	$area[1] = $winpos[1] + $ctrlpos[1]
-	$area[2] = $area[0] + $ctrlpos[2]
-	$area[3] = $area[1] + $ctrlpos[3]
-	Local $result = _ImageSearchArea($v_imagepath & $image, 1, $area[0], $area[1], $area[2], $area[3], $x, $y, $tolerance, $HBMP)
+	If $area_x = 0 And $area_y = 0 And $area_width = 0 And $area_height = 0 Then
+		$area[0] = $winpos[0] + $ctrlpos[0]
+		$area[1] = $winpos[1] + $ctrlpos[1]
+		$area[2] = $area[0] + $ctrlpos[2]
+		$area[3] = $area[1] + $ctrlpos[3]
+	Else
+		$area[0] = $winpos[0] + $ctrlpos[0] + $area_x
+		$area[1] = $winpos[1] + $ctrlpos[1] + $area_y
+		$area[2] = $area[0] + $area_width
+		$area[3] = $area[1] + $area_height
+	EndIf
+	Local $result = _ImageSearchArea($v_imagepath & $image, 1, $area[0], $area[1], $area[2], $area[3], $x, $y, $tolerance)
 	If $debug Then WriteLog("SearchImage search " & $image & ", result:" & $result)
 	Return $result ; return 1 or 0
 EndFunc   ;==>SearchImage
@@ -146,6 +154,14 @@ Func Slide($x1, $y1, $x2, $y2)
 	If $debug Then WriteLog("Slide from " & $x1 & "," & $y1 & " to " & $x2 & "," & $y2)
 EndFunc   ;==>Slide
 
+Func SlideRelative($x1, $y1, $x2, $y2)
+	Local $start[2] = [$x1, $y1]
+	Local $end[2] = [$x2, $y2]
+	Local $start_conv = ConvertRelativePosToAbsolutePos($start)
+	Local $end_conv = ConvertRelativePosToAbsolutePos($end)
+	Slide($start_conv[0],$start_conv[1],$end_conv[0],$end_conv[1])
+EndFunc
+
 Func Drag($x1, $y1, $x2, $y2, $delay = 500)
 	Opt("MouseClickDragDelay", $delay)
 	MouseClickDrag($MOUSE_CLICK_LEFT, $x1, $y1, $x2, $y2)
@@ -155,10 +171,32 @@ EndFunc   ;==>Drag
 #EndRegion Fundamental Operation (e.g ClickOn, SearchImage, SendPasteKeys, Slide, Drag)
 
 #Region Advanced Image Operation
+Func ClickImageDesktop($image, $timeout = 20, $timeoutcall = "")
+	Local $pos = [0,0], $tolerance = 20
+	Local $hTimer = TimerInit()
+	While 1
+		Local $search = _ImageSearch($v_imagepath&$image, 1, $pos[0], $pos[1], $tolerance)
+		If $search = 1 Then
+			ClickOn($pos)
+			If $debug Then WriteLog("ClickImageDesktop click on image " & $image)
+			ExitLoop
+		EndIf
+
+		If TimerDiff($hTimer) > $timeout * 1000 Then
+			WriteLog("ClickImageDesktop time out after " & $timeout & " seconds waiting for image " & $image & ", $timeoutcall=" & $timeoutcall, $v_exception)
+			Exit
+			If $timeoutcall <> "" Then Call($timeoutcall)
+			ExitLoop
+		EndIf
+
+		Sleep(200)
+	WEnd
+EndFunc
+
 ;Return 1: clicked; 0: not click due to time out
-Func ClickImage($image, $sureclick = False, $timeout = 20, $timeoutcall = "")
+Func ClickImage($image, $sureclick = False, $timeout = 20, $timeoutcall = "", $area_x = 0, $area_y = 0, $area_width = 0, $area_height = 0)
 	If Not $sureclick Then
-		If WaitImage($image, $timeout, $timeoutcall, True) = 1 Then
+		If WaitImage($image, $timeout, $timeoutcall, True, 0, 0, 0, 0) = 1 Then
 			If $debug Then WriteLog("ClickImage clicked on image " & $image)
 			Return 1
 		Else
@@ -167,7 +205,7 @@ Func ClickImage($image, $sureclick = False, $timeout = 20, $timeoutcall = "")
 		EndIf
 	EndIf
 
-	If WaitImage($image, $timeout, $timeoutcall, False) = 1 Then
+	If WaitImage($image, $timeout, $timeoutcall, False, 0, 0, 0, 0) = 1 Then
 		Local $pos = [0, 0]
 		While SearchImage($image, $pos[0], $pos[1]) = 1
 			ClickOn($pos)
@@ -186,15 +224,15 @@ EndFunc   ;==>ClickImage
 	1 				- found when $image is single file
 	index number 	- found when $image is multiple files, it starts from 1
 #comments-end
-Func WaitImage($image, $timeout = 20, $timeoutcall = "", $click = False)
+Func WaitImage($image, $timeout = 20, $timeoutcall = "", $click = False, $area_x = 0, $area_y = 0, $area_width = 0, $area_height = 0)
 	Local $hTimer = TimerInit()
 	Local $pos = [0, 0]
-	Local $list = StringSplit($image,",")
+	Local $list = StringSplit($image, ",")
 	Local $found = 0
 
 	While 1
 		For $i = 1 To $list[0]
-			If SearchImage($list[$i], $pos[0], $pos[1]) = 1 Then
+			If SearchImage($list[$i], $pos[0], $pos[1], 20, 0, 0, 0, 0) = 1 Then
 				$found = $i
 				ExitLoop
 			EndIf
@@ -262,17 +300,18 @@ Func ClickPosUntilScreen($pos, $untilimage, $interval = 700, $timeout = 20, $tim
 	Return 1
 EndFunc   ;==>ClickPosUntilScreen
 
-Func DragImage($image, $to_x, $to_y)
+Func DragImage($image, $to_pos, $relaive = True)
 	If WaitImage($image) = 1 Then
 		Local $pos = [0, 0]
 		SearchImage($image, $pos[0], $pos[1])
-		Drag($pos[0], $pos[1], $to_x, $to_y)
-;~ 		MouseMove($pos[0], $pos[1], 0)
-;~ 		MouseDown($MOUSE_CLICK_LEFT)
-;~ 		Sleep(500)
-;~ 		MouseMove($to_x, $to_y)
-;~ 		MouseUp($MOUSE_CLICK_LEFT)
-		If $debug Then WriteLog("Drag image " & $image & " to [" & $to_x & "," & $to_y & "]")
+		If $relaive Then
+			Local $abspos = ConvertRelativePosToAbsolutePos($to_pos)
+			Drag($pos[0], $pos[1], $abspos[0], $abspos[1])
+		Else
+			Drag($pos[0], $pos[1], $to_pos[0], $to_pos[1])
+		EndIf
+
+		If $debug Then WriteLog("Drag image " & $image & " to [" & $to_pos[0] & "," & $to_pos[1] & "]")
 	Else
 		WriteLog("Drag unable to find image " & $image, $v_exception)
 	EndIf
@@ -381,5 +420,5 @@ Func AddArrayElem(ByRef $arr1, $elem)
 	If _ArraySearch($arr1, $elem) = -1 Then
 		_ArrayAdd($arr1, $elem)
 	EndIf
-EndFunc
+EndFunc   ;==>AddArrayElem
 #EndRegion Misc Helper

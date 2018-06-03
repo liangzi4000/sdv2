@@ -2,6 +2,7 @@
 #RequireAdmin
 #include <Common.au3>
 #include <Steps.au3>
+#include <CreateAccounts.au3>
 
 If MutexExists("MydeswswScriptName") Then
 	; We know the script is already running. Let the user know.
@@ -29,11 +30,10 @@ Func Terminate()
 EndFunc
 
 Func Main()
-	;BlockInput($BI_DISABLE)
+	BlockInput($BI_DISABLE)
 	ExecDBQuery("[dbo].[SP_ResetDailyTaskStatus] '"&$v_windows[0]&"'")
 	Local $firstrunflag = True
 	While UBound($inactivewindows)-1 <> UBound($v_windows)
-		WriteLog("UBound($inactivewindows)="&UBound($inactivewindows)&" vs UBound($v_windows)="&UBound($v_windows))
 		If $firstrunflag Then
 			$firstrunflag = False
 			For $x=0 To UBound($firstrun)-1
@@ -45,7 +45,38 @@ Func Main()
 			Next
 		EndIf
 	WEnd
-	Exit
+	WriteLog("Accounts sign in completed.")
+
+;~ 	; Reset inactive window array to default
+;~ 	While UBound($inactivewindows) > 1
+;~ 		_ArrayPop($inactivewindows)
+;~ 	WEnd
+
+;~ 	Local $total = 2
+;~ 	For $i = 1 To $total
+
+;~ 		If $i = 1 Then
+;~ 			For $x=0 To UBound($createaccountfirstrun)-1
+;~ 				ExecStep($createaccountfirstrun[$x])
+;~ 			Next
+;~ 		ElseIf $i = $total Then
+;~ 			For $x=0 To UBound($createaccountlastrun)-1
+;~ 				ExecStep($createaccountlastrun[$x])
+;~ 			Next
+;~ 		Else
+;~ 			For $x=0 To UBound($createaccountsteps)-1
+;~ 				ExecStep($createaccountsteps[$x])
+;~ 			Next
+;~ 		EndIf
+;~ 	Next
+;~ 	Exit
+
+	$v_email_Subject = "All tasks completed"
+	$v_email_AttachFiles = GetLog()
+	_INetSmtpMailCom($v_email_SmtpServer,$v_email_FromName,$v_email_FromAddress,$v_email_ToAddress,$v_email_Subject,$v_email_Body,$v_email_AttachFiles,$v_email_CcAddress,$v_email_BccAddress,$v_email_Importance,$v_email_Username,$v_email_Password,$v_email_IPPort,$v_email_ssl)
+
+	Shutdown($SD_SHUTDOWN) ; shutdown PC
+Exit
 EndFunc
 
 Func OnAutoitExit()
