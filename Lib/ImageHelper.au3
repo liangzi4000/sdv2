@@ -32,10 +32,10 @@ EndFunc   ;==>SearchImage
 	Check if specified image can be found in desktop, the $x and $y are absolute screen coordinates
 #comments-end
 Func SearchImageDesktop($image, ByRef $x, ByRef $y, $tolerance = 20)
-	Local $result = _ImageSearch($v_imagepath&$image, 1, $x, $y, $tolerance)
+	Local $result = _ImageSearch($v_imagepath & $image, 1, $x, $y, $tolerance)
 	If $debug Then WriteLog("SearchImageDesktop search " & $image & ", result:" & $result)
 	Return $result ; return 1 or 0
-EndFunc
+EndFunc   ;==>SearchImageDesktop
 
 #comments-start
 	Return the center absolute x,y coordination of speicifed image in active window
@@ -54,7 +54,7 @@ EndFunc   ;==>GetImageCenterPos
 	1 				- found when $image is single file
 	index number 	- found when $image is multiple files, it starts from 1
 #comments-end
-Func WaitImageDesktop($image, $timeout = 20, $timeoutcall = "", $click = False)
+Func WaitImageDesktop($image, $timeout = 60, $timeoutcall = "", $click = False)
 	Local $hTimer = TimerInit()
 	Local $pos = [0, 0]
 	Local $list = StringSplit($image, ",")
@@ -88,7 +88,7 @@ Func WaitImageDesktop($image, $timeout = 20, $timeoutcall = "", $click = False)
 	EndIf
 
 	Return $found
-EndFunc
+EndFunc   ;==>WaitImageDesktop
 
 #comments-start
 	Wait and check if specified image(s) can be found in active window
@@ -98,7 +98,7 @@ EndFunc
 	1 				- found when $image is single file
 	index number 	- found when $image is multiple files, it starts from 1
 #comments-end
-Func WaitImage($image, $timeout = 20, $timeoutcall = "", $click = False, $area_x = 0, $area_y = 0, $area_width = 0, $area_height = 0)
+Func WaitImage($image, $timeout = 60, $timeoutcall = "", $click = False, $area_x = 0, $area_y = 0, $area_width = 0, $area_height = 0)
 	Local $hTimer = TimerInit()
 	Local $pos = [0, 0]
 	Local $list = StringSplit($image, ",")
@@ -106,7 +106,7 @@ Func WaitImage($image, $timeout = 20, $timeoutcall = "", $click = False, $area_x
 
 	While 1
 		For $i = 1 To $list[0]
-			If SearchImage($list[$i], $pos[0], $pos[1], 20, 0, 0, 0, 0) = 1 Then
+			If SearchImage($list[$i], $pos[0], $pos[1], $timeout, 0, 0, 0, 0) = 1 Then
 				$found = $i
 				ExitLoop
 			EndIf
@@ -139,7 +139,7 @@ EndFunc   ;==>WaitImage
 	Wait and click on specified image in desktop
 	Return 1: clicked; 0: not click due to time out
 #comments-end
-Func ClickImageDesktop($image, $sureclick = False, $timeout = 20, $timeoutcall = "")
+Func ClickImageDesktop($image, $sureclick = False, $timeout = 60, $timeoutcall = "")
 	If Not $sureclick Then
 		If WaitImageDesktop($image, $timeout, $timeoutcall, True) = 1 Then
 			If $debug Then WriteLog("ClickImageDesktop clicked on image " & $image)
@@ -160,13 +160,13 @@ Func ClickImageDesktop($image, $sureclick = False, $timeout = 20, $timeoutcall =
 	Else
 		WriteLog("ClickImageDesktop [sureclick] unable to find image " & $image, $v_exception)
 	EndIf
-EndFunc
+EndFunc   ;==>ClickImageDesktop
 
 #comments-start
 	Wait and click on specified image in active window
 	Return 1: clicked; 0: not click due to time out
 #comments-end
-Func ClickImage($image, $sureclick = False, $timeout = 20, $timeoutcall = "", $area_x = 0, $area_y = 0, $area_width = 0, $area_height = 0)
+Func ClickImage($image, $sureclick = False, $timeout = 60, $timeoutcall = "", $area_x = 0, $area_y = 0, $area_width = 0, $area_height = 0)
 	If Not $sureclick Then
 		If WaitImage($image, $timeout, $timeoutcall, True, 0, 0, 0, 0) = 1 Then
 			If $debug Then WriteLog("ClickImage clicked on image " & $image)
@@ -192,7 +192,7 @@ EndFunc   ;==>ClickImage
 #comments-start
 	Wait and click on specified image in active window until targe image appear in active window
 #comments-end
-Func ClickImageUntilScreen($waitimage, $untilimage, $interval = 700, $timeout = 20, $timeoutcall = "")
+Func ClickImageUntilScreen($waitimage, $untilimage, $interval = 700, $timeout = 60, $timeoutcall = "")
 	If WaitImage($waitimage, $timeout, $timeoutcall) = 1 Then
 		Local $pos = [0, 0]
 		If SearchImage($waitimage, $pos[0], $pos[1]) = 1 Then
@@ -218,7 +218,7 @@ EndFunc   ;==>ClickImageUntilScreen
 	Wait and click on specified position in active window until targe image appear in active window.
 	The $pos by default is relative position
 #comments-end
-Func ClickPosUntilScreen($pos, $untilimage, $interval = 700, $timeout = 20, $timeoutcall = "", $convertposition = True)
+Func ClickPosUntilScreen($pos, $untilimage, $interval = 700, $timeout = 60, $timeoutcall = "", $convertposition = True)
 	Local $mypos = $convertposition = True ? ConvertRelativePosToAbsolutePos($pos) : $pos
 	Local $x = 0, $y = 0
 	Local $hTimer = TimerInit()
