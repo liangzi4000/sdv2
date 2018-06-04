@@ -82,7 +82,7 @@ Func SetupLanguageAndAgreement()
 	ClickImage("btn_ok_language.bmp")
 	ClickImage("btn_ok_language_confirm.bmp")
 	ClickImage("btn_agree.bmp")
-	Sleep(300)
+	Sleep(800)
 	ClickImage("btn_agree.bmp",True)
 EndFunc
 
