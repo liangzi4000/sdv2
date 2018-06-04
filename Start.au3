@@ -52,9 +52,8 @@ Func Main()
 ;~ 		_ArrayPop($inactivewindows)
 ;~ 	WEnd
 
-;~ 	Local $total = 2
+;~ 	Local $total = 3
 ;~ 	For $i = 1 To $total
-
 ;~ 		If $i = 1 Then
 ;~ 			For $x=0 To UBound($createaccountfirstrun)-1
 ;~ 				ExecStep($createaccountfirstrun[$x])
@@ -76,7 +75,6 @@ Func Main()
 	_INetSmtpMailCom($v_email_SmtpServer,$v_email_FromName,$v_email_FromAddress,$v_email_ToAddress,$v_email_Subject,$v_email_Body,$v_email_AttachFiles,$v_email_CcAddress,$v_email_BccAddress,$v_email_Importance,$v_email_Username,$v_email_Password,$v_email_IPPort,$v_email_ssl)
 
 	Shutdown($SD_SHUTDOWN) ; shutdown PC
-Exit
 EndFunc
 
 Func OnAutoitExit()

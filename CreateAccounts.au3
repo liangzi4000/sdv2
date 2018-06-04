@@ -73,7 +73,7 @@ EndFunc
 Func SetupLanguageAndAgreement()
 	ClickImage("ui_startscreen.bmp", True, 20, "", $area_startscreen[0], $area_startscreen[1], $area_startscreen[2], $area_startscreen[3])
 	WaitImage("btn_ok_language.bmp")
-	Sleep(800)
+	Sleep(1500)
 	ClickOnRelative($btn_change_lang)
 	WaitImage("btn_ok_cht.bmp")
 	Sleep(500)
