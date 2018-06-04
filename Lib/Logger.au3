@@ -1,5 +1,5 @@
 #include-once
-#include <GlobalVariables.au3>
+#include "../GlobalVariables.au3"
 #include <File.au3>
 #include <Date.au3>
 
@@ -14,5 +14,9 @@ Func WriteLog($msg,$file="")
 EndFunc
 
 Func GetLog($file="")
+	If IsDeclared("activewindow") <> 1 Then
+		Local $activewindow = "Default"
+	EndIf
+
 	Return $v_logpath & StringReplace(_NowCalcDate(),"/","")&$activewindow&$file&".log"
 EndFunc
