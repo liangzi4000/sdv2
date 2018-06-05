@@ -254,7 +254,7 @@ Func CloseApp()
 		Send("{PGUP}")
 		Sleep(1500)
 	Until SearchImage("app_icon_tasklist.bmp", $pos[0], $pos[1]) = 1
-	Slide($pos[0], $pos[1], $pos[0], 0)
+	Slide($pos[0], $pos[1]+120, $pos[0], 0)
 EndFunc   ;==>CloseApp
 
 Func GetGift()
@@ -290,7 +290,9 @@ Func PerformTask1()
 		ClickPosUntilScreen($btn_zhuzhanzhe_confirm,"btn_save.bmp") ; 点击决定
 		ClickImage("btn_save.bmp")
 		ClickImage("btn_jueding_bianjicard.bmp")
+		Sleep(500)
 		ClickImage("btn_ok_card_saved.bmp")
+		Sleep(500)
 		ClickImage("btn_ok_fight_effect.bmp")
 
 		ClickImage("menu_single_mode.bmp")
@@ -306,6 +308,7 @@ Func PerformTask1()
 		ClickImage("btn_fight_option.bmp")
 		ClickImage("btn_giveup.bmp")
 		ClickImage("btn_giveup_confirm.bmp")
+		Sleep(500)
 	 	ClickImage("btn_ok_fight_effect.bmp")
 	 	ExecDBQuery("[dbo].[SP_CompleteTask1] "&$acctinfoarr[4])
 		ClickImage("btn_choosechapter.bmp")
