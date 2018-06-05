@@ -275,7 +275,41 @@ Func PerformTask1()
 	Local $acctinfo = Eval("acctinfo" & $activewindow)
 	Local $acctinfoarr = StringSplit($acctinfo, "|")
 	If $acctinfoarr[3] = 0 Then
+		ClickImage("menu_card.bmp",True) ; 点击卡片菜单
+		Sleep(500)
+		ClickPosUntilScreen($opt_zhuxian,"ui_zhidingxilie.bmp") ;点击直到出现 指定系列
+		ClickImage("ui_zhidingxilie.bmp") ; 选择 指定系列
+;~ 		Sleep(300)
+;~ 		ClickPosUntilScreen($opt_zhuxian,"ui_zhidingxilie.bmp") ;点击直到出现 指定系列
+;~ 		ClickImage("ui_zhidingxilie.bmp") ; 选择 指定系列
+		Sleep(800)
+		WaitImage("btn_back.bmp")
+		ClickOnRelative($btn_createcombination) ; 点击 创建新牌组
+		ClickImage("btn_zidongbianji.bmp"); 点击 自动编辑
+		Sleep(300)
+		ClickPosUntilScreen($btn_zhuzhanzhe_confirm,"btn_save.bmp") ; 点击决定
+		ClickImage("btn_save.bmp")
+		ClickImage("btn_jueding_bianjicard.bmp")
+		ClickImage("btn_ok_card_saved.bmp")
+		ClickImage("btn_ok_fight_effect.bmp")
 
+		ClickImage("menu_single_mode.bmp")
+		Sleep(3000)
+		ClickOnRelative($opt_zhuxian) ; 点击 主线剧情
+		WaitImage("btn_back.bmp")
+		ClickOnRelative($btn_zhuzhanzhe_confirm) ; 点击决定
+		ClickImage("ui_1st_chapter_task1.bmp")
+		ClickImage("btn_qianwangjuqing.bmp")
+		ClickPosUntilScreen($btn_ignore,"btn_ignore.bmp") ;忽略
+		ClickImage("btn_ignore.bmp")
+		ClickImage("btn_ok_fight_effect.bmp")
+		ClickImage("btn_fight_option.bmp")
+		ClickImage("btn_giveup.bmp")
+		ClickImage("btn_giveup_confirm.bmp")
+	 	ClickImage("btn_ok_fight_effect.bmp")
+	 	ExecDBQuery("[dbo].[SP_CompleteTask1] "&$acctinfoarr[4])
+		ClickImage("btn_choosechapter.bmp")
+		ClickImage("btn_back.bmp")
 	EndIf
 EndFunc   ;==>PerformTask1
 

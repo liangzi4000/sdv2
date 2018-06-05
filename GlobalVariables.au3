@@ -24,11 +24,13 @@ Global $btn_skipvideo[2] = [650,23] ; skip video
 Global $sld_card1[4] = [334,313,334,5] ; 交换第一张卡
 Global $sld_card2[4] = [496,313,496,5] ; 交换第二张卡
 Global $btn_fight_confirm[2] = [611,204] ; 决定
-Global $opt_zhuxian[2] = [215,200] ; 主线剧情
+Global $opt_zhuxian[2] = [129,119] ; 主线剧情
 Global $btn_setpwd[2] = [334,244] ; 设定连动密码
 Global $txt_setpwd[2] = [334,126] ; password
 Global $txt_setpwd_confirm[2] = [334,205] ; confirm password
 Global $chk_agreeprivacy[2] = [405,290] ; 同意隐私政策
+Global $btn_createcombination = [129,103] ; 创建新牌组
+Global $btn_zhuzhanzhe_confirm[2] = [621,277] ; 决定
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 Global Const $v_room_screenshot = @ScriptDir & "\db\privateroom.jpg"
@@ -44,7 +46,7 @@ Global $btn_doitlater[2] = [562,645] ; 晚点操作
 Global $btn_jdacct[2] = [666,534] ; 决定
 
 Global $sld_close_app[4] = [1167,447,1167,110] ; 关闭app
-Global $btn_createcombination = [285,199] ; 创建新牌组
+
 Global $screencenter[2] = [666,377] ; 屏幕中心点
 Global $btn_install_next[2] = [304,654] ; 下一步，安装
 
@@ -54,7 +56,7 @@ Global $btn_install_next[2] = [304,654] ; 下一步，安装
 Global $btn_confirm[2] = [666,533] ; 大弹窗确定按钮
 
 
-Global $btn_zhuzhanzhe_confirm[2] = [1183,516] ; 决定
+
 Global $btn_reward_ok[2] = [666,445] ; 登录奖励 ok
 
 
