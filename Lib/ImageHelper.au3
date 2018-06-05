@@ -22,6 +22,7 @@ Func SearchImage($image, ByRef $x, ByRef $y, $tolerance = 20, $area_x = 0, $area
 		$area[1] = $winpos[1] + $ctrlpos[1] + $area_y
 		$area[2] = $area[0] + $area_width
 		$area[3] = $area[1] + $area_height
+		ConsoleWrite(_ArrayToString($area))
 	EndIf
 	Local $result = _ImageSearchArea($v_imagepath & $image, 1, $area[0], $area[1], $area[2], $area[3], $x, $y, $tolerance)
 	If $debug Then WriteLog("SearchImage search " & $image & ", result:" & $result)
@@ -106,7 +107,10 @@ Func WaitImage($image, $timeout = 60, $timeoutcall = "", $click = False, $area_x
 
 	While 1
 		For $i = 1 To $list[0]
-			If SearchImage($list[$i], $pos[0], $pos[1], $timeout, 0, 0, 0, 0) = 1 Then
+			If SearchImage($list[$i], $pos[0], $pos[1], 20, $area_x, $area_y, $area_width, $area_height) = 1 Then
+				If $image = "ui_startscreen.bmp"  Then
+					CaptureScreenshot()
+				EndIf
 				$found = $i
 				ExitLoop
 			EndIf
