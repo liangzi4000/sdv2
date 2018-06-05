@@ -106,7 +106,10 @@ Func WaitImage($image, $timeout = 60, $timeoutcall = "", $click = False, $area_x
 
 	While 1
 		For $i = 1 To $list[0]
-			If SearchImage($list[$i], $pos[0], $pos[1], $timeout, 0, 0, 0, 0) = 1 Then
+			If SearchImage($list[$i], $pos[0], $pos[1], 20, $area_x, $area_y, $area_width, $area_height) = 1 Then
+				If $image = "ui_startscreen.bmp"  Then
+					CaptureScreenshot()
+				EndIf
 				$found = $i
 				ExitLoop
 			EndIf
