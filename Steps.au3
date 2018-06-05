@@ -200,7 +200,6 @@ EndFunc   ;==>Wrapper_StartScreen_DoItLater
 
 Func StartScreen()
 	WaitImage("ui_startscreen.bmp", 600, "", False, $area_startscreen[0], $area_startscreen[1], $area_startscreen[2], $area_startscreen[3])
-	Exit
 EndFunc   ;==>StartScreen
 
 Func ClickOnStartScreen()

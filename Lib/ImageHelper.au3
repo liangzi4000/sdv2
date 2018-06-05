@@ -22,7 +22,6 @@ Func SearchImage($image, ByRef $x, ByRef $y, $tolerance = 20, $area_x = 0, $area
 		$area[1] = $winpos[1] + $ctrlpos[1] + $area_y
 		$area[2] = $area[0] + $area_width
 		$area[3] = $area[1] + $area_height
-		ConsoleWrite(_ArrayToString($area))
 	EndIf
 	Local $result = _ImageSearchArea($v_imagepath & $image, 1, $area[0], $area[1], $area[2], $area[3], $x, $y, $tolerance)
 	If $debug Then WriteLog("SearchImage search " & $image & ", result:" & $result)
