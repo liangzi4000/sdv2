@@ -69,14 +69,16 @@ Func WaitImageDesktop($image, $timeout = 60, $timeoutcall = "", $click = False)
 		Next
 
 		If TimerDiff($hTimer) > $timeout * 1000 Then
-			WriteLog("WaitImageDesktop time out after " & $timeout & " seconds waiting for image " & $image & ", $timeoutcall=" & $timeoutcall, $v_exception)
 			If $timeoutcall <> "" Then
+				WriteLog("WaitImageDesktop time out after " & $timeout & " seconds waiting for image " & $image & ", $timeoutcall=" & $timeoutcall, $v_exception)
 				Call($timeoutcall)
-			ElseIf $timeoutcount < 5 Then
+			ElseIf $timeoutcount < 1 Then
+				WriteLog("WaitImageDesktop time out after " & $timeout & " seconds waiting for image " & $image & ", $timeoutcount=" & $timeoutcount, $v_exception)
 				$timeoutcount = $timeoutcount + 1
 				ClickOnLastPosition()
 				Call("WaitImageDesktop",$image,$timeout,$timeoutcall,$click)
 			Else
+				WriteLog("WaitImageDesktop time out after " & $timeout & " seconds waiting for image " & $image & ", exit after click on last position and failed", $v_exception)
 				Exit
 			EndIf
 			ExitLoop
@@ -124,14 +126,16 @@ Func WaitImage($image, $timeout = 60, $timeoutcall = "", $click = False, $area_x
 		Next
 
 		If TimerDiff($hTimer) > $timeout * 1000 Then
-			WriteLog("WaitImage time out after " & $timeout & " seconds waiting for image " & $image & ", $timeoutcall=" & $timeoutcall, $v_exception)
 			If $timeoutcall <> "" Then
+				WriteLog("WaitImage time out after " & $timeout & " seconds waiting for image " & $image & ", $timeoutcall=" & $timeoutcall, $v_exception)
 				Call($timeoutcall)
-			ElseIf $timeoutcount < 5 Then
+			ElseIf $timeoutcount < 1 Then
+				WriteLog("WaitImage time out after " & $timeout & " seconds waiting for image " & $image & ", $timeoutcount=" & $timeoutcount, $v_exception)
 				$timeoutcount = $timeoutcount + 1
 				ClickOnLastPosition()
 				Call("WaitImage",$image,$timeout,$timeoutcall,$click,$area_x,$area_y,$area_width,$area_height)
 			Else
+				WriteLog("WaitImage time out after " & $timeout & " seconds waiting for image " & $image & ", exit after click on last position and failed", $v_exception)
 				Exit
 			EndIf
 			ExitLoop
