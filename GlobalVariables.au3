@@ -5,6 +5,8 @@ Global $debug = True
 Global $exit = False ; Terminate script flag
 Global $winleftready = False
 Global $winrightready = False
+Global $timeoutcount = 0
+Global Const $lastclickposition = "lastclicked"
 
 Global $v_winctrlclassname = "subWin1"
 Global Const $v_imagepath = @ScriptDir & "\Assets\identifier\"
