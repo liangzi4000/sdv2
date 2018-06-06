@@ -42,3 +42,16 @@ Func ConvertRelativePosToAbsolutePos($ctrlcoords)
 	$result[1] = $winpos[1] + $ctrlpos[1] + $ctrlcoords[1]
 	Return $result
 EndFunc   ;==>ConvertRelativePosToAbsolutePos
+
+Func GetLastClickPosition()
+	Local $result[2] = [0,0]
+	If IsDeclared($activewindow&$lastclickposition) Then
+		Local $postr = Eval($activewindow&$lastclickposition)
+		Local $pos = StringSplit($postr,",")
+		If $pos[0] = 2 Then
+			$result[0] = $pos[1]
+			$result[1] = $pos[2]
+		EndIf
+	EndIf
+	Return $result
+EndFunc

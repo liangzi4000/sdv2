@@ -5,6 +5,7 @@
 
 Func ClickOn($pos)
 	MouseClick($MOUSE_CLICK_LEFT, $pos[0], $pos[1], 1, 0)
+	Assign($activewindow&$lastclickposition, $pos[0]&","&$pos[1], 2)
 	If $debug Then WriteLog("ClickOn [" & $pos[0] & "," & $pos[1] & "]")
 EndFunc   ;==>ClickOn
 
@@ -13,6 +14,14 @@ Func ClickOnRelative($pos)
 	ClickOn($targetpos)
 	If $debug Then WriteLog("ClickOnRelative [" & $pos[0] & "," & $pos[1] & "]")
 EndFunc   ;==>ClickOnRelative
+
+Func ClickOnLastPosition()
+	Local $pos = GetLastClickPosition()
+	If $pos[0] = 0 And $pos[1] = 0 Then Return 0
+	ClickOn($pos)
+	If $debug Then WriteLog("ClickOnLastPosition [" & $pos[0] & "," & $pos[1] & "]")
+	Return 1
+EndFunc
 
 Func SendPasteKeys()
 	Sleep(100)

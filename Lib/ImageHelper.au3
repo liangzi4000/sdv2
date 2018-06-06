@@ -70,12 +70,20 @@ Func WaitImageDesktop($image, $timeout = 60, $timeoutcall = "", $click = False)
 
 		If TimerDiff($hTimer) > $timeout * 1000 Then
 			WriteLog("WaitImageDesktop time out after " & $timeout & " seconds waiting for image " & $image & ", $timeoutcall=" & $timeoutcall, $v_exception)
-			Exit
-			If $timeoutcall <> "" Then Call($timeoutcall)
+			If $timeoutcall <> "" Then
+				Call($timeoutcall)
+			ElseIf $timeoutcount < 5 Then
+				$timeoutcount = $timeoutcount + 1
+				ClickOnLastPosition()
+				Call("WaitImageDesktop",$image,$timeout,$timeoutcall,$click)
+			Else
+				Exit
+			EndIf
 			ExitLoop
 		EndIf
 
 		If $found <> 0 Then
+			$timeoutcount = 0 ; reset time out count
 			If $debug Then WriteLog("WaitImageDesktop found image " & $list[$found])
 			ExitLoop
 		EndIf
@@ -117,12 +125,20 @@ Func WaitImage($image, $timeout = 60, $timeoutcall = "", $click = False, $area_x
 
 		If TimerDiff($hTimer) > $timeout * 1000 Then
 			WriteLog("WaitImage time out after " & $timeout & " seconds waiting for image " & $image & ", $timeoutcall=" & $timeoutcall, $v_exception)
-			Exit
-			If $timeoutcall <> "" Then Call($timeoutcall)
+			If $timeoutcall <> "" Then
+				Call($timeoutcall)
+			ElseIf $timeoutcount < 5 Then
+				$timeoutcount = $timeoutcount + 1
+				ClickOnLastPosition()
+				Call("WaitImage",$image,$timeout,$timeoutcall,$click,$area_x,$area_y,$area_width,$area_height)
+			Else
+				Exit
+			EndIf
 			ExitLoop
 		EndIf
 
 		If $found <> 0 Then
+			$timeoutcount = 0 ; reset time out count
 			If $debug Then WriteLog("WaitImage found image " & $list[$found])
 			ExitLoop
 		EndIf
