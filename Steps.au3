@@ -65,10 +65,11 @@ Func MoveWindow()
 		WinActivate($activewindow)
 		ClickOn($winleftheaderpos)
 	ElseIf Not $winrightready Then
-		WinMove($activewindow, "", $ctrlpos[0] + $ctrlpos[2] + 5, 0)
+		Local $winpos = GetWinPosition()
+		WinMove($activewindow, "", @DesktopWidth-$winpos[2], 0)
 		$winrightready = True
 		Sleep(500)
-		Local $winrightheaderpos = [($ctrlpos[0] + $ctrlpos[2]) * 3 / 2, 10]
+		Local $winrightheaderpos = [@DesktopWidth-$winpos[2]/2, 10]
 		WinActivate($activewindow)
 		ClickOn($winrightheaderpos)
 	EndIf
