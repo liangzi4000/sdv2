@@ -62,8 +62,11 @@ Func SetupLanguageAndAgreement()
 	Sleep(500)
 	ClickOnRelative($opt_lang_cht)
 	ClickImage("btn_ok_cht.bmp")
+	Sleep(500)
 	ClickImage("btn_ok_language.bmp")
+	Sleep(500)
 	ClickImage("btn_ok_language_confirm.bmp")
+	Sleep(500)
 	ClickImage("btn_agree.bmp")
 	Sleep(800)
 	ClickImage("btn_agree.bmp",True)
@@ -76,7 +79,9 @@ Func SetupUserName()
 	ClickPosUntilScreen($txt_username, "btn_queding.bmp", 800)
 	SendPasteKeys() ; 黏贴
 	ClickImage("btn_queding.bmp") ;点击确定
+	Sleep(500)
 	ClickImage("btn_jueding_name.bmp")
+	Sleep(500)
 	ClickImageUntilScreen("btn_ok_complete_registration.bmp","initial_downloading.bmp")
 EndFunc
 
