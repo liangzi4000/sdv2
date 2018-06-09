@@ -2,16 +2,9 @@
 #include <Common.au3>
 #include <Array.au3>
 
-Global $createaccountfirstrun = []
-_ArrayAdd($createaccountfirstrun,"Wrapper1")
-_ArrayAdd($createaccountfirstrun,"Wrapper2")
-
 Global $createaccountsteps = []
-_ArrayAdd($createaccountsteps,"Wrapper3")
 _ArrayAdd($createaccountsteps,"Wrapper1")
-
-Global $createaccountlastrun = []
-_ArrayAdd($createaccountlastrun,"Wrapper3")
+_ArrayAdd($createaccountsteps,"Wrapper2")
 
 Func Wrapper1()
 	CreateNextRecord()
@@ -24,16 +17,6 @@ EndFunc
 Func Wrapper2()
 	BeginnerTutorial()
 	SetupPassword()
-	CreateNextRecord()
-	DeleteApp()
-	InstallApp()
-	SetupLanguageAndAgreement()
-	SetupUserName()
-EndFunc
-
-Func Wrapper3()
-	BeginnerTutorial()
-	SetupPassword()
 EndFunc
 
 Func CreateNextRecord()
@@ -42,7 +25,7 @@ Func CreateNextRecord()
 	If Not IsValidResult($acctinfo) Then
 		WriteLog("CreateNextRecord return invalid database record: " & $acctinfo, $v_exception)
 		AddArrayElem($inactivewindows,$activewindow)
-		;CloseApp()
+		CloseApp()
 		Return False
 	EndIf
 	Return True
@@ -164,6 +147,7 @@ Func SetupPassword()
 	ClickImage("btn_sheding_confirm.bmp") ; 设置密码
 	Sleep(500)
 	ClickImage("btn_copy_uid.bmp")
+	Sleep(500)
 	ClickImage("btn_ok_beginner.bmp")
 	ExecDBQuery("[dbo].[SP_CompleteAccountCreation] '"&_ClipBoard_GetData()&"','"&$acctinfoarr[2]&"'")
 	ClickImage("btn_ok_fight_effect.bmp")

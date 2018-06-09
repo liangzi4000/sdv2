@@ -48,29 +48,20 @@ Func Main()
 	WEnd
 	WriteLog("Accounts sign in completed.")
 
-;~ 	; Reset inactive window array to default
-;~ 	While UBound($inactivewindows) > 1
-;~ 		_ArrayPop($inactivewindows)
-;~ 	WEnd
+	; Reset inactive window array to default
+	While UBound($inactivewindows) > 1
+		_ArrayPop($inactivewindows)
+	WEnd
 
-;~ 	Local $total = 3
-;~ 	For $i = 1 To $total
-;~ 		If $i = 1 Then
-;~ 			For $x=0 To UBound($createaccountfirstrun)-1
-;~ 				ExecStep($createaccountfirstrun[$x])
-;~ 			Next
-;~ 		ElseIf $i = $total Then
-;~ 			For $x=0 To UBound($createaccountlastrun)-1
-;~ 				ExecStep($createaccountlastrun[$x])
-;~ 			Next
-;~ 		Else
-;~ 			For $x=0 To UBound($createaccountsteps)-1
-;~ 				ExecStep($createaccountsteps[$x])
-;~ 			Next
-;~ 		EndIf
-;~ 	Next
+	While UBound($inactivewindows)-1 <> UBound($v_windows)
+		For $x=0 To UBound($createaccountsteps)-1
+			ExecStep($createaccountsteps[$x])
+		Next
+	WEnd
+	WriteLog("Accounts creation completed.")
 	$exit = True
 	Exit
+
 
 ;~ 	$v_email_Subject = "All tasks completed"
 ;~ 	$v_email_AttachFiles = GetLog()
@@ -81,6 +72,7 @@ EndFunc
 
 Func OnAutoitExit()
 	WriteLog("OnAutoitExit Called.")
+	CaptureScreenshot()
 	ExecStep("CloseApp")
 	If Not $exit Then
 		RunScript()
