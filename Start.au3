@@ -80,8 +80,8 @@ EndFunc
 
 Func OnAutoitExit()
 	WriteLog("OnAutoitExit Called.")
+	ExecStep("CloseApp")
 	If Not $exit Then
-		ExecStep("CloseApp")
 		RunScript()
 	EndIf
 EndFunc
