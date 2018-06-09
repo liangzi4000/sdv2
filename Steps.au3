@@ -95,34 +95,45 @@ EndFunc   ;==>ClickBtnLianDongZiLiangV2
 
 #Region ChooseUserIDLogin, ChooseUserIDLoginV2
 Func ChooseUserIDLogin()
-	If WaitImage("btn_close_login.bmp") = 1 Then
-		ClickOnRelative($btn_uidpwd)
-	Else
-		WriteLog("Uanble to find btn_close_login.bmp", $v_exception)
-		AddArrayElem($inactivewindows, $activewindow)
-	EndIf
+	WaitImage("btn_close_login.bmp")
+	ClickOnRelative($btn_uidpwd)
 EndFunc   ;==>ChooseUserIDLogin
 
 Func ChooseUserIDLoginV2()
-	If WaitImage("btn_close_switch.bmp") = 1 Then
-		ClickOnRelative($btn_uidpwd)
-	Else
-		WriteLog("Uanble to find btn_close_switch.bmp", $v_exception)
-		AddArrayElem($inactivewindows, $activewindow)
-	EndIf
+	WaitImage("btn_close_switch.bmp")
+	ClickOnRelative($btn_uidpwd)
 EndFunc   ;==>ChooseUserIDLoginV2
 #EndRegion ChooseUserIDLogin, ChooseUserIDLoginV2
 
 Func GetNextRecord()
-	Local $acctinfo = ExecDBQuery("[dbo].[SP_GetNextRecord] '" & $activewindow & "'")
+	Local $acctinfo = ""
+	Local $result = False
+	For $x = 1 To 5
+		$acctinfo = ExecDBQuery("[dbo].[SP_GetNextRecord] '" & $activewindow & "'")
+		If $acctinfo = "End" Then
+			WriteLog("Reach end of database, close window.")
+			AddArrayElem($inactivewindows, $activewindow)
+			CloseApp()
+			$result = True
+			ExitLoop
+		ElseIf IsValidResult($acctinfo) Then
+			WriteLog("$acctinfo = "&$acctinfo)
+			$result = True
+			ExitLoop
+		Else
+			WriteLog("GetNextRecord return invalid database record: " & $acctinfo, $v_exception)
+			Sleep(5000)
+		EndIf
+	Next
 	Assign("acctinfo" & $activewindow, $acctinfo, 2)
-	If Not IsValidResult($acctinfo) Then
-		WriteLog("GetNextRecord return invalid database record: " & $acctinfo, $v_exception)
+
+	If Not $result Then
+		WriteLog("Failed to connnect to database after 5 times retry, close window.", $v_exception)
 		AddArrayElem($inactivewindows, $activewindow)
 		CloseApp()
-		Return False
 	EndIf
-	Return True
+
+	Return $result
 EndFunc   ;==>GetNextRecord
 
 #Region Wrapper_EnterUIDandPWD_LianDong, Wrapper_EnterUIDandPWD_LianDongV2

@@ -12,7 +12,6 @@ Func IsValidResult($dbmessage)
 	If ($dbmessage <> "" And StringInStr($dbmessage,"|") > 0) Then
 		Return True
 	Else
-		WriteLog("Invalid database message: "&$dbmessage)
 		Return False
 	EndIf
 EndFunc

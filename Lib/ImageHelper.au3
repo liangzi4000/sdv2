@@ -79,7 +79,9 @@ Func WaitImageDesktop($image, $timeout = 60, $timeoutcall = "", $click = False)
 				Call("WaitImageDesktop",$image,$timeout,$timeoutcall,$click)
 			Else
 				WriteLog("WaitImageDesktop time out after " & $timeout & " seconds waiting for image " & $image & ", exit after click on last position and failed", $v_exception)
+				;;;;;;;;;;;;;;;;;;;; TIMEOUT EXIT ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 				Exit
+				;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 			EndIf
 			ExitLoop
 		EndIf
@@ -117,9 +119,6 @@ Func WaitImage($image, $timeout = 60, $timeoutcall = "", $click = False, $area_x
 	While 1
 		For $i = 1 To $list[0]
 			If SearchImage($list[$i], $pos[0], $pos[1], 20, $area_x, $area_y, $area_width, $area_height) = 1 Then
-				If $image = "ui_startscreen.bmp"  Then
-					CaptureScreenshot()
-				EndIf
 				$found = $i
 				ExitLoop
 			EndIf
@@ -136,7 +135,9 @@ Func WaitImage($image, $timeout = 60, $timeoutcall = "", $click = False, $area_x
 				Call("WaitImage",$image,$timeout,$timeoutcall,$click,$area_x,$area_y,$area_width,$area_height)
 			Else
 				WriteLog("WaitImage time out after " & $timeout & " seconds waiting for image " & $image & ", exit after click on last position and failed", $v_exception)
+				;;;;;;;;;;;;;;;;;;;; TIMEOUT EXIT ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 				Exit
+				;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 			EndIf
 			ExitLoop
 		EndIf
@@ -163,26 +164,17 @@ EndFunc   ;==>WaitImage
 	Return 1: clicked; 0: not click due to time out
 #comments-end
 Func ClickImageDesktop($image, $sureclick = False, $timeout = 60, $timeoutcall = "")
-	If Not $sureclick Then
-		If WaitImageDesktop($image, $timeout, $timeoutcall, True) = 1 Then
-			If $debug Then WriteLog("ClickImageDesktop clicked on image " & $image)
-			Return 1
-		Else
-			WriteLog("ClickImageDesktop unable to find image " & $image, $v_exception)
-			Return 0
-		EndIf
-	EndIf
-
-	If WaitImageDesktop($image, $timeout, $timeoutcall, True) = 1 Then
+	WaitImageDesktop($image, $timeout, $timeoutcall, True)
+	If $sureclick Then
+		Local $sleeptime = 1000
 		Local $pos = [0, 0]
+		Sleep($sleeptime)
 		While SearchImageDesktop($image, $pos[0], $pos[1]) = 1
 			ClickOn($pos)
-			Sleep(1000)
+			Sleep($sleeptime)
 		WEnd
-		If $debug Then WriteLog("ClickImageDesktop [sureclick] clicked on image " & $image)
-	Else
-		WriteLog("ClickImageDesktop [sureclick] unable to find image " & $image, $v_exception)
 	EndIf
+	If $debug Then WriteLog("ClickImageDesktop [$sureclick="&$sureclick&"] clicked on image " & $image)
 EndFunc   ;==>ClickImageDesktop
 
 #comments-start
@@ -190,51 +182,27 @@ EndFunc   ;==>ClickImageDesktop
 	Return 1: clicked; 0: not click due to time out
 #comments-end
 Func ClickImage($image, $sureclick = False, $timeout = 60, $timeoutcall = "", $area_x = 0, $area_y = 0, $area_width = 0, $area_height = 0)
-	If Not $sureclick Then
-		If WaitImage($image, $timeout, $timeoutcall, True, 0, 0, 0, 0) = 1 Then
-			If $debug Then WriteLog("ClickImage clicked on image " & $image)
-			Return 1
-		Else
-			WriteLog("ClickImage unable to find image " & $image, $v_exception)
-			Return 0
-		EndIf
-	EndIf
-
-	If WaitImage($image, $timeout, $timeoutcall, False, 0, 0, 0, 0) = 1 Then
+	WaitImage($image, $timeout, $timeoutcall, True, $area_x, $area_y, $area_width, $area_height)
+	If $sureclick Then
+		Local $sleeptime = 1000
 		Local $pos = [0, 0]
+		Sleep($sleeptime)
 		While SearchImage($image, $pos[0], $pos[1]) = 1
 			ClickOn($pos)
-			Sleep(1000)
+			Sleep($sleeptime)
 		WEnd
-		If $debug Then WriteLog("ClickImage [sureclick] clicked on image " & $image)
-	Else
-		WriteLog("ClickImage [sureclick] unable to find image " & $image, $v_exception)
 	EndIf
+	If $debug Then WriteLog("ClickImage [$sureclick="&$sureclick&"] clicked on image " & $image)
 EndFunc   ;==>ClickImage
 
 #comments-start
 	Wait and click on specified image in active window until targe image appear in active window
 #comments-end
 Func ClickImageUntilScreen($waitimage, $untilimage, $interval = 700, $timeout = 60, $timeoutcall = "")
-	If WaitImage($waitimage, $timeout, $timeoutcall) = 1 Then
-		Local $pos = [0, 0]
-		If SearchImage($waitimage, $pos[0], $pos[1]) = 1 Then
-			Local $result = ClickPosUntilScreen($pos, $untilimage, $interval, $timeout, $timeoutcall, False)
-			If $result = 1 Then
-				If $debug Then WriteLog("ClickImageUntilScreen found image " & $untilimage)
-				Return 1
-			Else
-				If $debug Then WriteLog("ClickImageUntilScreen unable to find image " & $untilimage)
-				Return 0
-			EndIf
-		Else
-			WriteLog("ClickImageUntilScreen unexpected error")
-			Return 0
-		EndIf
-	Else
-		WriteLog("ClickImageUntilScreen unable to find image " & $waitimage, $v_exception)
-		Return 0
-	EndIf
+	WaitImage($waitimage, $timeout, $timeoutcall)
+	Local $pos = GetImageCenterPos($waitimage)
+	ClickPosUntilScreen($pos, $untilimage, $interval, $timeout, $timeoutcall, False)
+	If $debug Then WriteLog("ClickImageUntilScreen found image " & $untilimage)
 EndFunc   ;==>ClickImageUntilScreen
 
 #comments-start
@@ -247,31 +215,32 @@ Func ClickPosUntilScreen($pos, $untilimage, $interval = 700, $timeout = 60, $tim
 	Local $hTimer = TimerInit()
 	While SearchImage($untilimage, $x, $y) = 0
 		If TimerDiff($hTimer) > $timeout * 1000 Then
-			WriteLog("ClickPosUntilScreen time out after " & $timeout & " seconds waiting for image " & $untilimage & ", $timeoutcall=" & $timeoutcall, $v_exception)
-			Exit
-			If $timeoutcall <> "" Then Call($timeoutcall)
-			Return 0
+			If $timeoutcall <> "" Then
+				WriteLog("ClickPosUntilScreen time out after " & $timeout & " seconds waiting for image " & $untilimage & ", $timeoutcall=" & $timeoutcall, $v_exception)
+				Call($timeoutcall)
+			Else
+				WriteLog("ClickPosUntilScreen time out after " & $timeout & " seconds waiting for image " & $untilimage & ", exit", $v_exception)
+				;;;;;;;;;;;;;;;;;;;; TIMEOUT EXIT ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+				Exit
+				;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+			EndIf
+			ExitLoop
 		EndIf
+
 		ClickOn($mypos)
 		Sleep($interval)
 	WEnd
 	If $debug Then WriteLog("ClickPosUntilScreen found image " & $untilimage)
-	Return 1
 EndFunc   ;==>ClickPosUntilScreen
 
 Func DragImage($image, $to_pos, $relaive = True)
-	If WaitImage($image) = 1 Then
-		Local $pos = [0, 0]
-		SearchImage($image, $pos[0], $pos[1])
-		If $relaive Then
-			Local $abspos = ConvertRelativePosToAbsolutePos($to_pos)
-			Drag($pos[0], $pos[1], $abspos[0], $abspos[1])
-		Else
-			Drag($pos[0], $pos[1], $to_pos[0], $to_pos[1])
-		EndIf
-
-		If $debug Then WriteLog("Drag image " & $image & " to [" & $to_pos[0] & "," & $to_pos[1] & "]")
+	WaitImage($image)
+	Local $pos = GetImageCenterPos($image)
+	If $relaive Then
+		Local $abspos = ConvertRelativePosToAbsolutePos($to_pos)
+		Drag($pos[0], $pos[1], $abspos[0], $abspos[1])
 	Else
-		WriteLog("Drag unable to find image " & $image, $v_exception)
+		Drag($pos[0], $pos[1], $to_pos[0], $to_pos[1])
 	EndIf
+	If $debug Then WriteLog("Drag image " & $image & " to [" & $to_pos[0] & "," & $to_pos[1] & "]")
 EndFunc   ;==>DragImage
