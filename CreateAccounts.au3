@@ -7,11 +7,13 @@ _ArrayAdd($createaccountsteps,"Wrapper1")
 _ArrayAdd($createaccountsteps,"Wrapper2")
 
 Func Wrapper1()
-	CreateNextRecord()
-	DeleteApp()
-	InstallApp()
-	SetupLanguageAndAgreement()
-	SetupUserName()
+	Local $success = CreateNextRecord()
+	If $success Then
+		DeleteApp()
+		InstallApp()
+		SetupLanguageAndAgreement()
+		SetupUserName()
+	EndIf
 EndFunc
 
 Func Wrapper2()
@@ -25,7 +27,6 @@ Func CreateNextRecord()
 	If Not IsValidResult($acctinfo) Then
 		WriteLog("CreateNextRecord return invalid database record: " & $acctinfo, $v_exception)
 		AddArrayElem($inactivewindows,$activewindow)
-		CloseApp()
 		Return False
 	EndIf
 	Return True
@@ -44,8 +45,12 @@ Func DeleteApp()
 EndFunc
 
 Func InstallApp()
-	WinActivate($activewindow)
-	Send("^3")
+	Local $pos = [0, 0]
+	Do
+		WinActivate($activewindow)
+		Send("^3")
+		Sleep(1500)
+	Until SearchImageDesktop("openphoneapkfolder.bmp", $pos[0], $pos[1]) = 1
 	ClickImageDesktop("openphoneapkfolder.bmp") ; Click on "Open Phone Folder" of APK files
 	ClickImage("shadowverseapk.bmp") ; Click on "Shadowverse" apk file
 	ClickImage("btn_next.bmp")
