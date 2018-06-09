@@ -325,7 +325,6 @@ Func CheckExit()
 EndFunc   ;==>CheckExit
 
 Func RunScript()
-	Run(@ScriptDir&"\Start.exe")
-	Sleep(10000)
+	Sleep(5000)
 	Send("^m")
 EndFunc
