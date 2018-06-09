@@ -253,9 +253,12 @@ Func CloseApp()
 	Local $pos = [0, 0]
 	Do
 		Send("{PGUP}")
-		Sleep(1500)
+		Sleep(3000)
 	Until SearchImage("app_icon_tasklist.bmp", $pos[0], $pos[1]) = 1
 	Slide($pos[0], $pos[1]+120, $pos[0], 0)
+	Sleep(2000)
+	Local $toolbarpos = GetOpenToolBarPosition()
+	ClickOn($toolbarpos)
 EndFunc   ;==>CloseApp
 
 Func GetGift()
@@ -320,3 +323,9 @@ EndFunc   ;==>PerformTask1
 Func CheckExit()
 	If $exit Then Exit
 EndFunc   ;==>CheckExit
+
+Func RunScript()
+	Run(@ScriptDir&"\Start.exe")
+	Sleep(10000)
+	Send("^m")
+EndFunc

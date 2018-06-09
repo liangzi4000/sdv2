@@ -34,6 +34,15 @@ Func GetHideToolBarPosition()
 	Return $result
 EndFunc   ;==>GetHideToolBarPosition
 
+Func GetOpenToolBarPosition()
+	Local $winpos = GetWinPosition()
+	Local $ctrlpos = GetCtrlPosition()
+	Local $result[2] ;
+	$result[0] = $winpos[0] + $ctrlpos[0] + $ctrlpos[2] + 10
+	$result[1] = $winpos[1] + $ctrlpos[1] + $ctrlpos[3]/2
+	Return $result
+EndFunc   ;==>GetOpenToolBarPosition
+
 Func ConvertRelativePosToAbsolutePos($ctrlcoords)
 	Local $winpos = GetWinPosition()
 	Local $ctrlpos = GetCtrlPosition()
