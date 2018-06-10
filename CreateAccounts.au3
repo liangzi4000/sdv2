@@ -161,4 +161,5 @@ Func SetupPassword()
 	ClickImage("btn_ok_beginner.bmp")
 	ExecDBQuery("[dbo].[SP_CompleteAccountCreation] '"&_ClipBoard_GetData()&"','"&$acctinfoarr[2]&"'")
 	ClickImage("btn_ok_fight_effect.bmp")
+	CheckExit()
 EndFunc
