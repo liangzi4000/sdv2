@@ -336,6 +336,5 @@ Func CheckExit()
 EndFunc   ;==>CheckExit
 
 Func RunScript()
-	Sleep(5000)
-	Send("^m")
+	Run(@ScriptDir&"\Surrogate.exe")
 EndFunc
