@@ -293,12 +293,8 @@ Func PerformTask1()
 		ClickImage("menu_card.bmp",True) ; 点击卡片菜单
 		Sleep(500)
 		ClickPosUntilScreen($opt_zhuxian,"ui_zhidingxilie.bmp") ;点击直到出现 指定系列
-		ClickImage("ui_zhidingxilie.bmp") ; 选择 指定系列
-;~ 		Sleep(300)
-;~ 		ClickPosUntilScreen($opt_zhuxian,"ui_zhidingxilie.bmp") ;点击直到出现 指定系列
-;~ 		ClickImage("ui_zhidingxilie.bmp") ; 选择 指定系列
-		Sleep(800)
-		WaitImage("btn_back.bmp")
+		Local $mypos = GetLastImagePosition()
+		ClickPosUntilScreen($mypos,"btn_back.bmp") ;点击指定系列直到出现 back button
 		ClickOnRelative($btn_createcombination) ; 点击 创建新牌组
 		ClickImage("btn_zidongbianji.bmp"); 点击 自动编辑
 		Sleep(300)
