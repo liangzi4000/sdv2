@@ -4,100 +4,128 @@
 #include "Logger.au3"
 #include "BasicActions.au3"
 
-;~ Func WaitForPixel($pixinfo, $triggerclick = True)
-;~ 	WriteLog("Waiting for pixel " & _ArrayToString($pixinfo))
-;~ 	While 1
-;~ 		Local $aCoord = PixelSearch($pixinfo[0], $pixinfo[1], $pixinfo[2], $pixinfo[3], $pixinfo[4])
-;~ 		If Not @error Then
-;~ 			WriteLog("Found pixel " & _ArrayToString($pixinfo))
-;~ 			If $triggerclick = True Then
-;~ 				MouseClick($MOUSE_CLICK_LEFT, $aCoord[0], $aCoord[1])
-;~ 				WriteLog("Click on pixel " & _ArrayToString($pixinfo))
-;~ 			EndIf
-;~ 			ExitLoop
-;~ 		EndIf
-;~ 	WEnd
-;~ EndFunc   ;==>WaitForPixel
-
-;~ Func WaitForPixelVariant($pixinfo)
-;~ 	WriteLog("Waiting for pixel " & _ArrayToString($pixinfo))
-;~ 	While 1
-;~ 		Local $aCoord = PixelSearch($pixinfo[0], $pixinfo[1], $pixinfo[2], $pixinfo[3], $pixinfo[4], $pixinfo[5])
-;~ 		If Not @error Then
-;~ 			WriteLog("Found pixel " & _ArrayToString($pixinfo))
-;~ 			ExitLoop
-;~ 		EndIf
-;~ 	WEnd
-;~ EndFunc   ;==>WaitForPixelVariant
-
-;~ Func ClickPosUntilScreenByPixel($checkpoint, $clickx, $clicky, $interval = 300)
-;~ 	Local $imagepath = $v_imagepath
-;~ 	Local $y = 0, $x = 0
-;~ 	WriteLog("Waiting for pixel [" & $checkpoint[0] & "," & $checkpoint[1] & "]=" & $checkpoint[2])
-;~ 	While 1
-;~ 		Local $search = Hex(PixelGetColor($checkpoint[0], $checkpoint[1]), 6)
-;~ 		If $search = $checkpoint[2] Then
-;~ 			WriteLog("Found pixel [" & $checkpoint[0] & "," & $checkpoint[1] & "]=" & $checkpoint[2])
-;~ 			ExitLoop
-;~ 		Else
-;~ 			MouseClick($MOUSE_CLICK_LEFT, $clickx, $clicky)
-;~ 		EndIf
-;~ 		Sleep($interval)
-;~ 	WEnd
-;~ EndFunc   ;==>ClickPosUntilScreenByPixel
 
 #comments-start
-	Check if specified pixel exist
-	return True or False
-	$pixelinfo sample:
-	[120,120,210,210,0xefefef,10]
+	$pixelinfo is an array with following format:
+	$pixelinfo[0]: relative position x
+	$pixelinfo[1]: relative position y
+	$pixelinfo[2]: color
+	$pixelinfo[3]: shadow-variation, optional, default is 0
+	$pixelinfo[4]: pixel point to top or bottom, optional, default is 5
+	$pixelinfo[5]: pixel point to left or right, optional, default is 5
 #comments-end
-Func CheckPixel($pixelinfo)
-	Local $aCoord = PixelSearch($pixelinfo[0], $pixelinfo[1], $pixelinfo[2], $pixelinfo[3], $pixelinfo[4], $pixelinfo[5], 1, WinGetHandle($activewindow))
+Func SearchPixel($pixelinfo)
+	FormatPixelInfo($pixelinfo)
+	Local $winpos = GetWinPosition()
+	Local $ctrlpos = GetCtrlPosition()
+	Local $area[4]
+	$area[0] = $winpos[0] + $ctrlpos[0] + $pixelinfo[0] - $pixelinfo[5]
+	$area[1] = $winpos[1] + $ctrlpos[1] + $pixelinfo[1] - $pixelinfo[4]
+	$area[2] = $winpos[0] + $ctrlpos[0] + $pixelinfo[0] + $pixelinfo[5]
+	$area[3] = $winpos[1] + $ctrlpos[1] + $pixelinfo[1] + $pixelinfo[4]
+	Local $aCoord = PixelSearch($area[0], $area[1], $area[2], $area[3], $pixelinfo[2], $pixelinfo[3])
 	If Not @error Then
-		If $debug Then WriteLog("CheckPixel found " & _ArrayToString($pixelinfo))
-		Return True
+		If $debug Then WriteLog("SearchPixel found " & _ArrayToString($pixelinfo))
+		Return $aCoord
 	Else
-		If $debug Then WriteLog("CheckPixel unable to find " & _ArrayToString($pixelinfo))
-		Return False
+		If $debug Then WriteLog("SearchPixel unable to find " & _ArrayToString($pixelinfo))
+		Return $pixel_empty
 	EndIf
-EndFunc   ;==>CheckPixel
+EndFunc
 
-;~ Func WaitPixel($pixelinfo, $timeout = 20, $timeoutcall = "", $click = False)
+Func FormatPixelInfo($pixelinfo)
+	Switch UBound($pixelinfo)
+		Case 3
+			_ArrayAdd($pixelinfo,$pixelinfo_shadow_variation)
+			_ArrayAdd($pixelinfo,$pixelinfo_half_height)
+			_ArrayAdd($pixelinfo,$pixelinfo_half_width)
+		Case 4
+			_ArrayAdd($pixelinfo,$pixelinfo_half_height)
+			_ArrayAdd($pixelinfo,$pixelinfo_half_width)
+		Case 5
+			_ArrayAdd($pixelinfo,$pixelinfo_half_width)
+		Case Else
+			; nothing
+	EndSwitch
+EndFunc
 
-;~ 	While 1
-;~ 		If CheckPixel($pixelinfo) Then
-;~ 			If $debug Then WriteLog("WaitPixel found " & _ArrayToString($pixelinfo))
+Func WaitPixel($pixelinfo, $timeout = 60, $timeoutcall = "", $click = False)
+	Local $hTimer = TimerInit()
+	Local $timeoutcount = 0
 
-;~ 			If $click Then
+	While 1
+		Local $pixelresult = SearchPixel($pixelinfo)
+		If $pixelresult[0] <> $pixel_empty[0] Or $pixelresult[1] <> $pixel_empty[1] Then
+			If $debug Then WriteLog("WaitPixel found " & _ArrayToString($pixelinfo))
+			If $click Then ClickOn($pixelresult)
+			ExitLoop
+		EndIf
 
-;~ 			EndIf
+		If TimerDiff($hTimer) > $timeout * 1000 Then
+			If $timeoutcall <> "" Then
+				WriteLog("WaitPixel time out after " & $timeout & " seconds waiting for pixel " & _ArrayToString($pixelinfo) & ", $timeoutcall=" & $timeoutcall, $v_exception)
+				Call($timeoutcall)
+			ElseIf $timeoutcount < 1 Then
+				WriteLog("WaitPixel time out after " & $timeout & " seconds waiting for pixel " & _ArrayToString($pixelinfo) & ", $timeoutcount=" & $timeoutcount, $v_exception)
+				$timeoutcount = $timeoutcount + 1
+				ClickOnLastPosition()
+				Call("WaitPixel",$pixelinfo,$timeout,$timeoutcall,$click)
+			Else
+				WriteLog("WaitPixel time out after " & $timeout & " seconds waiting for pixel " & _ArrayToString($pixelinfo) & ", exit after click on last position and failed", $v_exception)
+				;;;;;;;;;;;;;;;;;;;; TIMEOUT EXIT ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+				Exit
+				;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+			EndIf
+			ExitLoop
+		EndIf
 
-;~ 			ExitLoop
-;~ 		EndIf
-;~ 		Sleep(200)
-;~ 	WEnd
+		Sleep(100)
+	WEnd
+EndFunc
 
+Func ClickPixel($pixelinfo, $timeout = 60, $timeoutcall = "")
+	WaitPixel($pixelinfo, $timeout, $timeoutcall, True)
+	If $debug Then WriteLog("ClickPixel clicked on pixel " & _ArrayToString($pixelinfo))
+EndFunc
 
-;~ 	WriteLog("Waiting for pixel " & _ArrayToString($pixelinfo))
-;~ 	While 1
-;~ 		Local $aCoord = PixelSearch($pixelinfo[0], $pixelinfo[1], $pixelinfo[2], $pixelinfo[3], $pixelinfo[4])
-;~ 		If Not @error Then
-;~ 			WriteLog("Found pixel " & _ArrayToString($pixelinfo))
-;~ 			If $triggerclick = True Then
-;~ 				MouseClick($MOUSE_CLICK_LEFT, $aCoord[0], $aCoord[1])
-;~ 				WriteLog("Click on pixel " & _ArrayToString($pixelinfo))
-;~ 			EndIf
-;~ 			ExitLoop
-;~ 		EndIf
-;~ 	WEnd
-;~ EndFunc
+Func ClickPosUntilScreenByPixel($pos, $untilpixel, $interval = 700, $timeout = 60, $timeoutcall = "", $convertposition = True)
+	Local $mypos = $convertposition = True ? ConvertRelativePosToAbsolutePos($pos) : $pos
+	Local $x = 0, $y = 0
+	Local $hTimer = TimerInit()
+	Do
+		If TimerDiff($hTimer) > $timeout * 1000 Then
+			If $timeoutcall <> "" Then
+				WriteLog("ClickPosUntilScreenByPixel time out after " & $timeout & " seconds waiting for pixel " & _ArrayToString($untilpixel) & ", $timeoutcall=" & $timeoutcall, $v_exception)
+				Call($timeoutcall)
+			Else
+				WriteLog("ClickPosUntilScreenByPixel time out after " & $timeout & " seconds waiting for pixel " & _ArrayToString($untilpixel) & ", exit", $v_exception)
+				;;;;;;;;;;;;;;;;;;;; TIMEOUT EXIT ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+				Exit
+				;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+			EndIf
+			ExitLoop
+		EndIf
+
+		ClickOn($pos)
+		Sleep($interval)
+		Local $pixelresult = SearchPixel($untilpixel)
+	Until $pixelresult[0] <> $pixel_empty[0] Or $pixelresult[1] <> $pixel_empty[1]
+	If $debug Then WriteLog("ClickPosUntilScreenByPixel found pixel " & _ArrayToString($untilpixel))
+EndFunc
+
+#comments-start
+	Wait and click on specified image in active window until targe image appear in active window
+#comments-end
+Func ClickPixelUntilScreenByPixel($waitpixel, $untilpixel, $interval = 700, $timeout = 60, $timeoutcall = "")
+	WaitPixel($waitpixel)
+	Local $pos = [$waitpixel[0],$waitpixel[1]]
+	ClickPosUntilScreenByPixel($pos, $untilpixel, $interval, $timeout, $timeoutcall)
+	If $debug Then WriteLog("ClickPixelUntilScreenByPixel found pixel " & _ArrayToString($untilpixel))
+EndFunc   ;==>ClickImageUntilScreen
 
 #comments-start
 	Determine which pixel exist given an array of pixels
 	return the found pixel index or -1 if not found, default time out is 1 second
-	$pixellist sample:
-	[[120,120,210,210,0xefefef,10],[128,128,232,232,0x989898,10]]
 #comments-end
 Func DeterminePixel($pixellist, $timeout = 1)
 	Local $sleepinterval = 500
@@ -106,7 +134,8 @@ Func DeterminePixel($pixellist, $timeout = 1)
 		Local $found = -1
 		For $i = 0 To UBound($pixellist) - 1
 			Local $currentitem = $pixellist[$i]
-			If CheckPixel($currentitem) Then
+			Local $pixelresult = SearchPixel($currentitem)
+			If $pixelresult[0] <> $pixel_empty[0] Or $pixelresult[1] <> $pixel_empty[1] Then
 				$found = $i
 				ExitLoop
 			EndIf

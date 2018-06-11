@@ -59,6 +59,7 @@ Func WaitImageDesktop($image, $timeout = 60, $timeoutcall = "", $click = False)
 	Local $pos = [0, 0]
 	Local $list = StringSplit($image, ",")
 	Local $found = 0
+	Local $timeoutcount = 0
 
 	While 1
 		For $i = 1 To $list[0]
@@ -115,6 +116,7 @@ Func WaitImage($image, $timeout = 60, $timeoutcall = "", $click = False, $area_x
 	Local $pos = [0, 0]
 	Local $list = StringSplit($image, ",")
 	Local $found = 0
+	Local $timeoutcount = 0
 
 	While 1
 		For $i = 1 To $list[0]
