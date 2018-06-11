@@ -5,6 +5,7 @@
 Global $createaccountsteps = []
 _ArrayAdd($createaccountsteps,"Wrapper1")
 _ArrayAdd($createaccountsteps,"Wrapper2")
+_ArrayAdd($createaccountsteps,"CheckExit")
 
 Func Wrapper1()
 	Local $success = CreateNextRecord()
@@ -161,5 +162,4 @@ Func SetupPassword()
 	ClickImage("btn_ok_beginner.bmp")
 	ExecDBQuery("[dbo].[SP_CompleteAccountCreation] '"&_ClipBoard_GetData()&"','"&$acctinfoarr[2]&"'")
 	ClickImage("btn_ok_fight_effect.bmp")
-	CheckExit()
 EndFunc
