@@ -7,6 +7,10 @@ Global $winleftready = False
 Global $winrightready = False
 Global $timeoutcount = 0
 Global Const $lastclickposition = "lastclicked"
+Global Const $pixelinfo_shadow_variation = 0
+Global Const $pixelinfo_half_width = 5
+Global Const $pixelinfo_half_height = 5
+Global Const $pixel_empty = [0,0]
 
 Global $v_winctrlclassname = "subWin1"
 Global Const $v_imagepath = @ScriptDir & "\Assets\identifier\"
