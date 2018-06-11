@@ -131,6 +131,7 @@ EndFunc
 
 Func SetupPassword()
 	Local $wincenter = GetCtrlCenter()
+	Sleep(1000)
 	ClickPosUntilScreen($wincenter,"btn_ok_fight_effect.bmp") ; 2-years anniversary
 	ClickImage("btn_ok_fight_effect.bmp") ; 2-years anniversary
 	ClickPosUntilScreen($wincenter,"btn_ok_beginner.bmp")
