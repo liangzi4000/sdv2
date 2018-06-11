@@ -131,6 +131,8 @@ EndFunc
 
 Func SetupPassword()
 	Local $wincenter = GetCtrlCenter()
+	ClickPosUntilScreen($wincenter,"btn_ok_fight_effect.bmp") ; 2-years anniversary
+	ClickImage("btn_ok_fight_effect.bmp") ; 2-years anniversary
 	ClickPosUntilScreen($wincenter,"btn_ok_beginner.bmp")
 	ClickImage("btn_ok_beginner.bmp") ;选择单人游戏-确定
 	ClickImage("menu_single_mode.bmp") ;单人游戏
