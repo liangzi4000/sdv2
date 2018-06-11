@@ -24,6 +24,7 @@ Func SearchImage($image, ByRef $x, ByRef $y, $tolerance = 20, $area_x = 0, $area
 		$area[3] = $area[1] + $area_height
 	EndIf
 	Local $result = _ImageSearchArea($v_imagepath & $image, 1, $area[0], $area[1], $area[2], $area[3], $x, $y, $tolerance)
+	Assign($activewindow&$lastimageposition, $x&","&$y, 2)
 	If $debug Then WriteLog("SearchImage search " & $image & ", result:" & $result)
 	Return $result ; return 1 or 0
 EndFunc   ;==>SearchImage

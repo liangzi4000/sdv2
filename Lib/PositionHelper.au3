@@ -64,3 +64,16 @@ Func GetLastClickPosition()
 	EndIf
 	Return $result
 EndFunc
+
+Func GetLastImagePosition()
+	Local $result[2] = [0,0]
+	If IsDeclared($activewindow&$lastimageposition) Then
+		Local $postr = Eval($activewindow&$lastimageposition)
+		Local $pos = StringSplit($postr,",")
+		If $pos[0] = 2 Then
+			$result[0] = $pos[1]
+			$result[1] = $pos[2]
+		EndIf
+	EndIf
+	Return $result
+EndFunc
