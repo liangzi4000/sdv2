@@ -122,7 +122,7 @@ Func GetNextRecord()
 			ExitLoop
 		Else
 			WriteLog("GetNextRecord return invalid database record: " & $acctinfo, $v_exception)
-			Sleep(5000)
+			Sleep(10000)
 		EndIf
 	Next
 	Assign("acctinfo" & $activewindow, $acctinfo, 2)
@@ -309,7 +309,7 @@ Func PerformTask1()
 		ClickImage("btn_ok_card_saved.bmp")
 		Sleep(500)
 		ClickImage("btn_ok_fight_effect.bmp")
-
+		Sleep(1000)
 		ClickImage("menu_single_mode.bmp")
 		Sleep(3000)
 		ClickOnRelative($opt_zhuxian) ; 点击 主线剧情
@@ -322,8 +322,9 @@ Func PerformTask1()
 		ClickImage("btn_ok_fight_effect.bmp")
 		ClickImage("btn_fight_option.bmp")
 		ClickImage("btn_giveup.bmp")
+		Sleep(1000)
 		ClickImage("btn_giveup_confirm.bmp")
-		Sleep(500)
+		Sleep(1000)
 	 	ClickImage("btn_ok_fight_effect.bmp")
 	 	ExecDBQuery("[dbo].[SP_CompleteTask1] "&$acctinfoarr[4])
 		ClickImage("btn_choosechapter.bmp")
