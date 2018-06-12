@@ -1,17 +1,17 @@
 #include-once
-Global $activewindow = ""
-Global $inactivewindows = [] ; To store the inactive windows
-Global $debug = True
-Global $exit = False ; Terminate script flag
-Global $winleftready = False
-Global $winrightready = False
-Global $timeoutcount = 0
-Global Const $lastclickposition = "lastclicked"
-Global Const $lastimageposition = "lastimage"
-Global Const $pixelinfo_shadow_variation = 0
-Global Const $pixelinfo_half_width = 5
-Global Const $pixelinfo_half_height = 5
-Global Const $pixel_empty = [0,0]
+Global $activewindow = ""						; Store current active window
+Global $inactivewindows = [] 					; Store inactive windows
+Global $debug = True 							; Debug falg, turn on to write detail log
+Global $exit = False 							; Terminate script flag
+Global $winleftready = False 					; Align window left flag
+Global $winrightready = False 					; Align window right flag
+Global $timeoutcount = 0 						; Count number of timeout for function that invoking itself
+Global Const $lastclickposition = "lastclicked" ; Name const of last clicked position
+Global Const $lastimageposition = "lastimage"	; Name const of last image center position
+Global Const $pixelinfo_shadow_variation = 0	; Default PixelSearch shadow variation
+Global Const $pixelinfo_half_width = 5			; Default PixelSearch range half width
+Global Const $pixelinfo_half_height = 5			; Default PixelSearch range half height
+Global Const $pixel_empty = [0,0]				; Default result position of PixelSearch
 
 Global $v_winctrlclassname = "subWin1"
 Global Const $v_imagepath = @ScriptDir & "\Assets\identifier\"

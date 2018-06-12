@@ -19,6 +19,7 @@ EndFunc
 
 Func Wrapper2()
 	BeginnerTutorial()
+	Handle2ndAnniversary()
 	SetupPassword()
 EndFunc
 
@@ -129,11 +130,15 @@ Func BeginnerTutorial()
 	ClickImage("btn_ok_fight_effect.bmp") ;关闭弹窗 “登入奖励”
 EndFunc
 
-Func SetupPassword()
-	Local $wincenter = GetCtrlCenter()
+Func Handle2ndAnniversary()
 	Sleep(1000)
+	Local $wincenter = GetCtrlCenter()
 	ClickPosUntilScreen($wincenter,"btn_ok_fight_effect.bmp") ; 2-years anniversary
 	ClickImage("btn_ok_fight_effect.bmp") ; 2-years anniversary
+EndFunc
+
+Func SetupPassword()
+	Local $wincenter = GetCtrlCenter()
 	ClickPosUntilScreen($wincenter,"btn_ok_beginner.bmp")
 	ClickImage("btn_ok_beginner.bmp") ;选择单人游戏-确定
 	ClickImage("menu_single_mode.bmp") ;单人游戏
