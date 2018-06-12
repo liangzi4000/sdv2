@@ -22,6 +22,6 @@ Exit
 Func WaitForSQLService()
 	While ExecDBQuery("SELECT 1 AS Result") <> "1"
 		WriteLog("Waiting for SQL service ...")
-		Sleep(100000)
+		Sleep(15000)
 	WEnd
 EndFunc
