@@ -60,7 +60,6 @@ Func WaitImageDesktop($image, $timeout = 60, $timeoutcall = "", $click = False)
 	Local $pos = [0, 0]
 	Local $list = StringSplit($image, ",")
 	Local $found = 0
-	Local $timeoutcount = 0
 
 	While 1
 		For $i = 1 To $list[0]
@@ -78,7 +77,7 @@ Func WaitImageDesktop($image, $timeout = 60, $timeoutcall = "", $click = False)
 				WriteLog("WaitImageDesktop time out after " & $timeout & " seconds waiting for image " & $image & ", $timeoutcount=" & $timeoutcount, $v_exception)
 				$timeoutcount = $timeoutcount + 1
 				ClickOnLastPosition()
-				Call("WaitImageDesktop",$image,$timeout,$timeoutcall,$click)
+				Call("WaitImageDesktop",$image,$timeout,$timeoutcall,$click) ; because of this code, $timeoutcount must be declared as global variable
 			Else
 				WriteLog("WaitImageDesktop time out after " & $timeout & " seconds waiting for image " & $image & ", exit after click on last position and failed", $v_exception)
 				;;;;;;;;;;;;;;;;;;;; TIMEOUT EXIT ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -117,7 +116,6 @@ Func WaitImage($image, $timeout = 60, $timeoutcall = "", $click = False, $area_x
 	Local $pos = [0, 0]
 	Local $list = StringSplit($image, ",")
 	Local $found = 0
-	Local $timeoutcount = 0
 
 	While 1
 		For $i = 1 To $list[0]

@@ -51,7 +51,6 @@ EndFunc
 
 Func WaitPixel($pixelinfo, $timeout = 60, $timeoutcall = "", $click = False)
 	Local $hTimer = TimerInit()
-	Local $timeoutcount = 0
 
 	While 1
 		Local $pixelresult = SearchPixel($pixelinfo)
