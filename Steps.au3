@@ -16,6 +16,10 @@ _ArrayAdd($firstrun, "Wrapper_ClickUntilNotification_CloseNotification_CompleteL
 ;_ArrayAdd($firstrun,"CloseBPInfo")
 _ArrayAdd($firstrun, "GetGift")
 _ArrayAdd($firstrun, "PerformTask1")
+_ArrayAdd($firstrun, "CreateOrEnterFightRoom")
+_ArrayAdd($firstrun, "WaitForFightStart")
+_ArrayAdd($firstrun, "HandleChangeCards")
+_ArrayAdd($firstrun, "ProcessFight")
 _ArrayAdd($firstrun, "CheckExit")
 
 
@@ -31,8 +35,11 @@ _ArrayAdd($steps, "Wrapper_ClickUntilNotification_CloseNotification_CompleteLogi
 ;_ArrayAdd($steps,"CloseBPInfo")
 _ArrayAdd($steps, "GetGift")
 _ArrayAdd($steps, "PerformTask1")
+_ArrayAdd($steps, "CreateOrEnterFightRoom")
+_ArrayAdd($steps, "WaitForFightStart")
+_ArrayAdd($steps, "HandleChangeCards")
+_ArrayAdd($steps, "ProcessFight")
 _ArrayAdd($steps, "CheckExit")
-
 
 
 Func ExecStep($index)
@@ -108,8 +115,15 @@ EndFunc   ;==>ChooseUserIDLoginV2
 Func GetNextRecord()
 	Local $acctinfo = ""
 	Local $result = False
+	Local $siblingloginid = 0
+	If Not IsFightHost() Then
+		SwitchWindow(True)
+		$siblingloginid = GetAccountInfo("uid")
+		SwitchWindow(False)
+	EndIf
+
 	For $x = 1 To 5
-		$acctinfo = ExecDBQuery("[dbo].[SP_GetNextRecord] '" & $activewindow & "'")
+		$acctinfo = ExecDBQuery("[dbo].[SP_GetNextRecord] '" & $activewindow & "',"&$siblingloginid)
 		If $acctinfo = "End" Then
 			WriteLog("Reach end of database, close window.")
 			AddArrayElem($inactivewindows, $activewindow)
@@ -150,16 +164,13 @@ Func Wrapper_EnterUIDandPWD_LianDongV2()
 EndFunc   ;==>Wrapper_EnterUIDandPWD_LianDongV2
 
 Func EnterUIDandPWD()
-	Local $acctinfo = Eval("acctinfo" & $activewindow)
-	Local $acctinfoarr = StringSplit($acctinfo, "|")
-
-	_ClipBoard_SetData($acctinfoarr[1]) ; 读取UID到粘贴板
+	_ClipBoard_SetData(GetAccountInfo("uid")) ; 读取UID到粘贴板
 	ClickPosUntilScreen($txt_uid, "btn_queding.bmp", 800)
 	SendPasteKeys() ; 黏贴
 	ClickImage("btn_queding.bmp") ;点击确定
 	Sleep(800)
 
-	_ClipBoard_SetData($acctinfoarr[2]) ; 读取password到粘贴板
+	_ClipBoard_SetData(GetAccountInfo("pwd")) ; 读取password到粘贴板
 	ClickPosUntilScreen($txt_pwd, "btn_queding.bmp", 800)
 	SendPasteKeys() ; 黏贴
 	ClickImage("btn_queding.bmp") ;点击确定
@@ -243,17 +254,14 @@ Func CloseBPInfo()
 EndFunc   ;==>CloseBPInfo
 
 Func CompleteLogin()
-	Local $acctinfo = Eval("acctinfo" & $activewindow)
-	If $debug Then WriteLog($acctinfo)
-	Local $acctinfoarr = StringSplit($acctinfo, "|")
-	Local $uid = $acctinfoarr[1]
-	If $debug Then WriteLog($uid)
+	Local $uid = GetAccountInfo("uid")
+	If $debug Then WriteLog($uid & "completed login")
 	ExecDBQuery("[dbo].[SP_CompleteDailyTask] '" & $uid & "'")
 EndFunc   ;==>CompleteLogin
 #EndRegion Wrapper_ClickUntilNotification_CloseNotification_CompleteLogin
 
 Func ClickMenuOthers()
-	ClickImageUntilScreen("menu_others.bmp", "btn_youxiziliaoliandong.bmp")
+	ClickImageUntilScreen("menu_others_v2.bmp", "btn_youxiziliaoliandong.bmp")
 EndFunc   ;==>ClickMenuOthers
 
 Func ClickBtnGameLink()
@@ -267,15 +275,13 @@ Func CloseApp()
 		Sleep(3000)
 	Until SearchImage("app_icon_tasklist.bmp", $pos[0], $pos[1]) = 1
 	Slide($pos[0], $pos[1]+120, $pos[0], 0)
-	Sleep(5000)
+	Sleep(2000)
 	Local $toolbarpos = GetOpenToolBarPosition()
 	ClickOn($toolbarpos)
 EndFunc   ;==>CloseApp
 
 Func GetGift()
-	Local $acctinfo = Eval("acctinfo" & $activewindow)
-	Local $acctinfoarr = StringSplit($acctinfo, "|")
-	If $acctinfoarr[5] = 1 Then
+	If GetAccountInfo("gift") = 1 Then
 		ClickPosUntilScreen($side_gift, "btn_back.bmp")
 		Local $img = WaitImage("btn_getall_gifts.bmp,btn_getall_gifts_greyout.bmp")
 		If $img = 1 Then
@@ -287,9 +293,7 @@ Func GetGift()
 EndFunc   ;==>GetGift
 
 Func PerformTask1()
-	Local $acctinfo = Eval("acctinfo" & $activewindow)
-	Local $acctinfoarr = StringSplit($acctinfo, "|")
-	If $acctinfoarr[3] = 0 Then
+	If GetAccountInfo("task1") = 0 Then
 		ClickImage("menu_card.bmp",True) ; 点击卡片菜单
 		Sleep(500)
 		ClickPosUntilScreen($opt_zhuxian,"ui_zhidingxilie.bmp") ;点击直到出现 指定系列
@@ -328,7 +332,7 @@ Func PerformTask1()
 		ClickImage("btn_giveup_confirm.bmp")
 		Sleep(1000)
 	 	ClickImage("btn_ok_fight_effect.bmp")
-	 	ExecDBQuery("[dbo].[SP_CompleteTask1] "&$acctinfoarr[4])
+	 	ExecDBQuery("[dbo].[SP_CompleteTask1] "&GetAccountInfo("acct"))
 		ClickImage("btn_choosechapter.bmp")
 		ClickImage("btn_back.bmp")
 	EndIf
@@ -341,3 +345,256 @@ EndFunc   ;==>CheckExit
 Func RunScript()
 	Run(@ScriptDir&"\Surrogate.exe")
 EndFunc
+
+#Region Fight Functions
+#comments-start
+; PC name end with odd number is host
+; PC name end with even number is guest
+#comments-end
+Func CreateOrEnterFightRoom()
+	If Not IsFightAllow() Then Return
+	ClickPosUntilScreenByPixel($meu_duizhan,$opt_privatefight) ;点击 对战
+	ClickOnRelative($opt_privatefight) ;点击 私人对战
+	If IsFightHost() Then
+		ClickImage("sdv_fight_duizhan.bmp") ; 建立对战室
+		ClickImage("sdv_fight_normalfight.bmp") ; 一般对战
+		ClickImage("sdv_button_jianliduizhanshi.bmp") ; 点击 建立对战室 按钮
+	Else
+		ClickImage("sdv_fight_jinruduizhan.bmp") ; 进入对战室
+		Sleep(500)
+		Local $roomnumber = StringSplit($fightroomnumber,"")
+		For $i = 1 To UBound($roomnumber)-1
+			Local $number = Number($roomnumber[$i])
+			Local $numpos[2] = [$btn_number[$number][0],$btn_number[$number][1]]
+			ClickOnRelative($numpos)
+			Sleep(100)
+		Next
+		ClickImage("sdv_button_jueding_room.bmp") ; 决定
+	EndIf
+	ClickImage("sdv_button_xuanzepaizu.bmp") ; 点击 选择牌组 按钮
+	ClickImage("sdv_card_jingling.bmp",True) ; 选择精灵
+	ClickImage("sdv_button_card_ok.bmp") ; OK
+	Sleep(500)
+	If IsFightHost() Then
+		Local $room_abs = GetAbsoluteRoomCoord($v_room)
+		_ScreenCapture_Capture($v_room_screenshot,$room_abs[0],$room_abs[1],$room_abs[2],$room_abs[3])
+		ShellExecuteWait($v_tesseractfile,$v_room_screenshot&" "&$v_room_file&" -psm 7")
+		$fightroomnumber = StringStripWS(FileReadLine($v_room_file&".txt",1),8)
+	EndIf
+EndFunc
+
+Func WaitForFightStart()
+	If Not IsFightAllow() Then Return
+	ClickPixel($btn_readytofight) ; 等待准备完毕
+EndFunc
+
+Func HandleChangeCards()
+	If Not IsFightAllow() Then Return
+	ClickPixel($btn_changecard) ; 决定
+EndFunc
+
+Func ProcessFight()
+	If Not IsFightAllow() Then Return
+	; Execute this function for first window only, skip for second window
+	If $skipsecondwindowexecution Then
+		SecondWindowExitFight()
+		$skipsecondwindowexecution = False
+		Return
+	EndIf
+	$skipsecondwindowexecution = True
+
+	Local $fightctrlbtns = [$btn_waitforfight,$btn_confirmfight] 			; List of fight buttons
+	Local $attackfirst = DeterminePixel($fightctrlbtns) = 1 ? True : False	; 是否先攻
+	Local $clickcount = 0 													; No of times click on 结束回合
+	Local $isfirstwindow = $attackfirst ? True : False						; Is first window active
+	Local $cardsinbattlecount = 0											; No of cards in battle area
+	Local $iscardsready = False
+	Local $jinhuastatus[3] = [False,False,False]							; Store if card jinhua
+
+	While 1
+		SwitchWindow($isfirstwindow)
+		WaitPixel($btn_confirmfight)
+
+		If $isfirstwindow And $clickcount >= 5 Then
+			ConsoleWrite("$clickcount:"&$clickcount&@CRLF)
+			If Not $iscardsready Then
+				$iscardsready = True
+				ClickOnRelative($cardready)
+				Sleep(1000)
+			EndIf
+
+			If $cardsinbattlecount < 5 Then
+				; Find one card in ready area and move it to battle area
+				Local $foundcard = False
+				For $x = 0 To UBound($readycards)-1
+					Local $currentcard = $readycards[$x]
+					Local $pixelresult = SearchPixel($currentcard)
+					If $pixelresult[0] <> $pixel_empty[0] Or $pixelresult[1] <> $pixel_empty[1] Then
+						ConsoleWrite("found card: "&$x&@CRLF)
+						SlideRelative($currentcard[0]+10,$currentcard[1]-25,$currentcard[0]+10,$currentcard[1]-200)
+						$cardsinbattlecount = $cardsinbattlecount + 1
+						$foundcard = True
+						ExitLoop
+					Else
+						ConsoleWrite("cannot find card: "&$x&@CRLF)
+					EndIf
+				Next
+				If Not $foundcard Then $iscardsready = False
+				Sleep(1500)
+			EndIf
+
+			If $cardsinbattlecount > 0 Then
+				Local $cardsinbattle[$cardsinbattlecount]
+				Switch $cardsinbattlecount
+					Case 1
+						$cardsinbattle[0] = $cardodds[2]
+						If Not $jinhuastatus[0] Then
+							$jinhuastatus[0] = True
+							Local $currentcard = $cardsinbattle[0]
+							JinHua($currentcard)
+						EndIf
+					Case 2
+						$cardsinbattle[0] = $cardevens[1]
+						$cardsinbattle[1] = $cardevens[2]
+						If Not $jinhuastatus[1] Then
+							$jinhuastatus[1] = True
+							Local $currentcard = $cardsinbattle[1]
+							JinHua($currentcard)
+						EndIf
+					Case 3
+						$cardsinbattle[0] = $cardodds[1]
+						$cardsinbattle[1] = $cardodds[2]
+						$cardsinbattle[2] = $cardodds[3]
+						If Not $jinhuastatus[2] And Not $attackfirst Then
+							$jinhuastatus[2] = True
+							Local $currentcard = $cardsinbattle[2]
+							JinHua($currentcard)
+						EndIf
+					Case 4
+						$cardsinbattle[0] = $cardevens[0]
+						$cardsinbattle[1] = $cardevens[1]
+						$cardsinbattle[2] = $cardevens[2]
+						$cardsinbattle[3] = $cardevens[3]
+					Case 5
+						$cardsinbattle[0] = $cardodds[0]
+						$cardsinbattle[1] = $cardodds[1]
+						$cardsinbattle[2] = $cardodds[2]
+						$cardsinbattle[3] = $cardodds[3]
+						$cardsinbattle[4] = $cardodds[4]
+				EndSwitch
+
+				For $x = 0 To UBound($cardsinbattle)-1
+					If $x = UBound($cardsinbattle)-1 And $cardsinbattlecount < 5 Then ContinueLoop
+					Local $card = $cardsinbattle[$x]
+					SlideRelative($card[0]-$v_battle_card_x_offset,$card[1],$enemypos[0],$enemypos[1])
+					Sleep(300)
+				Next
+			EndIf
+		EndIf
+
+		If $isfirstwindow Then
+			Local $pixelresult = SearchPixel($btn_confirmfight)
+			If $pixelresult[0] <> $pixel_empty[0] Or $pixelresult[1] <> $pixel_empty[1] Then
+				ConsoleWrite("Found confirm fight"&@CRLF)
+				ClickOnRelative($btn_confirmfight)
+				$clickcount = $clickcount + 1
+			Else
+				ConsoleWrite("Waiting for btn_back.bmp"&@CRLF)
+				Local $index = WaitImage("btn_ok_fight_effect.bmp,btn_back.bmp")
+				If $index = 1 Then
+					; Close the popup window if exists
+					ClickImage("btn_ok_fight_effect.bmp")
+					Sleep(300)
+				EndIf
+				WaitImage("btn_back.bmp")
+				ClickImage("menu_single_mode.bmp")
+				ClickImage("btn_jiesan.bmp")
+				ExitLoop
+			EndIf
+		Else
+			ClickOnRelative($btn_confirmfight)
+		EndIf
+
+		$isfirstwindow = Not $isfirstwindow
+	WEnd
+EndFunc
+
+Func SecondWindowExitFight()
+	ClickImage("btn_ok_beginner.bmp") ; 点击 ok
+	Local $rivalloginid = GetAccountInfo("uid")
+	SwitchWindow(True)
+	Local $hostloginid = GetAccountInfo("uid")
+	SwitchWindow(False)
+	ExecDBQuery("[dbo].[SP_CompletePYFight] "&$hostloginid&","&$rivalloginid&","&$fightroomnumber)
+EndFunc
+
+Func JinHua($card)
+	Sleep(2000)
+	ConsoleWrite("Click on card to jinhua"&@CRLF)
+	ClickOnRelative($card)
+	Sleep(1000)
+	ClickImage("btn_jinhua.bmp,btn_jinhua_v2.bmp,btn_jinhua_v3.bmp",True)
+	WaitPixel($btn_confirmfight)
+EndFunc
+
+Func SwitchWindow($isfirstwindow)
+	If $isfirstwindow Then
+		$activewindow = $v_windows[0]
+	Else
+		$activewindow = $v_windows[1]
+	EndIf
+	WinActivate($activewindow)
+EndFunc
+
+Func GetAbsoluteRoomCoord($v_room)
+	Local $leftpoint[2] = [$v_room[0],$v_room[1]]
+	Local $rightpoint[2] = [$v_room[2],$v_room[3]]
+	Local $leftpoint_abs = ConvertRelativePosToAbsolutePos($leftpoint)
+	Local $rightpoint_abs = ConvertRelativePosToAbsolutePos($rightpoint)
+	Local $result[4] = [$leftpoint_abs[0],$leftpoint_abs[1],$rightpoint_abs[0],$rightpoint_abs[1]]
+	Return $result
+EndFunc
+
+#comments-start
+Check if fight is allowed
+#comments-end
+Func IsFightAllow()
+	If GetAccountInfo("fight") = 1 And UBound($v_windows) = 2 Then Return True
+	Return False
+EndFunc
+
+Func IsFightHost()
+	Local $number = StringRight($activewindow,2)
+	If $number = "" Then Return False
+	If Mod($number,2) = 1 Then
+		Return True
+	Else
+		Return False
+	EndIf
+EndFunc
+#EndRegion
+
+#Region Account Info Helper
+Func GetAccountInfo($type)
+	Local $result = ""
+	Local $acctinfo = Eval("acctinfo" & $activewindow)
+	Local $acctinfoarr = StringSplit($acctinfo, "|")
+
+	Switch $type
+		Case "uid"
+			$result = $acctinfoarr[1]
+		Case "pwd"
+			$result = $acctinfoarr[2]
+		Case "task1"
+			$result = $acctinfoarr[3]
+		Case "acct"
+			$result = $acctinfoarr[4]
+		Case "gift"
+			$result = $acctinfoarr[5]
+		Case "fight"
+			$result = $acctinfoarr[6]
+	EndSwitch
+
+	Return $result
+EndFunc
+#EndRegion

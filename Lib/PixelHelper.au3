@@ -10,12 +10,12 @@
 	$pixelinfo[0]: relative position x
 	$pixelinfo[1]: relative position y
 	$pixelinfo[2]: color
-	$pixelinfo[3]: shadow-variation, optional, default is 0
-	$pixelinfo[4]: pixel point to top or bottom, optional, default is 5
-	$pixelinfo[5]: pixel point to left or right, optional, default is 5
+	$pixelinfo[3]: shadow-variation, optional, default is 5
+	$pixelinfo[4]: pixel point to top or bottom, optional, default is 2
+	$pixelinfo[5]: pixel point to left or right, optional, default is 2
 #comments-end
-Func SearchPixel($pixelinfo)
-	FormatPixelInfo($pixelinfo)
+Func SearchPixel($pixelinfo_var)
+	Local $pixelinfo = FormatPixelInfo($pixelinfo_var)
 	Local $winpos = GetWinPosition()
 	Local $ctrlpos = GetCtrlPosition()
 	Local $area[4]
@@ -47,6 +47,7 @@ Func FormatPixelInfo($pixelinfo)
 		Case Else
 			; nothing
 	EndSwitch
+	Return $pixelinfo
 EndFunc
 
 Func WaitPixel($pixelinfo, $timeout = 60, $timeoutcall = "", $click = False)
@@ -105,7 +106,7 @@ Func ClickPosUntilScreenByPixel($pos, $untilpixel, $interval = 700, $timeout = 6
 			ExitLoop
 		EndIf
 
-		ClickOn($pos)
+		ClickOn($mypos)
 		Sleep($interval)
 		Local $pixelresult = SearchPixel($untilpixel)
 	Until $pixelresult[0] <> $pixel_empty[0] Or $pixelresult[1] <> $pixel_empty[1]
@@ -124,12 +125,19 @@ EndFunc   ;==>ClickImageUntilScreen
 
 #comments-start
 	Determine which pixel exist given an array of pixels
-	return the found pixel index or -1 if not found, default time out is 1 second
+	return the found pixel index or exit program if not found, default time out is 60 seconds
 #comments-end
-Func DeterminePixel($pixellist, $timeout = 1)
+Func DeterminePixel($pixellist, $timeout = 60)
 	Local $sleepinterval = 500
-	Local $count = 0
+	Local $hTimer = TimerInit()
 	While 1
+		If TimerDiff($hTimer) > $timeout * 1000 Then
+			WriteLog("DeterminePixel time out after " & $timeout & " seconds waiting for pixel list " & _ArrayToString($pixellist) & ", exit", $v_exception)
+			;;;;;;;;;;;;;;;;;;;; TIMEOUT EXIT ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+			Exit
+			;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+		EndIf
+
 		Local $found = -1
 		For $i = 0 To UBound($pixellist) - 1
 			Local $currentitem = $pixellist[$i]
@@ -144,10 +152,5 @@ Func DeterminePixel($pixellist, $timeout = 1)
 			Return $found ; return found pixel index
 		EndIf
 		Sleep($sleepinterval)
-		$count = $count + 1
-		If ($count >= $timeout * 1000 / $sleepinterval) Then
-			If $debug Then WriteLog("DeterminePixel time out and unable to find " & _ArrayToString($pixellist))
-			Return -1 ; return -1 if timeout
-		EndIf
 	WEnd
 EndFunc   ;==>DeterminePixel
