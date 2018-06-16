@@ -398,6 +398,7 @@ Func ProcessFight()
 	; Execute this function for first window only, skip for second window
 	If $skipsecondwindowexecution Then
 		SecondWindowExitFight()
+		ConsoleWrite("Fight completed"&@CRLF)
 		$skipsecondwindowexecution = False
 		Return
 	EndIf
@@ -493,14 +494,13 @@ Func ProcessFight()
 		EndIf
 
 		If $isfirstwindow Then
-			Local $pixelresult = SearchPixel($btn_confirmfight)
-			If $pixelresult[0] <> $pixel_empty[0] Or $pixelresult[1] <> $pixel_empty[1] Then
+			Local $index = WaitImage("btn_ok_fight_effect.bmp,btn_back.bmp,btn_confirmfight.bmp")
+			If $index = 3 Then
 				ConsoleWrite("Found confirm fight"&@CRLF)
 				ClickOnRelative($btn_confirmfight)
 				$clickcount = $clickcount + 1
 			Else
 				ConsoleWrite("Waiting for btn_back.bmp"&@CRLF)
-				Local $index = WaitImage("btn_ok_fight_effect.bmp,btn_back.bmp")
 				If $index = 1 Then
 					; Close the popup window if exists
 					ClickImage("btn_ok_fight_effect.bmp")
