@@ -497,7 +497,8 @@ Func ProcessFight()
 			Local $index = WaitImage("btn_ok_fight_effect.bmp,btn_back.bmp,btn_confirmfight.bmp")
 			If $index = 3 Then
 				ConsoleWrite("Found confirm fight"&@CRLF)
-				ClickOnRelative($btn_confirmfight)
+				;ClickOnRelative($btn_confirmfight)
+				ClickImage("btn_confirmfight.bmp",True)
 				$clickcount = $clickcount + 1
 			Else
 				ConsoleWrite("Waiting for btn_back.bmp"&@CRLF)
