@@ -121,6 +121,7 @@ Func GetNextRecord()
 	If Not IsFightHost() Then
 		SwitchWindow(True)
 		$siblingloginid = GetAccountInfo("uid")
+		If Not IsNumber($siblingloginid) Then $siblingloginid = 0
 		SwitchWindow(False)
 	EndIf
 
