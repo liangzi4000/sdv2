@@ -24,6 +24,8 @@ Global $txt_uid[2] = [334,180] ; 用户名输入文本框
 Global $txt_pwd[2] = [334,236] ; 密码输入文本框
 Global $btn_ignore[2] = [625,25] ; 忽略
 Global $side_gift[2] = [635,84] ; 礼物
+Global $side_task[2] = [635,199] ; 任务
+Global $side_task_chengjiu[2] = [253,83] ; 成就
 Global $ico_bin[2] = [98,37] ; 回收站
 Global $area_startscreen[4] = [0, 340, 60, 60] ; 开始屏幕图标
 Global $btn_change_lang[2] = [500,113] ; change language
@@ -40,13 +42,16 @@ Global $txt_setpwd_confirm[2] = [334,205] ; confirm password
 Global $chk_agreeprivacy[2] = [405,290] ; 同意隐私政策
 Global $btn_createcombination = [129,103] ; 创建新牌组
 Global $btn_zhuzhanzhe_confirm[2] = [621,277] ; 决定
+Global $menu_other[2] = [619,378] ; 其他菜单
 
 ;;;;;;;;----------------;;;;;;;;;
 Global $opt_privatefight[3] = [555,222,0xE6E6E6] ; 私人对战
 Global $meu_duizhan[2] = [254,377] ; 对战菜单
 Global Const $v_room_screenshot = @ScriptDir & "\db\privateroom.jpg"
 Global Const $v_room_file = @ScriptDir & "\db\privateroom"
+Global Const $v_money_ocr = @ScriptDir & "\db\money\"
 Global $v_room[4] = [295,102,374,123] ; room number rectangle
+Global $v_money[4] = [493,19,532,37] ; money rectangle
 Global Const $v_tesseractfile = "C:\Program Files (x86)\Tesseract-OCR\tesseract.exe"
 Global $btn_number[10][2] = [[336,305],[218,161],[336,161],[454,161],[218,209],[336,209],[454,209],[218,257],[336,257],[454,257]]
 Global $btn_readytofight[3] = [337,275,0x00698A] ;准备完成

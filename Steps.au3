@@ -14,6 +14,7 @@ _ArrayAdd($firstrun, "Wrapper_EnterUIDandPWD_LianDong")
 _ArrayAdd($firstrun, "Wrapper_StartScreen_DoItLater")
 _ArrayAdd($firstrun, "Wrapper_ClickUntilNotification_CloseNotification_CompleteLogin")
 ;_ArrayAdd($firstrun,"CloseBPInfo")
+_ArrayAdd($firstrun, "CheckMoneyBefore")
 _ArrayAdd($firstrun, "GetGift")
 _ArrayAdd($firstrun, "PerformTask1")
 _ArrayAdd($firstrun, "CreateOrEnterFightRoom")
@@ -33,6 +34,7 @@ _ArrayAdd($steps, "Wrapper_EnterUIDandPWD_LianDongV2")
 _ArrayAdd($steps, "Wrapper_StartScreen_DoItLater")
 _ArrayAdd($steps, "Wrapper_ClickUntilNotification_CloseNotification_CompleteLogin")
 ;_ArrayAdd($steps,"CloseBPInfo")
+_ArrayAdd($steps, "CheckMoneyBefore")
 _ArrayAdd($steps, "GetGift")
 _ArrayAdd($steps, "PerformTask1")
 _ArrayAdd($steps, "CreateOrEnterFightRoom")
@@ -230,6 +232,11 @@ Func ClickOnStartScreen()
 EndFunc   ;==>ClickOnStartScreen
 
 Func DoItLater()
+	Local $index = WaitImage("btn_doitlater.bmp,btn_nox_forever.bmp")
+	If $index = 2 Then
+		ClickImage("btn_nox_forever.bmp")
+		ClickImage("btn_nox_reject.bmp")
+	EndIf
 	ClickImage("btn_doitlater.bmp", True)
 EndFunc   ;==>DoItLater
 #EndRegion Wrapper_StartScreen_DoItLater
@@ -261,7 +268,8 @@ EndFunc   ;==>CompleteLogin
 #EndRegion Wrapper_ClickUntilNotification_CloseNotification_CompleteLogin
 
 Func ClickMenuOthers()
-	ClickImageUntilScreen("menu_others_v2.bmp", "btn_youxiziliaoliandong.bmp")
+	;ClickImageUntilScreen("menu_others_v2.bmp", "btn_youxiziliaoliandong.bmp")
+	ClickPosUntilScreen($menu_other,"btn_youxiziliaoliandong.bmp")
 EndFunc   ;==>ClickMenuOthers
 
 Func ClickBtnGameLink()
@@ -597,5 +605,30 @@ Func GetAccountInfo($type)
 	EndSwitch
 
 	Return $result
+EndFunc
+#EndRegion
+
+Func CheckMoneyBefore()
+	CheckMoney("_before")
+EndFunc
+
+Func CheckMoneyAfter()
+	CheckMoney("_after")
+EndFunc
+
+Func CheckMoney($suffix)
+	Local $money_abs = GetAbsoluteRoomCoord($v_money)
+	Local $screenshotfile = $v_money_ocr&StringReplace(_NowCalcDate(),"/","")&"_"&GetAccountInfo("uid")&$suffix&".jpg"
+	Local $ocrfile = $v_money_ocr&StringReplace(_NowCalcDate(),"/","")&"_"&GetAccountInfo("uid")&$suffix
+	_ScreenCapture_Capture($screenshotfile,$money_abs[0],$money_abs[1],$money_abs[2],$money_abs[3])
+	ShellExecuteWait($v_tesseractfile,$screenshotfile&" "&$ocrfile&" -psm 7")
+	Local $moneyamount = StringStripWS(FileReadLine($ocrfile&".txt",1),8)
+	ConsoleWrite($moneyamount&@CRLF)
+	Return $moneyamount
+EndFunc
+
+#Region Check number of py fight
+Func GetAchievement()
+
 EndFunc
 #EndRegion
