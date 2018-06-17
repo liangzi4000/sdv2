@@ -120,8 +120,7 @@ Func GetNextRecord()
 	Local $siblingloginid = 0
 	If Not IsFightHost() Then
 		SwitchWindow(True)
-		$siblingloginid = GetAccountInfo("uid")
-		If Not IsNumber($siblingloginid) Then $siblingloginid = 0
+		$siblingloginid = Number(GetAccountInfo("uid"))
 		SwitchWindow(False)
 	EndIf
 
