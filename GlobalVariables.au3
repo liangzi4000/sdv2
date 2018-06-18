@@ -76,8 +76,8 @@ Global $oddcard2 = [257,231]
 Global $oddcard3 = [339,231]
 Global $oddcard4 = [418,231]
 Global $oddcard5 = [495,231]
-Global $cardevens[4] = [$evencard1,$evencard2,$evencard3,$evencard4]
-Global $cardodds[5] = [$oddcard1,$oddcard2,$oddcard3,$oddcard4,$oddcard5]
+Global $cardevens = [$evencard1,$evencard2,$evencard3,$evencard4]
+Global $cardodds = [$oddcard1,$oddcard2,$oddcard3,$oddcard4,$oddcard5]
 
 Global $enemypos = [336,34]
 Global $v_battle_card_x_offset = 24
