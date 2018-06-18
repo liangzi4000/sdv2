@@ -361,7 +361,7 @@ EndFunc
 #comments-end
 Func CreateOrEnterFightRoom()
 	If Not IsFightAllow() Then Return
-	ClickPosUntilScreenByPixel($meu_duizhan,$opt_privatefight) ;点击 对战
+	ClickPosUntilScreenByPixel($menu_duizhan,$opt_privatefight) ;点击 对战
 	ClickOnRelative($opt_privatefight) ;点击 私人对战
 	If IsFightHost() Then
 		ClickImage("sdv_fight_duizhan.bmp") ; 建立对战室

@@ -43,10 +43,10 @@ Global $chk_agreeprivacy[2] = [405,290] ; 同意隐私政策
 Global $btn_createcombination = [129,103] ; 创建新牌组
 Global $btn_zhuzhanzhe_confirm[2] = [621,277] ; 决定
 Global $menu_other[2] = [619,378] ; 其他菜单
+Global $menu_duizhan[2] = [254,377] ; 对战菜单
 
 ;;;;;;;;----------------;;;;;;;;;
 Global $opt_privatefight[3] = [555,222,0xE6E6E6] ; 私人对战
-Global $meu_duizhan[2] = [254,377] ; 对战菜单
 Global Const $v_room_screenshot = @ScriptDir & "\db\privateroom.jpg"
 Global Const $v_room_file = @ScriptDir & "\db\privateroom"
 Global Const $v_money_ocr = @ScriptDir & "\db\money\"
@@ -79,33 +79,8 @@ Global $oddcard5 = [495,231]
 Global $cardevens[4] = [$evencard1,$evencard2,$evencard3,$evencard4]
 Global $cardodds[5] = [$oddcard1,$oddcard2,$oddcard3,$oddcard4,$oddcard5]
 
-
 Global $enemypos = [336,34]
 Global $v_battle_card_x_offset = 24
 Global $cardready = [525,371]
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-Global $v_station_name = "jxpc"
-; Game configuration
-;Global $btn_liandong[2] = [304,75] ; 资料连动
-Global $btn_doitlater[2] = [562,645] ; 晚点操作
-Global $btn_jdacct[2] = [666,534] ; 决定
-Global $sld_close_app[4] = [1167,447,1167,110] ; 关闭app
-Global $screencenter[2] = [666,377] ; 屏幕中心点
-Global $btn_install_next[2] = [304,654] ; 下一步，安装
-Global $btn_confirm[2] = [666,533] ; 大弹窗确定按钮
-Global $btn_reward_ok[2] = [666,445] ; 登录奖励 ok
-Global $btn_liwu[6] = [1194,139,1202,147,0xE6E6D5,0] ; 礼物
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-Global $preparefight[6] = [110,883,114,87,0x356F25,10] ;back
-Global Const $v_ctrl_fight = "fight"
-Global Const $v_ctrl_wait = "wait"
-Global $zoomcard = [1160,810]
-;;;;;;;;;;;;;;;;;;;;;;;;
-;;;;;;;;;;;;;;;;;;;;;
-Global $jinhuaover = [1374,416,1378,420,0xF9F7E6,5]
-;;;;;;;;;;;;;;;;;;;;;;;
-Global $stationdesktop = False ; PC station flag
-
 
 #include <Configuration.au3>
