@@ -281,6 +281,10 @@ Func CloseApp()
 	Do
 		Send("{PGUP}")
 		Sleep(3000)
+		If SearchImage("app_icon_tasklist_vertical.bmp", $pos[0], $pos[1]) = 1 Then
+			ClickImage("app_icon_tasklist_vertical.bmp")
+			Sleep(1000)
+		EndIf
 	Until SearchImage("app_icon_tasklist.bmp", $pos[0], $pos[1]) = 1
 	Slide($pos[0], $pos[1]+120, $pos[0], 0)
 	Sleep(2000)
