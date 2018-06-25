@@ -28,7 +28,6 @@ EndFunc
 
 Func Terminate()
 	WriteLog("Ctrl+Q pressed.")
-	$exit = True
 	$exitaction = $exitaction_terminatescript
 	Exit
 EndFunc
