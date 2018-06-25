@@ -19,4 +19,5 @@ Func CaptureScreenshot($filename="",$logfile="")
 	EndIf
 	_ScreenCapture_Capture($screenshotpath&$defaultfilename,0,0,-1,-1,False)
 	WriteLog("Screenshot saved to " & $screenshotpath&$defaultfilename,$logfile)
+	Return $defaultfilename
 EndFunc

@@ -1,8 +1,10 @@
 #include-once
+Global Enum $exitaction_restart, $exitaction_terminatescript, $exitaction_shutdownpc
 Global $activewindow = ""						; Store current active window
 Global $inactivewindows = [] 					; Store inactive windows
 Global $debug = True 							; Debug falg, turn on to write detail log
 Global $exit = False 							; Terminate script flag
+Global $exitaction = $exitaction_restart 		; Action to take upon exit, default is to restart program
 Global $winleftready = False 					; Align window left flag
 Global $winrightready = False 					; Align window right flag
 Global $timeoutcount = 0 						; Count number of timeout for function that invoking itself

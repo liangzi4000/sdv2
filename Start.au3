@@ -11,9 +11,10 @@ If MutexExists("MydeswswScriptName") Then
 EndIf
 OnAutoItExitRegister("OnAutoitExit")
 
-HotKeySet("^m", "Main")
-HotKeySet("^q", "Terminate") ; quit immediately
-HotKeySet("^f", "Finish") ; quit after complete current record
+HotKeySet("^m", "Main")				; execute main process
+HotKeySet("^q", "Terminate") 		; quit immediately
+HotKeySet("^f", "Finish") 			; quit after complete current record
+HotKeySet("^g", "ShutdownAfterFinish") 	; shut down PC when all tasks completed
 
 While 1
 	Sleep(200)
@@ -22,12 +23,20 @@ WEnd
 Func Finish()
 	WriteLog("Ctrl+F pressed.")
 	$exit = True
+	$exitaction = $exitaction_terminatescript
 EndFunc
 
 Func Terminate()
 	WriteLog("Ctrl+Q pressed.")
 	$exit = True
+	$exitaction = $exitaction_terminatescript
 	Exit
+EndFunc
+
+Func ShutdownAfterFinish()
+	BlockInput($BI_DISABLE)
+	WriteLog("Ctrl+G pressed.")
+	$exitaction = $exitaction_shutdownpc
 EndFunc
 
 Func Main()
@@ -59,22 +68,27 @@ Func Main()
 		Next
 	WEnd
 	WriteLog("Accounts creation completed.")
-	$exit = True
+
+	; Default to terminate program without shutdown PC
+	If $exitaction = $exitaction_restart Then
+		$exitaction = $exitaction_terminatescript
+	EndIf
 	Exit
-
-
-;~ 	$v_email_Subject = "All tasks completed"
-;~ 	$v_email_AttachFiles = GetLog()
-;~ 	_INetSmtpMailCom($v_email_SmtpServer,$v_email_FromName,$v_email_FromAddress,$v_email_ToAddress,$v_email_Subject,$v_email_Body,$v_email_AttachFiles,$v_email_CcAddress,$v_email_BccAddress,$v_email_Importance,$v_email_Username,$v_email_Password,$v_email_IPPort,$v_email_ssl)
-
-;~ 	Shutdown($SD_SHUTDOWN) ; shutdown PC
 EndFunc
 
 Func OnAutoitExit()
 	WriteLog("OnAutoitExit Called.")
-	CaptureScreenshot()
-	If Not $exit Then
-		ExecStep("CloseApp")
-		RunScript()
-	EndIf
+	Local $errorscreen = CaptureScreenshot()
+	Switch $exitaction
+		Case $exitaction_restart
+			$v_email_Subject = "Program auto restart triggered"
+			$v_email_AttachFiles = $errorscreen
+			_INetSmtpMailCom($v_email_SmtpServer,$v_email_FromName,$v_email_FromAddress,$v_email_ToAddress,$v_email_Subject,$v_email_Body,$v_email_AttachFiles,$v_email_CcAddress,$v_email_BccAddress,$v_email_Importance,$v_email_Username,$v_email_Password,$v_email_IPPort,$v_email_ssl)
+			ExecStep("CloseApp")
+			RunScript()
+		Case $exitaction_shutdownpc
+			Shutdown($SD_SHUTDOWN) ; shutdown PC
+		Case $exitaction_terminatescript
+			; do nothing
+	EndSwitch
 EndFunc
