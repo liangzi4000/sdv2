@@ -54,6 +54,8 @@ Global Const $v_room_file = @ScriptDir & "\db\privateroom"
 Global Const $v_money_ocr = @ScriptDir & "\db\money\"
 Global $v_room[4] = [295,102,374,123] ; room number rectangle
 Global $v_money[4] = [493,19,532,37] ; money rectangle
+Global $v_card[4] = [0,0,0,0] ; no of cards rectangle
+Global $v_jjc[4] = [0,0,0,0] ; no of JJC rectangle
 Global Const $v_tesseractfile = "C:\Program Files (x86)\Tesseract-OCR\tesseract.exe"
 Global $btn_number[10][2] = [[336,305],[218,161],[336,161],[454,161],[218,209],[336,209],[454,209],[218,257],[336,257],[454,257]]
 Global $btn_readytofight[3] = [337,275,0x00698A] ;准备完成
@@ -84,5 +86,31 @@ Global $cardodds = [$oddcard1,$oddcard2,$oddcard3,$oddcard4,$oddcard5]
 Global $enemypos = [336,34]
 Global $v_battle_card_x_offset = 24
 Global $cardready = [525,371]
+
+; Account status variables
+Global $as_Money = 0
+Global $as_Money_url = ""
+Global $as_MoneyAfter = 0
+Global $as_MoneyAfter_url = ""
+Global $as_legendcard = 0
+Global $as_legendcard_url = ""
+Global $as_dawnbreakcard = 0
+Global $as_dawnbreakcard_url = ""
+Global $as_chronogenesiscard = 0
+Global $as_chronogenesiscard_url = ""
+Global $as_starforgedcard = 0
+Global $as_starforgedcard_url = ""
+Global $as_wonderlandcard = 0
+Global $as_wonderlandcard_url = ""
+Global $as_tempestcard = 0
+Global $as_tempestcard_url = ""
+Global $as_bahamutcard = 0
+Global $as_bahamutcard_url = ""
+Global $as_darknesscard = 0
+Global $as_darknesscard_url = ""
+Global $as_classiccard = 0
+Global $as_classiccard_url = ""
+Global $as_JJC = 0
+Global $as_JJC_url = ""
 
 #include <Configuration.au3>

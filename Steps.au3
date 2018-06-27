@@ -612,27 +612,131 @@ Func GetAccountInfo($type)
 EndFunc
 #EndRegion
 
+Func CheckAccountStatus()
+	CheckMoneyBefore()
+	;Perform get fight award
+	CheckMoneyAfter()
+	;Go to cards menu
+	CheckCardLegend()
+	CheckCardDawnbreak()
+	CheckCardChronogenesis()
+	CheckCardStarforged()
+	CheckCardWonderland()
+	CheckCardTempest()
+	CheckCardBahamut()
+	CheckCardDarkness()
+	CheckCardClassic()
+	; Go to JJC
+	CheckCardJJC()
+	ExecDBQuery("[dbo].[SP_InsertAccountStatus] "&GetAccountInfo("uid")&","&$as_Money&",'"&$as_Money_url&"',"&$as_MoneyAfter&",'"&$as_MoneyAfter_url&"',"&$as_legendcard&",'"&$as_legendcard_url&"',"&$as_dawnbreakcard&",'"&$as_dawnbreakcard_url&"',"&$as_chronogenesiscard&",'"&$as_chronogenesiscard_url&"',"&$as_starforgedcard&",'"&$as_starforgedcard_url&"',"&$as_wonderlandcard&",'"&$as_wonderlandcard_url&"',"&$as_tempestcard&",'"&$as_tempestcard_url&"',"&$as_bahamutcard&",'"&$as_bahamutcard_url&"',"&$as_darknesscard&",'"&$as_darknesscard_url&"',"&$as_classiccard&",'"&$as_classiccard_url&"',"&$as_JJC&",'"&$as_JJC_url&"'")
+EndFunc
+
+#Region OCR functions
 Func CheckMoneyBefore()
-	CheckMoney("_before")
+	$as_Money = 0
+	$as_Money_url = ""
+	Local $val = ExecTesseract("_before",$v_money)
+	$as_Money = $val[0]
+	$as_Money_url = $val[1]
 EndFunc
 
 Func CheckMoneyAfter()
-	CheckMoney("_after")
+	$as_MoneyAfter = 0
+	$as_MoneyAfter_url = ""
+	Local $val = ExecTesseract("_after",$v_money)
+	$as_MoneyAfter = $val[0]
+	$as_MoneyAfter_url = $val[1]
 EndFunc
 
-Func CheckMoney($suffix)
-	Local $money_abs = GetAbsoluteRoomCoord($v_money)
-	Local $screenshotfile = $v_money_ocr&StringReplace(_NowCalcDate(),"/","")&"_"&GetAccountInfo("uid")&$suffix&".jpg"
+Func CheckCardLegend()
+	$as_legendcard = 0
+	$as_legendcard_url = ""
+	Local $val = ExecTesseract("_legend",$v_card)
+	$as_legendcard = $val[0]
+	$as_legendcard_url = $val[1]
+EndFunc
+
+Func CheckCardDawnbreak()
+	$as_dawnbreakcard = 0
+	$as_dawnbreakcard_url = ""
+	Local $val = ExecTesseract("_dawnbreak",$v_card)
+	$as_dawnbreakcard = $val[0]
+	$as_dawnbreakcard_url = $val[1]
+EndFunc
+
+Func CheckCardChronogenesis()
+	$as_chronogenesiscard = 0
+	$as_chronogenesiscard_url = ""
+	Local $val = ExecTesseract("_chronogenesis",$v_card)
+	$as_chronogenesiscard = $val[0]
+	$as_chronogenesiscard_url = $val[1]
+EndFunc
+
+Func CheckCardStarforged()
+	$as_starforgedcard = 0
+	$as_starforgedcard_url = ""
+	Local $val = ExecTesseract("_starforged",$v_card)
+	$as_starforgedcard = $val[0]
+	$as_starforgedcard_url = $val[1]
+EndFunc
+
+Func CheckCardWonderland()
+	$as_wonderlandcard = 0
+	$as_wonderlandcard_url = ""
+	Local $val = ExecTesseract("_wonderland",$v_card)
+	$as_wonderlandcard = $val[0]
+	$as_wonderlandcard_url = $val[1]
+EndFunc
+
+Func CheckCardTempest()
+	$as_tempestcard = 0
+	$as_tempestcard_url = ""
+	Local $val = ExecTesseract("_tempest",$v_card)
+	$as_tempestcard = $val[0]
+	$as_tempestcard_url = $val[1]
+EndFunc
+
+Func CheckCardBahamut()
+	$as_bahamutcard = 0
+	$as_bahamutcard_url = ""
+	Local $val = ExecTesseract("_bahamut",$v_card)
+	$as_bahamutcard = $val[0]
+	$as_bahamutcard_url = $val[1]
+EndFunc
+
+Func CheckCardDarkness()
+	$as_darknesscard = 0
+	$as_darknesscard_url = ""
+	Local $val = ExecTesseract("_darkness",$v_card)
+	$as_darknesscard = $val[0]
+	$as_darknesscard_url = $val[1]
+EndFunc
+
+Func CheckCardClassic()
+	$as_classiccard = 0
+	$as_classiccard_url = ""
+	Local $val = ExecTesseract("_classic",$v_card)
+	$as_classiccard = $val[0]
+	$as_classiccard_url = $val[1]
+EndFunc
+
+Func CheckCardJJC()
+	$as_JJC = 0
+	$as_JJC_url = ""
+	Local $val = ExecTesseract("_jjc",$v_jjc)
+	$as_JJC = $val[0]
+	$as_JJC_url = $val[1]
+EndFunc
+
+Func ExecTesseract($suffix,$area)
+	Local $money_abs = GetAbsoluteRoomCoord($area)
+	Local $screenshotfilename = StringReplace(_NowCalcDate(),"/","")&"_"&GetAccountInfo("uid")&$suffix&".jpg"
+	Local $screenshotfile = $v_money_ocr&$screenshotfilename
 	Local $ocrfile = $v_money_ocr&StringReplace(_NowCalcDate(),"/","")&"_"&GetAccountInfo("uid")&$suffix
 	_ScreenCapture_Capture($screenshotfile,$money_abs[0],$money_abs[1],$money_abs[2],$money_abs[3])
-	ShellExecuteWait($v_tesseractfile,$screenshotfile&" "&$ocrfile&" -psm 7")
+	ShellExecuteWait($v_tesseractfile,$screenshotfile&" "&$ocrfile&" -psm 7 digits")
 	Local $moneyamount = StringStripWS(FileReadLine($ocrfile&".txt",1),8)
-	ConsoleWrite($moneyamount&@CRLF)
-	Return $moneyamount
-EndFunc
-
-#Region Check number of py fight
-Func GetAchievement()
-
+	Local $result[2] = [$moneyamount,$screenshotfilename]
+	Return $result
 EndFunc
 #EndRegion
