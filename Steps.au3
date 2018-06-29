@@ -517,7 +517,8 @@ Func ProcessFight()
 				If $index = 1 Then
 					; Close the popup window if exists
 					ClickImage("btn_ok_fight_effect.bmp")
-					Sleep(300)
+					Sleep(800)
+					ClickOnLastPosition()
 				EndIf
 				WaitImage("btn_back.bmp")
 				ClickImage("menu_single_mode.bmp")
