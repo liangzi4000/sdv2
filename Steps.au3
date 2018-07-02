@@ -278,6 +278,7 @@ EndFunc   ;==>ClickBtnGameLink
 
 Func CloseApp()
 	Local $pos = [0, 0]
+	Local $mycount = 5
 	Do
 		Send("{PGUP}")
 		Sleep(3000)
@@ -285,7 +286,8 @@ Func CloseApp()
 			ClickImage("app_icon_tasklist_vertical.bmp")
 			Sleep(1000)
 		EndIf
-	Until SearchImage("app_icon_tasklist.bmp", $pos[0], $pos[1]) = 1
+		$mycount = $mycount - 1
+	Until (SearchImage("app_icon_tasklist.bmp", $pos[0], $pos[1]) = 1 Or $mycount = 0)
 	Slide($pos[0], $pos[1]+120, $pos[0], 0)
 	Sleep(2000)
 	While SearchImage("app_icon_home.bmp", $pos[0], $pos[1]) <> 1
