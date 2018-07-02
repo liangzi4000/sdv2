@@ -288,6 +288,10 @@ Func CloseApp()
 	Until SearchImage("app_icon_tasklist.bmp", $pos[0], $pos[1]) = 1
 	Slide($pos[0], $pos[1]+120, $pos[0], 0)
 	Sleep(2000)
+	While SearchImage("app_icon_home.bmp", $pos[0], $pos[1]) <> 1
+		Send("{HOME}")
+		Sleep(3000)
+	WEnd
 	Local $toolbarpos = GetOpenToolBarPosition()
 	ClickOn($toolbarpos)
 EndFunc   ;==>CloseApp
