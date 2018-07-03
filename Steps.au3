@@ -180,7 +180,7 @@ Func EnterUIDandPWD()
 EndFunc   ;==>EnterUIDandPWD
 
 Func ClickJueDing()
-	ClickImage("btn_login_jueding.bmp", True)
+	ClickImage("btn_login_jueding.bmp")
 EndFunc   ;==>ClickJueDing
 
 Func JueDingTimeout()
@@ -189,7 +189,7 @@ Func JueDingTimeout()
 EndFunc   ;==>JueDingTimeout
 
 Func ClickJueDingV2()
-	ClickImage("btn_login_jueding_v2.bmp", True)
+	ClickImage("btn_login_jueding_v2.bmp")
 EndFunc   ;==>ClickJueDingV2
 
 Func JueDingTimeoutV2()
@@ -198,21 +198,27 @@ Func JueDingTimeoutV2()
 EndFunc   ;==>JueDingTimeoutV2
 
 Func LianDong()
-	ClickImageUntilScreen("btn_liandong.bmp", "btn_ok.bmp", 900)
+	;ClickImageUntilScreen("btn_liandong.bmp", "btn_ok.bmp", 900, 5)
+	ClickImage("btn_liandong.bmp", False, 2)
+	Sleep(500)
+	ClickImage("btn_liandong.bmp", False, 2)
 	ClickBtnOK()
 EndFunc   ;==>LianDong
 
 Func LianDongV2()
-	ClickImageUntilScreen("btn_liandong_v2.bmp", "btn_ok_v2.bmp", 900)
+	;ClickImageUntilScreen("btn_liandong_v2.bmp", "btn_ok_v2.bmp", 900, 5)
+	ClickImage("btn_liandong_v2.bmp", False, 2)
+	Sleep(500)
+	ClickImage("btn_liandong_v2.bmp", False, 2)
 	ClickBtnOKV2()
 EndFunc   ;==>LianDongV2
 
 Func ClickBtnOK()
-	ClickImage("btn_ok.bmp", True)
+	ClickImage("btn_ok.bmp", True, 2)
 EndFunc   ;==>ClickBtnOK
 
 Func ClickBtnOKV2()
-	ClickImage("btn_ok_v2.bmp", True)
+	ClickImage("btn_ok_v2.bmp", True, 2)
 EndFunc   ;==>ClickBtnOKV2
 #EndRegion Wrapper_EnterUIDandPWD_LianDong, Wrapper_EnterUIDandPWD_LianDongV2
 
