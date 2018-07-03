@@ -165,12 +165,13 @@ EndFunc   ;==>WaitImage
 	Return 1: clicked; 0: not click due to time out
 #comments-end
 Func ClickImageDesktop($image, $sureclick = False, $timeout = 60, $timeoutcall = "")
-	WaitImageDesktop($image, $timeout, $timeoutcall, True)
+	Local $index = WaitImageDesktop($image, $timeout, $timeoutcall, True)
 	If $sureclick Then
+		Local $list = StringSplit($image, ",")
 		Local $sleeptime = 1000
 		Local $pos = [0, 0]
 		Sleep($sleeptime)
-		While SearchImageDesktop($image, $pos[0], $pos[1]) = 1
+		While SearchImageDesktop($list[$index], $pos[0], $pos[1]) = 1
 			ClickOn($pos)
 			Sleep($sleeptime)
 		WEnd
@@ -183,12 +184,13 @@ EndFunc   ;==>ClickImageDesktop
 	Return 1: clicked; 0: not click due to time out
 #comments-end
 Func ClickImage($image, $sureclick = False, $timeout = 60, $timeoutcall = "", $area_x = 0, $area_y = 0, $area_width = 0, $area_height = 0)
-	WaitImage($image, $timeout, $timeoutcall, True, $area_x, $area_y, $area_width, $area_height)
+	Local $index = WaitImage($image, $timeout, $timeoutcall, True, $area_x, $area_y, $area_width, $area_height)
 	If $sureclick Then
+		Local $list = StringSplit($image, ",")
 		Local $sleeptime = 1000
 		Local $pos = [0, 0]
 		Sleep($sleeptime)
-		While SearchImage($image, $pos[0], $pos[1]) = 1
+		While SearchImage($list[$index], $pos[0], $pos[1]) = 1
 			ClickOn($pos)
 			Sleep($sleeptime)
 		WEnd

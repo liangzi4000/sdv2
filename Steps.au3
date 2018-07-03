@@ -27,10 +27,10 @@ _ArrayAdd($firstrun, "CheckExit")
 Global $steps = []
 _ArrayAdd($steps, "ClickMenuOthers")
 _ArrayAdd($steps, "ClickBtnGameLink")
-_ArrayAdd($steps, "ClickBtnLianDongZiLiangV2")
-_ArrayAdd($steps, "ChooseUserIDLoginV2")
+_ArrayAdd($steps, "ClickBtnLianDongZiLiang")
+_ArrayAdd($steps, "ChooseUserIDLogin")
 _ArrayAdd($steps, "GetNextRecord")
-_ArrayAdd($steps, "Wrapper_EnterUIDandPWD_LianDongV2")
+_ArrayAdd($steps, "Wrapper_EnterUIDandPWD_LianDong")
 _ArrayAdd($steps, "Wrapper_StartScreen_DoItLater")
 _ArrayAdd($steps, "Wrapper_ClickUntilNotification_CloseNotification_CompleteLogin")
 ;_ArrayAdd($steps,"CloseBPInfo")
@@ -92,27 +92,14 @@ Func OpenLoginUI()
 	ClickOnRelative($btn_liandong)
 EndFunc   ;==>OpenLoginUI
 
-#Region ClickBtnLianDongZiLiang, ClickBtnLianDongZiLiangV2
 Func ClickBtnLianDongZiLiang()
-	ClickImage("btn_liandongziliao.bmp")
+	ClickImage("btn_liandongziliao.bmp,btn_liandongziliao_v2.bmp,btn_liandongziliao_v3.bmp")
 EndFunc   ;==>ClickBtnLianDongZiLiang
 
-Func ClickBtnLianDongZiLiangV2()
-	ClickImage("btn_liandongziliao_v2.bmp")
-EndFunc   ;==>ClickBtnLianDongZiLiangV2
-#EndRegion ClickBtnLianDongZiLiang, ClickBtnLianDongZiLiangV2
-
-#Region ChooseUserIDLogin, ChooseUserIDLoginV2
 Func ChooseUserIDLogin()
-	WaitImage("btn_close_login.bmp")
+	WaitImage("btn_close_login.bmp,btn_close_login_v2.bmp,btn_close_switch.bmp")
 	ClickOnRelative($btn_uidpwd)
 EndFunc   ;==>ChooseUserIDLogin
-
-Func ChooseUserIDLoginV2()
-	WaitImage("btn_close_switch.bmp")
-	ClickOnRelative($btn_uidpwd)
-EndFunc   ;==>ChooseUserIDLoginV2
-#EndRegion ChooseUserIDLogin, ChooseUserIDLoginV2
 
 Func GetNextRecord()
 	Local $acctinfo = ""
@@ -152,18 +139,12 @@ Func GetNextRecord()
 	Return $result
 EndFunc   ;==>GetNextRecord
 
-#Region Wrapper_EnterUIDandPWD_LianDong, Wrapper_EnterUIDandPWD_LianDongV2
+#Region Wrapper_EnterUIDandPWD_LianDong
 Func Wrapper_EnterUIDandPWD_LianDong()
 	EnterUIDandPWD()
 	ClickJueDing()
 	LianDong()
 EndFunc   ;==>Wrapper_EnterUIDandPWD_LianDong
-
-Func Wrapper_EnterUIDandPWD_LianDongV2()
-	EnterUIDandPWD()
-	ClickJueDingV2()
-	LianDongV2()
-EndFunc   ;==>Wrapper_EnterUIDandPWD_LianDongV2
 
 Func EnterUIDandPWD()
 	_ClipBoard_SetData(GetAccountInfo("uid")) ; 读取UID到粘贴板
@@ -180,47 +161,20 @@ Func EnterUIDandPWD()
 EndFunc   ;==>EnterUIDandPWD
 
 Func ClickJueDing()
-	ClickImage("btn_login_jueding.bmp")
+	ClickImage("btn_login_jueding.bmp,btn_login_jueding_v2.bmp")
 EndFunc   ;==>ClickJueDing
 
-Func JueDingTimeout()
-	EnterUIDandPWD()
-	ClickJueDing()
-EndFunc   ;==>JueDingTimeout
-
-Func ClickJueDingV2()
-	ClickImage("btn_login_jueding_v2.bmp")
-EndFunc   ;==>ClickJueDingV2
-
-Func JueDingTimeoutV2()
-	EnterUIDandPWD()
-	ClickJueDingV2()
-EndFunc   ;==>JueDingTimeoutV2
-
 Func LianDong()
-	;ClickImageUntilScreen("btn_liandong.bmp", "btn_ok.bmp", 900, 5)
-	ClickImage("btn_liandong.bmp", False, 2)
+	ClickImage("btn_liandong.bmp,btn_liandong_v2.bmp", False, 2)
 	Sleep(500)
-	ClickImage("btn_liandong.bmp", False, 2)
+	ClickImage("btn_liandong.bmp,btn_liandong_v2.bmp", False, 2)
 	ClickBtnOK()
 EndFunc   ;==>LianDong
 
-Func LianDongV2()
-	;ClickImageUntilScreen("btn_liandong_v2.bmp", "btn_ok_v2.bmp", 900, 5)
-	ClickImage("btn_liandong_v2.bmp", False, 2)
-	Sleep(500)
-	ClickImage("btn_liandong_v2.bmp", False, 2)
-	ClickBtnOKV2()
-EndFunc   ;==>LianDongV2
-
 Func ClickBtnOK()
-	ClickImage("btn_ok.bmp", True, 2)
+	ClickImage("btn_ok.bmp,btn_ok_v2.bmp", True, 2)
 EndFunc   ;==>ClickBtnOK
-
-Func ClickBtnOKV2()
-	ClickImage("btn_ok_v2.bmp", True, 2)
-EndFunc   ;==>ClickBtnOKV2
-#EndRegion Wrapper_EnterUIDandPWD_LianDong, Wrapper_EnterUIDandPWD_LianDongV2
+#EndRegion Wrapper_EnterUIDandPWD_LianDong
 
 #Region Wrapper_StartScreen_DoItLater
 Func Wrapper_StartScreen_DoItLater()
@@ -274,7 +228,6 @@ EndFunc   ;==>CompleteLogin
 #EndRegion Wrapper_ClickUntilNotification_CloseNotification_CompleteLogin
 
 Func ClickMenuOthers()
-	;ClickImageUntilScreen("menu_others_v2.bmp", "btn_youxiziliaoliandong.bmp")
 	ClickPosUntilScreen($menu_other,"btn_youxiziliaoliandong.bmp")
 EndFunc   ;==>ClickMenuOthers
 

@@ -163,8 +163,7 @@ Func SetupPassword()
 	ClickImage("btn_queding.bmp") ;点击确定
 	Sleep(800)
 	ClickOnRelative($chk_agreeprivacy)
-	ClickImage("btn_sheding_confirm.bmp") ; 设置密码
-	Sleep(500)
+	ClickImage("btn_sheding_confirm.bmp",True,5) ; 设置密码
 	ClickImage("btn_copy_uid.bmp",True)
 	ClickImage("btn_ok_beginner.bmp")
 	ExecDBQuery("[dbo].[SP_CompleteAccountCreation] '"&_ClipBoard_GetData()&"','"&$acctinfoarr[2]&"'")
