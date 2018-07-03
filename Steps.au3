@@ -320,26 +320,22 @@ Func PerformTask1()
 		If SearchImage("ui_zhidingxilie.bmp",$mypos[0],$mypos[1]) = 0 Then
 			ClickPosUntilScreen($opt_zhuxian,"ui_zhidingxilie.bmp") ;点击直到出现 指定系列
 		EndIf
-		ClickImage("ui_zhidingxilie.bmp")
-		Sleep(800)
+		ClickImage("ui_zhidingxilie.bmp",True)
 		WaitImage("btn_back.bmp")
 		ClickOnRelative($btn_createcombination) ; 点击 创建新牌组
 		ClickImage("btn_zidongbianji.bmp"); 点击 自动编辑
 		Sleep(300)
 		ClickPosUntilScreen($btn_zhuzhanzhe_confirm,"btn_save.bmp") ; 点击决定
 		ClickImage("btn_save.bmp")
-		ClickImage("btn_jueding_bianjicard.bmp")
-		Sleep(1000)
-		ClickImage("btn_ok_card_saved.bmp")
-		Sleep(1000)
-		ClickImage("btn_ok_fight_effect.bmp")
-		Sleep(1000)
-		ClickImage("menu_single_mode.bmp")
-		Sleep(3000)
+		ClickImage("btn_jueding_bianjicard.bmp",True)
+		ClickImage("btn_ok_card_saved.bmp",True)
+		ClickImage("btn_ok_fight_effect.bmp",True)
+		ClickImage("menu_single_mode.bmp",True)
+		Sleep(2000)
 		ClickOnRelative($opt_zhuxian) ; 点击 主线剧情
-		WaitImage("btn_back.bmp")
+		WaitImage("btn_back.bmp",5)
 		ClickOnRelative($btn_zhuzhanzhe_confirm) ; 点击决定
-		ClickImage("ui_1st_chapter_task1.bmp")
+		ClickImage("ui_1st_chapter_task1.bmp",10)
 		ClickImage("btn_qianwangjuqing.bmp")
 		ClickPosUntilScreen($btn_ignore,"btn_ignore.bmp") ;忽略
 		ClickImage("btn_ignore.bmp")
@@ -528,7 +524,7 @@ Func ProcessFight()
 				EndIf
 				WaitImage("btn_back.bmp")
 				ClickImage("menu_single_mode.bmp")
-				ClickImage("btn_jiesan.bmp")
+				ClickImage("btn_jiesan.bmp",False,5)
 				ExitLoop
 			EndIf
 		Else
