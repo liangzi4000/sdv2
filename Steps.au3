@@ -531,6 +531,7 @@ Func ProcessFight()
 				WaitImage("btn_back.bmp")
 				ClickImage("menu_single_mode.bmp")
 				ClickImage("btn_jiesan.bmp",False,5)
+				UpdateFightResult()
 				ExitLoop
 			EndIf
 		Else
@@ -542,11 +543,14 @@ Func ProcessFight()
 EndFunc
 
 Func SecondWindowExitFight()
-	ClickImage("btn_ok_beginner.bmp") ; 点击 ok
-	Local $rivalloginid = GetAccountInfo("uid")
-	SwitchWindow(True)
+	ClickImage("btn_ok_beginner.bmp",True) ; 点击 ok
+EndFunc
+
+Func UpdateFightResult()
 	Local $hostloginid = GetAccountInfo("uid")
 	SwitchWindow(False)
+	Local $rivalloginid = GetAccountInfo("uid")
+	SwitchWindow(True)
 	ExecDBQuery("[dbo].[SP_CompletePYFight] "&$hostloginid&","&$rivalloginid&","&$fightroomnumber)
 EndFunc
 
