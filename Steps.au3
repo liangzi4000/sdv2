@@ -186,6 +186,10 @@ Func Wrapper_StartScreen_DoItLater()
 EndFunc   ;==>Wrapper_StartScreen_DoItLater
 
 Func StartScreen()
+	; Extra check to ensure Ok button is clicked
+	If SearchImage("btn_ok.bmp") = 1 Then ClickImage("btn_ok.bmp")
+	If SearchImage("btn_ok_v2.bmp") = 1 Then ClickImage("btn_ok_v2.bmp")
+
 	WaitImage("ui_startscreen.bmp", 600, "", False, $area_startscreen[0], $area_startscreen[1], $area_startscreen[2], $area_startscreen[3])
 EndFunc   ;==>StartScreen
 
