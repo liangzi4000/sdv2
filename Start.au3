@@ -39,7 +39,7 @@ Func ShutdownAfterFinish()
 EndFunc
 
 Func Main()
-	;BlockInput($BI_DISABLE)
+	BlockInput($BI_DISABLE)
 	ExecDBQuery("[dbo].[SP_ResetDailyTaskStatus] '"&$v_windows[0]&"'")
 	Local $firstrunflag = True
 	While UBound($inactivewindows)-1 <> UBound($v_windows)

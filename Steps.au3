@@ -769,6 +769,7 @@ Func GetPFR()
 		$sqlparams = $sqlparams & ",0"
 	EndIf
 	ExecDBQuery("[dbo].[SP_InsertPYFStatus] "&$sqlparams)
+	ClickOnRelative($menu_main)
 EndFunc
 
 #EndRegion
