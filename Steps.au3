@@ -751,7 +751,6 @@ Func GetPFR()
 				WaitImage("btn_ok_fight_effect.bmp")
 				CaptureActiveWindow(GetAccountInfo("uid")&"_"&($i*4+$j+1)&".bmp",$v_pyf)
 				ClickImage("btn_ok_fight_effect.bmp",True)
-				Sleep(1000)
 			Else
 				$sqlparams = $sqlparams & ",0"
 			EndIf
@@ -766,7 +765,6 @@ Func GetPFR()
 		WaitImage("btn_ok_fight_effect.bmp")
 		CaptureActiveWindow(GetAccountInfo("uid")&"_dblreward.bmp",$v_pyf)
 		ClickImage("btn_ok_fight_effect.bmp",True)
-		Sleep(1000)
 	Else
 		$sqlparams = $sqlparams & ",0"
 	EndIf
