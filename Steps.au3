@@ -15,6 +15,7 @@ _ArrayAdd($firstrun, "Wrapper_StartScreen_DoItLater")
 _ArrayAdd($firstrun, "Wrapper_ClickUntilNotification_CloseNotification_CompleteLogin")
 ;_ArrayAdd($firstrun,"CloseBPInfo")
 _ArrayAdd($firstrun, "CheckMoneyBefore")
+_ArrayAdd($firstrun, "GetPFR")
 _ArrayAdd($firstrun, "GetGift")
 _ArrayAdd($firstrun, "PerformTask1")
 _ArrayAdd($firstrun, "CreateOrEnterFightRoom")
@@ -35,6 +36,7 @@ _ArrayAdd($steps, "Wrapper_StartScreen_DoItLater")
 _ArrayAdd($steps, "Wrapper_ClickUntilNotification_CloseNotification_CompleteLogin")
 ;_ArrayAdd($steps,"CloseBPInfo")
 _ArrayAdd($steps, "CheckMoneyBefore")
+_ArrayAdd($steps, "GetPFR")
 _ArrayAdd($steps, "GetGift")
 _ArrayAdd($steps, "PerformTask1")
 _ArrayAdd($steps, "CreateOrEnterFightRoom")
@@ -268,6 +270,18 @@ Func GetGift()
 		EndIf
 	EndIf
 EndFunc   ;==>GetGift
+
+Func GetTaskReward()
+	If GetAccountInfo("task") = 1 Then
+		ClickPosUntilScreen($side_task, "btn_back.bmp")
+		ClickOnRelative($side_task_chengjiu)
+		Local $img = WaitImage("btn_getall_gifts.bmp,btn_getall_gifts_greyout.bmp")
+		If $img = 1 Then
+			ClickImage("btn_getall_gifts.bmp", True)
+			ClickImage("btn_ok_lingqu.bmp", True)
+		EndIf
+	EndIf
+EndFunc
 
 Func PerformTask1()
 	If GetAccountInfo("task1") = 0 Then
@@ -579,9 +593,9 @@ EndFunc
 #EndRegion
 
 Func CheckAccountStatus()
-	CheckMoneyBefore()
+	;CheckMoneyBefore()
 	;Perform get fight award
-	CheckMoneyAfter()
+	;CheckMoneyAfter()
 	;Go to cards menu
 	CheckCardLegend()
 	CheckCardDawnbreak()
@@ -595,6 +609,13 @@ Func CheckAccountStatus()
 	; Go to JJC
 	CheckCardJJC()
 	ExecDBQuery("[dbo].[SP_InsertAccountStatus] "&GetAccountInfo("uid")&","&$as_Money&",'"&$as_Money_url&"',"&$as_MoneyAfter&",'"&$as_MoneyAfter_url&"',"&$as_legendcard&",'"&$as_legendcard_url&"',"&$as_dawnbreakcard&",'"&$as_dawnbreakcard_url&"',"&$as_chronogenesiscard&",'"&$as_chronogenesiscard_url&"',"&$as_starforgedcard&",'"&$as_starforgedcard_url&"',"&$as_wonderlandcard&",'"&$as_wonderlandcard_url&"',"&$as_tempestcard&",'"&$as_tempestcard_url&"',"&$as_bahamutcard&",'"&$as_bahamutcard_url&"',"&$as_darknesscard&",'"&$as_darknesscard_url&"',"&$as_classiccard&",'"&$as_classiccard_url&"',"&$as_JJC&",'"&$as_JJC_url&"'")
+EndFunc
+
+Func GotoCardPage()
+	ClickPosUntilScreenByPixel($menu_shop,$opt_buycards) ;点击 商店
+	ClickOnRelative($opt_buycards) ;点击 购买卡包
+	ClickImage("opt_buycard.bmp",True)
+
 EndFunc
 
 #Region OCR functions
@@ -615,6 +636,9 @@ Func CheckMoneyAfter()
 EndFunc
 
 Func CheckCardLegend()
+
+	WaitImage("card_legend.bmp")
+
 	$as_legendcard = 0
 	$as_legendcard_url = ""
 	Local $val = ExecTesseract("_legend",$v_card)
@@ -705,4 +729,48 @@ Func ExecTesseract($suffix,$area)
 	Local $result[2] = [$moneyamount,$screenshotfilename]
 	Return $result
 EndFunc
+#EndRegion
+
+#Region Private Fight Reward
+Func GetPFR()
+	ClickImage("activity_privatefight.bmp")
+	WaitImage("btn_back.bmp",5)
+	CaptureActiveWindow(GetAccountInfo("uid")&".bmp",$v_pyf)
+	Local $sqlparams = GetAccountInfo("uid")
+	Local $i = 0, $j = 0, $pos = [0,0]
+	For $i = 0 To 1
+		For $j = 0 To 3
+			Local $startpoint_x = $pfa_reward_start[0] + $j * $pfa_length
+			Local $startpoint_y = $pfa_reward_start[1] + $i * $pfa_height
+			Local $tmpixel = [$pfa_reward_start[0]+$j*$pfa_length,$pfa_reward_start[1]+$i*$pfa_height,0x2B74F5,10,8,8]
+			Local $pixelresult = SearchPixel($tmpixel)
+			If $pixelresult[0] <> $pixel_empty[0] Or $pixelresult[1] <> $pixel_empty[1] Then
+				$sqlparams = $sqlparams & ",1"
+				Local $clickonpos = [$tmpixel[0],$tmpixel[1]]
+				ClickOnRelative($clickonpos)
+				WaitImage("btn_ok_fight_effect.bmp")
+				CaptureActiveWindow(GetAccountInfo("uid")&"_"&($i*4+$j+1)&".bmp",$v_pyf)
+				ClickImage("btn_ok_fight_effect.bmp",True)
+				Sleep(1000)
+			Else
+				$sqlparams = $sqlparams & ",0"
+			EndIf
+		Next
+	Next
+
+	Local $pixelresult2 = SearchPixel($pfa_double_reward)
+	If $pixelresult2[0] <> $pixel_empty[0] Or $pixelresult2[1] <> $pixel_empty[1] Then
+		$sqlparams = $sqlparams & ",1"
+		Local $clickonpos2 = [$pfa_double_reward[0],$pfa_double_reward[1]]
+		ClickOnRelative($clickonpos2)
+		WaitImage("btn_ok_fight_effect.bmp")
+		CaptureActiveWindow(GetAccountInfo("uid")&"_dblreward.bmp",$v_pyf)
+		ClickImage("btn_ok_fight_effect.bmp",True)
+		Sleep(1000)
+	Else
+		$sqlparams = $sqlparams & ",0"
+	EndIf
+	ExecDBQuery("[dbo].[SP_InsertPYFStatus] "&$sqlparams)
+EndFunc
+
 #EndRegion

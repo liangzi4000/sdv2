@@ -21,3 +21,20 @@ Func CaptureScreenshot($filename="",$logfile="")
 	WriteLog("Screenshot saved to " & $screenshotpath&$defaultfilename,$logfile)
 	Return $defaultfilename
 EndFunc
+
+Func CaptureActiveWindow($filename="", $myscreenshotpath="")
+	Local $screenshotpath = $myscreenshotpath
+	Local $defaultfilename = StringReplace(StringReplace(StringReplace(_NowCalc(),"/",""),":","")," ","") &"_"& Random(1000,9999,1) & ".jpg"
+	If $filename <> "" Then
+		$defaultfilename = $filename
+	EndIf
+	Local $area[4]
+	Local $winpos = GetWinPosition()
+	Local $ctrlpos = GetCtrlPosition()
+	$area[0] = $winpos[0] + $ctrlpos[0]
+	$area[1] = $winpos[1] + $ctrlpos[1]
+	$area[2] = $area[0] + $ctrlpos[2]
+	$area[3] = $area[1] + $ctrlpos[3]
+	_ScreenCapture_Capture($screenshotpath&$defaultfilename,$area[0],$area[1],$area[2],$area[3],False)
+	Return $defaultfilename
+EndFunc

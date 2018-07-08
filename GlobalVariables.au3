@@ -46,6 +46,7 @@ Global $btn_createcombination = [129,103] ; 创建新牌组
 Global $btn_zhuzhanzhe_confirm[2] = [621,277] ; 决定
 Global $menu_other[2] = [619,378] ; 其他菜单
 Global $menu_duizhan[2] = [254,377] ; 对战菜单
+Global $menu_shop[2] = [0,377] ; 商店菜单 ;todo
 
 ;;;;;;;;----------------;;;;;;;;;
 Global $opt_privatefight[3] = [555,222,0xE6E6E6] ; 私人对战
@@ -112,5 +113,18 @@ Global $as_classiccard = 0
 Global $as_classiccard_url = ""
 Global $as_JJC = 0
 Global $as_JJC_url = ""
+
+Global $as_nextcard[2] = [67,319] ;todo
+Global $opt_buycards[3] = [405,183,0xB4E5E5] ; 购买卡包 ;todo
+Global $v_card_legend[4] = [597,338,623,356] ; card legend rectangle ; todo
+Global $v_card_normal[4] = [597,182,623,199] ; card legend rectangle ; todo
+
+;;;;;;;;;;;;;;;;;;;;;Privat fight activity;;;;;;;;;;;;
+Global Const $v_pyf = @ScriptDir & "\db\pyf\"
+Global $pfa_reward_start[2] = [130,224]
+Global $pfa_length = 105
+Global $pfa_height = 88
+Global $pfa_double_reward = [609,263,0x154CEE,10,8,8]
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 #include <Configuration.au3>

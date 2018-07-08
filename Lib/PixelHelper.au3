@@ -154,3 +154,11 @@ Func DeterminePixel($pixellist, $timeout = 60)
 		Sleep($sleepinterval)
 	WEnd
 EndFunc   ;==>DeterminePixel
+
+Func GetPixelColor($pos)
+	Local $winpos = GetWinPosition()
+	Local $ctrlpos = GetCtrlPosition()
+	Local $iColor = PixelGetColor($winpos[0] + $ctrlpos[0] + $pos[0],$winpos[1] + $ctrlpos[1] + $pos[1])
+	Return Hex($iColor, 6)
+EndFunc
+
