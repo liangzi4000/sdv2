@@ -35,7 +35,7 @@ EndFunc
 Func ShutdownAfterFinish()
 	BlockInput($BI_DISABLE)
 	WriteLog("Ctrl+G pressed.")
-	$exitaction = $exitaction_shutdownpc
+	$shutdownpc = True
 EndFunc
 
 Func Main()
@@ -71,6 +71,10 @@ Func Main()
 	; Default to terminate program without shutdown PC
 	If $exitaction = $exitaction_restart Then
 		$exitaction = $exitaction_terminatescript
+	EndIf
+
+	If $shutdownpc Then
+		$exitaction = $exitaction_shutdownpc
 	EndIf
 	Exit
 EndFunc

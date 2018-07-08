@@ -4,6 +4,7 @@ Global $activewindow = ""						; Store current active window
 Global $inactivewindows = [] 					; Store inactive windows
 Global $debug = True 							; Debug falg, turn on to write detail log
 Global $exit = False 							; Terminate script flag
+Global $shutdownpc = False						; Shut down pc after script completed
 Global $exitaction = $exitaction_restart 		; Action to take upon exit, default is to restart program
 Global $winleftready = False 					; Align window left flag
 Global $winrightready = False 					; Align window right flag
