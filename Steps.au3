@@ -738,6 +738,9 @@ EndFunc
 
 #Region Private Fight Reward
 Func GetPFR()
+	; This function only available for 05 and 06 player
+	If StringInStr($activewindow,"05") = 0 Or StringInStr($activewindow,"06") = 0 Then Return
+
 	ClickImage("activity_privatefight.bmp")
 	WaitImage("btn_back.bmp",5)
 	CaptureActiveWindow(GetAccountInfo("uid")&".bmp",$v_pyf)
