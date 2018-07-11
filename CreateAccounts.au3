@@ -40,7 +40,7 @@ Func DeleteApp()
 		Send("{HOME}")
 		WriteLog("Press Home key")
 		Sleep(1500)
-	Until SearchImage("app_icon_home.bmp", $pos[0], $pos[1]) = 1
+	Until SearchImageActive("app_icon_home.bmp", $pos[0], $pos[1]) = 1
 
 	DragImage("app_icon_home.bmp",$ico_bin)
 	ClickImage("btn_delete_app_queding.bmp")

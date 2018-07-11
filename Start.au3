@@ -81,7 +81,7 @@ EndFunc
 
 Func OnAutoitExit()
 	WriteLog("OnAutoitExit Called.")
-	Local $errorscreen = CaptureScreenshot()
+	Local $errorscreen = $v_screenshotpath & CaptureFullScreen()
 	Switch $exitaction
 		Case $exitaction_restart
 			$v_email_Subject = "Program auto restart triggered"
