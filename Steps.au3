@@ -188,8 +188,8 @@ EndFunc   ;==>Wrapper_StartScreen_DoItLater
 Func StartScreen()
 	; Extra check to ensure Ok button is clicked
 	Local $pos = [0,0]
-	If SearchImage("btn_ok.bmp",$pos[0],$pos[1]) = 1 Then ClickImage("btn_ok.bmp")
-	If SearchImage("btn_ok_v2.bmp",$pos[0],$pos[1]) = 1 Then ClickImage("btn_ok_v2.bmp")
+	If SearchImageActive("btn_ok.bmp",$pos[0],$pos[1]) = 1 Then ClickImage("btn_ok.bmp")
+	If SearchImageActive("btn_ok_v2.bmp",$pos[0],$pos[1]) = 1 Then ClickImage("btn_ok_v2.bmp")
 
 	WaitImage("ui_startscreen.bmp", 600, "", False, $area_startscreen[0], $area_startscreen[1], $area_startscreen[2], $area_startscreen[3])
 EndFunc   ;==>StartScreen
@@ -248,15 +248,15 @@ Func CloseApp()
 	Do
 		Send("{PGUP}")
 		Sleep(3000)
-		If SearchImage("app_icon_tasklist_vertical.bmp", $pos[0], $pos[1]) = 1 Then
+		If SearchImageActive("app_icon_tasklist_vertical.bmp", $pos[0], $pos[1]) = 1 Then
 			ClickImage("app_icon_tasklist_vertical.bmp")
 			Sleep(1000)
 		EndIf
 		$mycount = $mycount - 1
-	Until (SearchImage("app_icon_tasklist.bmp", $pos[0], $pos[1]) = 1 Or $mycount = 0)
+	Until (SearchImageActive("app_icon_tasklist.bmp", $pos[0], $pos[1]) = 1 Or $mycount = 0)
 	Slide($pos[0], $pos[1]+120, $pos[0], 0)
 	Sleep(2000)
-	While SearchImage("app_icon_home.bmp", $pos[0], $pos[1]) <> 1
+	While SearchImageActive("app_icon_home.bmp", $pos[0], $pos[1]) <> 1
 		Send("{HOME}")
 		Sleep(3000)
 	WEnd
@@ -295,7 +295,7 @@ Func PerformTask1()
 		ClickPosUntilScreen($opt_zhuxian,"ui_zhidingxilie.bmp") ;点击直到出现 指定系列
 		Sleep(500)
 		Local $mypos = [0,0]
-		If SearchImage("ui_zhidingxilie.bmp",$mypos[0],$mypos[1]) = 0 Then
+		If SearchImageActive("ui_zhidingxilie.bmp",$mypos[0],$mypos[1]) = 0 Then
 			ClickPosUntilScreen($opt_zhuxian,"ui_zhidingxilie.bmp") ;点击直到出现 指定系列
 		EndIf
 		ClickImage("ui_zhidingxilie.bmp",True)

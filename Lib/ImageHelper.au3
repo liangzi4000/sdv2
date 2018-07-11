@@ -8,7 +8,7 @@
 #comments-start
 	Check if specified image can be found in active window, the $x and $y are absolute screen coordinates
 #comments-end
-Func SearchImage($image, ByRef $x, ByRef $y, $tolerance = 20, $area_x = 0, $area_y = 0, $area_width = 0, $area_height = 0)
+Func SearchImageActive($image, ByRef $x, ByRef $y, $tolerance = 20, $area_x = 0, $area_y = 0, $area_width = 0, $area_height = 0)
 	Local $area[4]
 	Local $winpos = GetWinPosition()
 	Local $ctrlpos = GetCtrlPosition()
@@ -25,9 +25,9 @@ Func SearchImage($image, ByRef $x, ByRef $y, $tolerance = 20, $area_x = 0, $area
 	EndIf
 	Local $result = _ImageSearchArea($v_imagepath & $image, 1, $area[0], $area[1], $area[2], $area[3], $x, $y, $tolerance)
 	Assign($activewindow&$lastimageposition, $x&","&$y, 2)
-	If $debug Then WriteLog("SearchImage search " & $image & ", result:" & $result)
+	If $debug Then WriteLog("SearchImageActive search " & $image & ", result:" & $result)
 	Return $result ; return 1 or 0
-EndFunc   ;==>SearchImage
+EndFunc   ;==>SearchImageActive
 
 #comments-start
 	Check if specified image can be found in desktop, the $x and $y are absolute screen coordinates
@@ -41,11 +41,11 @@ EndFunc   ;==>SearchImageDesktop
 #comments-start
 	Return the center absolute x,y coordination of speicifed image in active window
 #comments-end
-Func GetImageCenterPos($image)
+Func GetImageCenterPosActive($image)
 	Local $pos = [0, 0]
-	SearchImage($image, $pos[0], $pos[1])
+	SearchImageActive($image, $pos[0], $pos[1])
 	Return $pos
-EndFunc   ;==>GetImageCenterPos
+EndFunc   ;==>GetImageCenterPosActive
 
 #comments-start
 	Wait and check if specified image(s) can be found in desktop
@@ -119,7 +119,7 @@ Func WaitImage($image, $timeout = 60, $timeoutcall = "", $click = False, $area_x
 
 	While 1
 		For $i = 1 To $list[0]
-			If SearchImage($list[$i], $pos[0], $pos[1], 20, $area_x, $area_y, $area_width, $area_height) = 1 Then
+			If SearchImageActive($list[$i], $pos[0], $pos[1], 20, $area_x, $area_y, $area_width, $area_height) = 1 Then
 				$found = $i
 				ExitLoop
 			EndIf
@@ -190,7 +190,7 @@ Func ClickImage($image, $sureclick = False, $timeout = 60, $timeoutcall = "", $a
 		Local $sleeptime = 1000
 		Local $pos = [0, 0]
 		Sleep($sleeptime)
-		While SearchImage($list[$index], $pos[0], $pos[1]) = 1
+		While SearchImageActive($list[$index], $pos[0], $pos[1]) = 1
 			ClickOn($pos)
 			Sleep($sleeptime)
 		WEnd
@@ -203,7 +203,7 @@ EndFunc   ;==>ClickImage
 #comments-end
 Func ClickImageUntilScreen($waitimage, $untilimage, $interval = 700, $timeout = 60, $timeoutcall = "")
 	WaitImage($waitimage, $timeout, $timeoutcall)
-	Local $pos = GetImageCenterPos($waitimage)
+	Local $pos = GetImageCenterPosActive($waitimage)
 	ClickPosUntilScreen($pos, $untilimage, $interval, $timeout, $timeoutcall, False)
 	If $debug Then WriteLog("ClickImageUntilScreen found image " & $untilimage)
 EndFunc   ;==>ClickImageUntilScreen
@@ -216,7 +216,7 @@ Func ClickPosUntilScreen($pos, $untilimage, $interval = 700, $timeout = 60, $tim
 	Local $mypos = $convertposition = True ? ConvertRelativePosToAbsolutePos($pos) : $pos
 	Local $x = 0, $y = 0
 	Local $hTimer = TimerInit()
-	While SearchImage($untilimage, $x, $y) = 0
+	While SearchImageActive($untilimage, $x, $y) = 0
 		If TimerDiff($hTimer) > $timeout * 1000 Then
 			If $timeoutcall <> "" Then
 				WriteLog("ClickPosUntilScreen time out after " & $timeout & " seconds waiting for image " & $untilimage & ", $timeoutcall=" & $timeoutcall, $v_exception)
@@ -238,7 +238,7 @@ EndFunc   ;==>ClickPosUntilScreen
 
 Func DragImage($image, $to_pos, $relaive = True)
 	WaitImage($image)
-	Local $pos = GetImageCenterPos($image)
+	Local $pos = GetImageCenterPosActive($image)
 	If $relaive Then
 		Local $abspos = ConvertRelativePosToAbsolutePos($to_pos)
 		Drag($pos[0], $pos[1], $abspos[0], $abspos[1])
