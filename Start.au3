@@ -81,16 +81,16 @@ EndFunc
 
 Func OnAutoitExit()
 	WriteLog("OnAutoitExit Called.")
-	Local $errorscreen = $v_screenshotpath & CaptureFullScreen()
 	Switch $exitaction
 		Case $exitaction_restart
+			Local $errorscreen = $v_screenshotpath & CaptureFullScreen()
 			$v_email_Subject = "Program auto restart triggered"
 			$v_email_AttachFiles = $errorscreen
 			_INetSmtpMailCom($v_email_SmtpServer,$v_email_FromName,$v_email_FromAddress,$v_email_ToAddress,$v_email_Subject,$v_email_Body,$v_email_AttachFiles,$v_email_CcAddress,$v_email_BccAddress,$v_email_Importance,$v_email_Username,$v_email_Password,$v_email_IPPort,$v_email_ssl)
 			ExecStep("CloseApp")
 			RunScript()
 		Case $exitaction_shutdownpc
-			Shutdown($SD_SHUTDOWN) ; shutdown PC
+			Shutdown(BitOR($SD_SHUTDOWN,$SD_FORCE)) ; shutdown PC
 		Case $exitaction_terminatescript
 			; do nothing
 	EndSwitch

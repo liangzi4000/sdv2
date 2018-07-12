@@ -256,10 +256,23 @@ Func CloseApp()
 	Until (SearchImageActive("app_icon_tasklist.bmp", $pos[0], $pos[1]) = 1 Or $mycount = 0)
 	Slide($pos[0], $pos[1]+120, $pos[0], 0)
 	Sleep(2000)
-	While SearchImageActive("app_icon_home.bmp", $pos[0], $pos[1]) <> 1
+	Local $count = 0, $maxretry = 5
+	While SearchImageActive("app_icon_home.bmp", $pos[0], $pos[1]) <> 1 And $count < $maxretry
 		Send("{HOME}")
+		$count += 1
 		Sleep(3000)
 	WEnd
+	If $count >= $maxretry Then
+		If $v_onunexpectederrortoshutdownpc Then
+			Local $errorscreen = $v_screenshotpath & CaptureFullScreen()
+			$v_email_Subject = "Shutdown pc triggered"
+			$v_email_AttachFiles = $errorscreen
+			_INetSmtpMailCom($v_email_SmtpServer,$v_email_FromName,$v_email_FromAddress,$v_email_ToAddress,$v_email_Subject,$v_email_Body,$v_email_AttachFiles,$v_email_CcAddress,$v_email_BccAddress,$v_email_Importance,$v_email_Username,$v_email_Password,$v_email_IPPort,$v_email_ssl)
+			Shutdown(BitOR($SD_SHUTDOWN,$SD_FORCE)) ; shutdown PC
+		Else
+			Exit
+		EndIf
+	EndIf
 	Local $toolbarpos = GetOpenToolBarPosition()
 	ClickOn($toolbarpos)
 EndFunc   ;==>CloseApp
@@ -738,9 +751,7 @@ EndFunc
 
 #Region Private Fight Reward
 Func GetPFR()
-	; This function only available for 05 and 06 player
-	If StringInStr($activewindow,"05") = 0 Or StringInStr($activewindow,"06") = 0 Then Return
-
+	If Not $v_allowgetpyr Then Return
 	ClickImage("activity_privatefight.bmp")
 	WaitImage("btn_back.bmp",5)
 	CaptureActiveWindow(GetAccountInfo("uid")&".bmp",$v_pyf)
@@ -779,5 +790,4 @@ Func GetPFR()
 	ExecDBQuery("[dbo].[SP_InsertPYFStatus] "&$sqlparams)
 	ClickOnRelative($menu_main)
 EndFunc
-
 #EndRegion

@@ -17,6 +17,8 @@ Global Const $pixelinfo_half_height = 2			; Default PixelSearch range half heigh
 Global Const $pixel_empty = [0,0]				; Default result position of PixelSearch
 Global $skipsecondwindowexecution = False		; Skip second window execution flag
 Global $fightroomnumber = ""					; Fight room number
+Global $v_allowgetpyr = False					; Flag to config execution of function GetPFR
+Global $v_onunexpectederrortoshutdownpc = True	; Flag to config shutdown pc when unexpected error happens
 
 Global $v_winctrlclassname = "subWin1"
 Global Const $v_imagepath = @ScriptDir & "\Assets\identifier\"
