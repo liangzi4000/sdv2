@@ -118,7 +118,7 @@ Global $as_classiccard_url = ""
 Global $as_JJC = 0
 Global $as_JJC_url = ""
 
-Global $as_nextcard[2] = [67,319] ;todo
+Global $as_nextcard[2] = [67,319] ;点击切换卡包类别 todo
 Global $opt_buycards[3] = [405,183,0xB4E5E5] ; 购买卡包 ;todo
 Global $v_card_legend[4] = [597,338,623,356] ; card legend rectangle ; todo
 Global $v_card_normal[4] = [597,182,623,199] ; card legend rectangle ; todo

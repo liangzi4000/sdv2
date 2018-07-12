@@ -14,7 +14,7 @@ _ArrayAdd($firstrun, "Wrapper_EnterUIDandPWD_LianDong")
 _ArrayAdd($firstrun, "Wrapper_StartScreen_DoItLater")
 _ArrayAdd($firstrun, "Wrapper_ClickUntilNotification_CloseNotification_CompleteLogin")
 ;_ArrayAdd($firstrun,"CloseBPInfo")
-;_ArrayAdd($firstrun, "CheckMoneyBefore")
+_ArrayAdd($firstrun, "CheckAccountStatus")
 ;_ArrayAdd($firstrun, "GetPFR")
 _ArrayAdd($firstrun, "GetGift")
 _ArrayAdd($firstrun, "PerformTask1")
@@ -35,7 +35,7 @@ _ArrayAdd($steps, "Wrapper_EnterUIDandPWD_LianDong")
 _ArrayAdd($steps, "Wrapper_StartScreen_DoItLater")
 _ArrayAdd($steps, "Wrapper_ClickUntilNotification_CloseNotification_CompleteLogin")
 ;_ArrayAdd($steps,"CloseBPInfo")
-;_ArrayAdd($steps, "CheckMoneyBefore")
+_ArrayAdd($steps, "CheckAccountStatus")
 ;_ArrayAdd($steps, "GetPFR")
 _ArrayAdd($steps, "GetGift")
 _ArrayAdd($steps, "PerformTask1")
@@ -290,14 +290,16 @@ Func GetGift()
 EndFunc   ;==>GetGift
 
 Func GetTaskReward()
-	If GetAccountInfo("task") = 1 Then
-		ClickPosUntilScreen($side_task, "btn_back.bmp")
-		ClickOnRelative($side_task_chengjiu)
-		Local $img = WaitImage("btn_getall_gifts.bmp,btn_getall_gifts_greyout.bmp")
-		If $img = 1 Then
-			ClickImage("btn_getall_gifts.bmp", True)
-			ClickImage("btn_ok_lingqu.bmp", True)
-		EndIf
+	ClickPosUntilScreen($side_task, "btn_back.bmp")
+	ClickOnRelative($side_task_chengjiu)
+	Local $img = WaitImage("btn_getall_gifts.bmp,btn_getall_gifts_greyout.bmp")
+	If $img = 1 Then
+		ClickImage("btn_getall_gifts.bmp", True)
+		ClickImage("btn_ok_lingqu.bmp", True)
+		Return 1
+	Else
+		ClickOnRelative($menu_main)
+		Return 0
 	EndIf
 EndFunc
 
@@ -611,29 +613,32 @@ EndFunc
 #EndRegion
 
 Func CheckAccountStatus()
-	;CheckMoneyBefore()
-	;Perform get fight award
-	;CheckMoneyAfter()
-	;Go to cards menu
+	CheckMoneyBefore()
+;~ 	Local $gettaskrewardresult = GetTaskReward()
+;~ 	If $gettaskrewardresult = 1 Then
+;~ 		CheckMoneyAfter()
+;~ 	EndIf
+	GotoCardPage()
 	CheckCardLegend()
+	CheckCardBrigade()
 	CheckCardDawnbreak()
 	CheckCardChronogenesis()
 	CheckCardStarforged()
 	CheckCardWonderland()
+	ClickImage("btn_switch_classic_cards.bmp",True)
 	CheckCardTempest()
 	CheckCardBahamut()
 	CheckCardDarkness()
 	CheckCardClassic()
 	; Go to JJC
-	CheckCardJJC()
-	ExecDBQuery("[dbo].[SP_InsertAccountStatus] "&GetAccountInfo("uid")&","&$as_Money&",'"&$as_Money_url&"',"&$as_MoneyAfter&",'"&$as_MoneyAfter_url&"',"&$as_legendcard&",'"&$as_legendcard_url&"',"&$as_dawnbreakcard&",'"&$as_dawnbreakcard_url&"',"&$as_chronogenesiscard&",'"&$as_chronogenesiscard_url&"',"&$as_starforgedcard&",'"&$as_starforgedcard_url&"',"&$as_wonderlandcard&",'"&$as_wonderlandcard_url&"',"&$as_tempestcard&",'"&$as_tempestcard_url&"',"&$as_bahamutcard&",'"&$as_bahamutcard_url&"',"&$as_darknesscard&",'"&$as_darknesscard_url&"',"&$as_classiccard&",'"&$as_classiccard_url&"',"&$as_JJC&",'"&$as_JJC_url&"'")
+	;CheckCardJJC()
+	;ExecDBQuery("[dbo].[SP_InsertAccountStatus] "&GetAccountInfo("uid")&","&$as_Money&",'"&$as_Money_url&"',"&$as_MoneyAfter&",'"&$as_MoneyAfter_url&"',"&$as_legendcard&",'"&$as_legendcard_url&"',"&$as_dawnbreakcard&",'"&$as_dawnbreakcard_url&"',"&$as_chronogenesiscard&",'"&$as_chronogenesiscard_url&"',"&$as_starforgedcard&",'"&$as_starforgedcard_url&"',"&$as_wonderlandcard&",'"&$as_wonderlandcard_url&"',"&$as_tempestcard&",'"&$as_tempestcard_url&"',"&$as_bahamutcard&",'"&$as_bahamutcard_url&"',"&$as_darknesscard&",'"&$as_darknesscard_url&"',"&$as_classiccard&",'"&$as_classiccard_url&"',"&$as_JJC&",'"&$as_JJC_url&"'")
 EndFunc
 
 Func GotoCardPage()
 	ClickPosUntilScreenByPixel($menu_shop,$opt_buycards) ;点击 商店
 	ClickOnRelative($opt_buycards) ;点击 购买卡包
 	ClickImage("opt_buycard.bmp",True)
-
 EndFunc
 
 #Region OCR functions
@@ -654,76 +659,92 @@ Func CheckMoneyAfter()
 EndFunc
 
 Func CheckCardLegend()
-
-	WaitImage("card_legend.bmp")
-
+	Local $pos[2] = [$as_nextcard[0],$as_nextcard[1]-60]
+	ClickPosUntilScreen($pos, "card_legend.bmp", 800)
 	$as_legendcard = 0
 	$as_legendcard_url = ""
-	Local $val = ExecTesseract("_legend",$v_card)
+	Local $val = ExecTesseract("_legend",$v_card_legend)
 	$as_legendcard = $val[0]
 	$as_legendcard_url = $val[1]
 EndFunc
 
+Func CheckCardBrigade()
+	ClickPosUntilScreen($as_nextcard, "card_brigade.bmp", 800)
+	$as_brigadecard = 0
+	$as_brigadecard_url = ""
+	Local $val = ExecTesseract("_brigade",$v_card_normal)
+	$as_brigadecard = $val[0]
+	$as_brigadecard_url = $val[1]
+EndFunc
+
 Func CheckCardDawnbreak()
+	ClickPosUntilScreen($as_nextcard, "card_dawnbreak.bmp", 800)
 	$as_dawnbreakcard = 0
 	$as_dawnbreakcard_url = ""
-	Local $val = ExecTesseract("_dawnbreak",$v_card)
+	Local $val = ExecTesseract("_dawnbreak",$v_card_normal)
 	$as_dawnbreakcard = $val[0]
 	$as_dawnbreakcard_url = $val[1]
 EndFunc
 
 Func CheckCardChronogenesis()
+	ClickPosUntilScreen($as_nextcard, "card_chronogenesis.bmp", 800)
 	$as_chronogenesiscard = 0
 	$as_chronogenesiscard_url = ""
-	Local $val = ExecTesseract("_chronogenesis",$v_card)
+	Local $val = ExecTesseract("_chronogenesis",$v_card_normal)
 	$as_chronogenesiscard = $val[0]
 	$as_chronogenesiscard_url = $val[1]
 EndFunc
 
 Func CheckCardStarforged()
+	ClickPosUntilScreen($as_nextcard, "card_starforged.bmp", 800)
 	$as_starforgedcard = 0
 	$as_starforgedcard_url = ""
-	Local $val = ExecTesseract("_starforged",$v_card)
+	Local $val = ExecTesseract("_starforged",$v_card_normal)
 	$as_starforgedcard = $val[0]
 	$as_starforgedcard_url = $val[1]
 EndFunc
 
 Func CheckCardWonderland()
+	ClickPosUntilScreen($as_nextcard, "card_wonderland.bmp", 800)
 	$as_wonderlandcard = 0
 	$as_wonderlandcard_url = ""
-	Local $val = ExecTesseract("_wonderland",$v_card)
+	Local $val = ExecTesseract("_wonderland",$v_card_normal)
 	$as_wonderlandcard = $val[0]
 	$as_wonderlandcard_url = $val[1]
 EndFunc
 
 Func CheckCardTempest()
+	ClickPosUntilScreen($as_nextcard, "card_tempest.bmp", 800)
 	$as_tempestcard = 0
 	$as_tempestcard_url = ""
-	Local $val = ExecTesseract("_tempest",$v_card)
+	Local $val = ExecTesseract("_tempest",$v_card_normal)
 	$as_tempestcard = $val[0]
 	$as_tempestcard_url = $val[1]
 EndFunc
 
 Func CheckCardBahamut()
+	ClickPosUntilScreen($as_nextcard, "card_bahamut.bmp", 800)
 	$as_bahamutcard = 0
 	$as_bahamutcard_url = ""
-	Local $val = ExecTesseract("_bahamut",$v_card)
+	Local $val = ExecTesseract("_bahamut",$v_card_normal)
 	$as_bahamutcard = $val[0]
 	$as_bahamutcard_url = $val[1]
 EndFunc
 
 Func CheckCardDarkness()
+	ClickPosUntilScreen($as_nextcard, "card_darkness.bmp", 800)
 	$as_darknesscard = 0
 	$as_darknesscard_url = ""
-	Local $val = ExecTesseract("_darkness",$v_card)
+	Local $val = ExecTesseract("_darkness",$v_card_normal)
 	$as_darknesscard = $val[0]
 	$as_darknesscard_url = $val[1]
 EndFunc
 
 Func CheckCardClassic()
+	ClickPosUntilScreen($as_nextcard, "card_classic.bmp", 800)
 	$as_classiccard = 0
 	$as_classiccard_url = ""
-	Local $val = ExecTesseract("_classic",$v_card)
+	Local $val = ExecTesseract("_classic",$v_card_normal)
 	$as_classiccard = $val[0]
 	$as_classiccard_url = $val[1]
 EndFunc
