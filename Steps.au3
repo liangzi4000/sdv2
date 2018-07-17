@@ -634,9 +634,7 @@ Func CheckAccountStatus()
 
 	CheckMoneyBefore($_as_MoneyBefore)
 	Local $gettaskrewardresult = GetTaskReward()
-	If $gettaskrewardresult = 1 Then
-		CheckMoneyAfter($_as_MoneyAfter)
-	EndIf
+	CheckMoneyAfter($_as_MoneyAfter)
 	GotoCardPage()
 	CheckCardLegend($_as_legendcard)
 	CheckCardBrigade($_as_brigadecard)
