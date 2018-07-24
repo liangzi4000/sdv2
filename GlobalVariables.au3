@@ -61,6 +61,7 @@ Global Const $v_money_ocr = @ScriptDir & "\db\money\"
 Global $v_room[4] = [295,102,374,123] ; room number rectangle
 Global $v_money[4] = [493,19,532,37] ; money rectangle
 Global Const $v_tesseractfile = "C:\Program Files (x86)\Tesseract-OCR\tesseract.exe"
+Global Const $v_graphicsmagickfile = "C:\Program Files\GraphicsMagick-1.3.30-Q16\gm.exe"
 Global $btn_number[10][2] = [[336,305],[218,161],[336,161],[454,161],[218,209],[336,209],[454,209],[218,257],[336,257],[454,257]]
 Global $btn_readytofight[3] = [337,275,0x00698A] ;准备完成
 Global $btn_changecard[3] = [613,203,0x016C8D] ;交换 决定
