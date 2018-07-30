@@ -292,9 +292,9 @@ EndFunc   ;==>GetGift
 Func GetTaskReward()
 	ClickPosUntilScreen($side_task, "btn_back.bmp")
 	ClickOnRelative($side_task_chengjiu)
-	Local $img = WaitImage("btn_getall_gifts.bmp,btn_getall_gifts_greyout.bmp")
+	Local $img = WaitImage("btn_getall_rewards.bmp,btn_getall_rewards_greyout.bmp")
 	If $img = 1 Then
-		ClickImage("btn_getall_gifts.bmp", True)
+		ClickImage("btn_getall_rewards.bmp", True)
 		ClickImage("btn_ok_lingqu.bmp", True)
 		Return 1
 	Else
@@ -606,33 +606,65 @@ Func GetAccountInfo($type)
 			$result = $acctinfoarr[5]
 		Case "fight"
 			$result = $acctinfoarr[6]
+		Case "chkstatus"
+			$result = $acctinfoarr[7]
 	EndSwitch
 
 	Return $result
 EndFunc
 #EndRegion
 
+#Region Check Account Status Functions
 Func CheckAccountStatus()
-	CheckMoneyBefore()
-;~ 	Local $gettaskrewardresult = GetTaskReward()
-;~ 	If $gettaskrewardresult = 1 Then
-;~ 		CheckMoneyAfter()
-;~ 	EndIf
-	GotoCardPage()
-	CheckCardLegend()
-	CheckCardBrigade()
-	CheckCardDawnbreak()
-	CheckCardChronogenesis()
-	CheckCardStarforged()
-	CheckCardWonderland()
-	ClickImage("btn_switch_classic_cards.bmp",True)
-	CheckCardTempest()
-	CheckCardBahamut()
-	CheckCardDarkness()
-	CheckCardClassic()
-	; Go to JJC
-	;CheckCardJJC()
-	;ExecDBQuery("[dbo].[SP_InsertAccountStatus] "&GetAccountInfo("uid")&","&$as_Money&",'"&$as_Money_url&"',"&$as_MoneyAfter&",'"&$as_MoneyAfter_url&"',"&$as_legendcard&",'"&$as_legendcard_url&"',"&$as_dawnbreakcard&",'"&$as_dawnbreakcard_url&"',"&$as_chronogenesiscard&",'"&$as_chronogenesiscard_url&"',"&$as_starforgedcard&",'"&$as_starforgedcard_url&"',"&$as_wonderlandcard&",'"&$as_wonderlandcard_url&"',"&$as_tempestcard&",'"&$as_tempestcard_url&"',"&$as_bahamutcard&",'"&$as_bahamutcard_url&"',"&$as_darknesscard&",'"&$as_darknesscard_url&"',"&$as_classiccard&",'"&$as_classiccard_url&"',"&$as_JJC&",'"&$as_JJC_url&"'")
+	If GetAccountInfo("chkstatus") = 0 Then Return
+	; Account status variables
+	Local $_as_MoneyBefore = ["as_Money","as_Money_url","_before",$v_money]
+	Local $_as_MoneyAfter = ["as_MoneyAfter","as_MoneyAfter_url","_after",$v_money]
+	Local $_as_legendcard = ["as_legendcard","as_legendcard_url","_legend",$v_card_legend]
+	Local $_as_brigadecard = ["as_brigadecard","as_brigadecard_url","_brigade",$v_card_normal]
+	Local $_as_dawnbreakcard = ["as_dawnbreakcard","as_dawnbreakcard_url","_dawnbreak",$v_card_normal]
+	Local $_as_chronogenesiscard = ["as_chronogenesiscard","as_chronogenesiscard_url","_chronogenesis",$v_card_normal]
+	Local $_as_starforgedcard = ["as_starforgedcard","as_starforgedcard_url","_starforged",$v_card_normal]
+	Local $_as_wonderlandcard = ["as_wonderlandcard","as_wonderlandcard_url","_wonderland",$v_card_normal]
+	Local $_as_tempestcard = ["as_tempestcard","as_tempestcard_url","_tempest",$v_card_normal]
+	Local $_as_bahamutcard = ["as_bahamutcard","as_bahamutcard_url","_bahamut",$v_card_normal]
+	Local $_as_darknesscard = ["as_darknesscard","as_darknesscard_url","_darkness",$v_card_normal]
+	Local $_as_classiccard = ["as_classiccard","as_classiccard_url","_classic",$v_card_normal]
+	Local $_as_JJC = ["as_JJC","as_JJC_url","_jjc",$v_jjc]
+
+	CheckMoneyBefore($_as_MoneyBefore)
+	Local $gettaskrewardresult = GetTaskReward()
+	CheckMoneyAfter($_as_MoneyAfter)
+;~ 	GotoCardPage()
+;~ 	CheckCardLegend($_as_legendcard)
+;~ 	CheckCardBrigade($_as_brigadecard)
+;~ 	CheckCardDawnbreak($_as_dawnbreakcard)
+;~ 	CheckCardChronogenesis($_as_chronogenesiscard)
+;~ 	CheckCardStarforged($_as_starforgedcard)
+;~ 	CheckCardWonderland($_as_wonderlandcard)
+;~ 	ClickImage("btn_switch_classic_cards.bmp",True)
+;~ 	CheckCardTempest($_as_tempestcard)
+;~ 	CheckCardBahamut($_as_bahamutcard)
+;~ 	CheckCardDarkness($_as_darknesscard)
+;~ 	CheckCardClassic($_as_classiccard)
+;~ 	CheckCardJJC($_as_JJC)
+
+	Local $as_MoneyBeforeArr = RetrieveVariablesCore($_as_MoneyBefore)
+	Local $as_MoneyAfterArr = RetrieveVariablesCore($_as_MoneyAfter)
+;~ 	Local $as_legendcardArr = RetrieveVariablesCore($_as_legendcard)
+;~ 	Local $as_brigadecardArr = RetrieveVariablesCore($_as_brigadecard)
+;~ 	Local $as_dawnbreakcardArr = RetrieveVariablesCore($_as_dawnbreakcard)
+;~ 	Local $as_chronogenesiscardArr = RetrieveVariablesCore($_as_chronogenesiscard)
+;~ 	Local $as_starforgedcardArr = RetrieveVariablesCore($_as_starforgedcard)
+;~ 	Local $as_wonderlandcardArr = RetrieveVariablesCore($_as_wonderlandcard)
+;~ 	Local $as_tempestcardArr = RetrieveVariablesCore($_as_tempestcard)
+;~ 	Local $as_bahamutcardArr = RetrieveVariablesCore($_as_bahamutcard)
+;~ 	Local $as_darknesscardArr = RetrieveVariablesCore($_as_darknesscard)
+;~ 	Local $as_classiccardArr = RetrieveVariablesCore($_as_classiccard)
+;~ 	Local $as_JJCArr = RetrieveVariablesCore($_as_JJC)
+;~ 	ExecDBQuery("[dbo].[SP_InsertAccountStatus] "&GetAccountInfo("uid")&","&$as_MoneyBeforeArr[0]&",'"&$as_MoneyBeforeArr[1]&"',"&$as_MoneyAfterArr[0]&",'"&$as_MoneyAfterArr[1]&"',"&$as_legendcardArr[0]&",'"&$as_legendcardArr[1]&"',"&$as_brigadecardArr[0]&",'"&$as_brigadecardArr[1]&"',"&$as_dawnbreakcardArr[0]&",'"&$as_dawnbreakcardArr[1]&"',"&$as_chronogenesiscardArr[0]&",'"&$as_chronogenesiscardArr[1]&"',"&$as_starforgedcardArr[0]&",'"&$as_starforgedcardArr[1]&"',"&$as_wonderlandcardArr[0]&",'"&$as_wonderlandcardArr[1]&"',"&$as_tempestcardArr[0]&",'"&$as_tempestcardArr[1]&"',"&$as_bahamutcardArr[0]&",'"&$as_bahamutcardArr[1]&"',"&$as_darknesscardArr[0]&",'"&$as_darknesscardArr[1]&"',"&$as_classiccardArr[0]&",'"&$as_classiccardArr[1]&"',"&$as_JJCArr[0]&",'"&$as_JJCArr[1]&"'")
+	ExecDBQuery("[dbo].[SP_InsertAccountStatus] "&GetAccountInfo("uid")&","&$as_MoneyBeforeArr[0]&",'"&$as_MoneyBeforeArr[1]&"',"&$as_MoneyAfterArr[0]&",'"&$as_MoneyAfterArr[1]&"',0,'',0,'',0,'',0,'',0,'',0,'',0,'',0,'',0,'',0,'',0,''")
+
 EndFunc
 
 Func GotoCardPage()
@@ -641,120 +673,85 @@ Func GotoCardPage()
 	ClickImage("opt_buycard.bmp",True)
 EndFunc
 
-#Region OCR functions
-Func CheckMoneyBefore()
-	$as_Money = 0
-	$as_Money_url = ""
-	Local $val = ExecTesseract("_before",$v_money)
-	$as_Money = $val[0]
-	$as_Money_url = $val[1]
+Func GotoJJC()
+	ClickPosUntilScreenByPixel($menu_jjc,$opt_twopick) ;点击 竞技场
+	Local $pos[2]=[$opt_twopick[0],$opt_twopick[1]]
+	ClickPosUntilScreen($pos, "btn_back.bmp", 800) ;点击 2 Pick
 EndFunc
 
-Func CheckMoneyAfter()
-	$as_MoneyAfter = 0
-	$as_MoneyAfter_url = ""
-	Local $val = ExecTesseract("_after",$v_money)
-	$as_MoneyAfter = $val[0]
-	$as_MoneyAfter_url = $val[1]
+Func RetrieveVariablesCore($item)
+	Local $val = Eval($item[0])
+	Local $url = Eval($item[1])
+	Local $result = [$val,$url]
+	Return $result
 EndFunc
 
-Func CheckCardLegend()
+Func CheckAccStatus($item)
+	Assign($item[0],0,2)
+	Assign($item[1],"",2)
+	Local $val = ExecTesseract($item[2],$item[3])
+	Assign($item[0],$val[0])
+	Assign($item[1],$val[1])
+EndFunc
+
+Func CheckCardWrapper($item,$image)
+	ClickPosUntilScreen($as_nextcard, $image, 800)
+	CheckAccStatus($item)
+EndFunc
+
+Func CheckMoneyBefore($item)
+	CheckAccStatus($item)
+EndFunc
+
+Func CheckMoneyAfter($item)
+	CheckAccStatus($item)
+EndFunc
+
+Func CheckCardLegend($item)
 	Local $pos[2] = [$as_nextcard[0],$as_nextcard[1]-60]
 	ClickPosUntilScreen($pos, "card_legend.bmp", 800)
-	$as_legendcard = 0
-	$as_legendcard_url = ""
-	Local $val = ExecTesseract("_legend",$v_card_legend)
-	$as_legendcard = $val[0]
-	$as_legendcard_url = $val[1]
+	CheckAccStatus($item)
 EndFunc
 
-Func CheckCardBrigade()
-	ClickPosUntilScreen($as_nextcard, "card_brigade.bmp", 800)
-	$as_brigadecard = 0
-	$as_brigadecard_url = ""
-	Local $val = ExecTesseract("_brigade",$v_card_normal)
-	$as_brigadecard = $val[0]
-	$as_brigadecard_url = $val[1]
+Func CheckCardBrigade($item)
+	CheckCardWrapper($item,"card_brigade.bmp")
 EndFunc
 
-Func CheckCardDawnbreak()
-	ClickPosUntilScreen($as_nextcard, "card_dawnbreak.bmp", 800)
-	$as_dawnbreakcard = 0
-	$as_dawnbreakcard_url = ""
-	Local $val = ExecTesseract("_dawnbreak",$v_card_normal)
-	$as_dawnbreakcard = $val[0]
-	$as_dawnbreakcard_url = $val[1]
+Func CheckCardDawnbreak($item)
+	CheckCardWrapper($item,"card_dawnbreak.bmp")
 EndFunc
 
-Func CheckCardChronogenesis()
-	ClickPosUntilScreen($as_nextcard, "card_chronogenesis.bmp", 800)
-	$as_chronogenesiscard = 0
-	$as_chronogenesiscard_url = ""
-	Local $val = ExecTesseract("_chronogenesis",$v_card_normal)
-	$as_chronogenesiscard = $val[0]
-	$as_chronogenesiscard_url = $val[1]
+Func CheckCardChronogenesis($item)
+	CheckCardWrapper($item,"card_chronogenesis.bmp")
 EndFunc
 
-Func CheckCardStarforged()
-	ClickPosUntilScreen($as_nextcard, "card_starforged.bmp", 800)
-	$as_starforgedcard = 0
-	$as_starforgedcard_url = ""
-	Local $val = ExecTesseract("_starforged",$v_card_normal)
-	$as_starforgedcard = $val[0]
-	$as_starforgedcard_url = $val[1]
+Func CheckCardStarforged($item)
+	CheckCardWrapper($item,"card_starforged.bmp")
 EndFunc
 
-Func CheckCardWonderland()
-	ClickPosUntilScreen($as_nextcard, "card_wonderland.bmp", 800)
-	$as_wonderlandcard = 0
-	$as_wonderlandcard_url = ""
-	Local $val = ExecTesseract("_wonderland",$v_card_normal)
-	$as_wonderlandcard = $val[0]
-	$as_wonderlandcard_url = $val[1]
+Func CheckCardWonderland($item)
+	CheckCardWrapper($item,"card_wonderland.bmp")
 EndFunc
 
-Func CheckCardTempest()
-	ClickPosUntilScreen($as_nextcard, "card_tempest.bmp", 800)
-	$as_tempestcard = 0
-	$as_tempestcard_url = ""
-	Local $val = ExecTesseract("_tempest",$v_card_normal)
-	$as_tempestcard = $val[0]
-	$as_tempestcard_url = $val[1]
+Func CheckCardTempest($item)
+	CheckCardWrapper($item,"card_tempest.bmp")
 EndFunc
 
-Func CheckCardBahamut()
-	ClickPosUntilScreen($as_nextcard, "card_bahamut.bmp", 800)
-	$as_bahamutcard = 0
-	$as_bahamutcard_url = ""
-	Local $val = ExecTesseract("_bahamut",$v_card_normal)
-	$as_bahamutcard = $val[0]
-	$as_bahamutcard_url = $val[1]
+Func CheckCardBahamut($item)
+	CheckCardWrapper($item,"card_bahamut.bmp")
 EndFunc
 
-Func CheckCardDarkness()
-	ClickPosUntilScreen($as_nextcard, "card_darkness.bmp", 800)
-	$as_darknesscard = 0
-	$as_darknesscard_url = ""
-	Local $val = ExecTesseract("_darkness",$v_card_normal)
-	$as_darknesscard = $val[0]
-	$as_darknesscard_url = $val[1]
+Func CheckCardDarkness($item)
+	CheckCardWrapper($item,"card_darkness.bmp")
 EndFunc
 
-Func CheckCardClassic()
-	ClickPosUntilScreen($as_nextcard, "card_classic.bmp", 800)
-	$as_classiccard = 0
-	$as_classiccard_url = ""
-	Local $val = ExecTesseract("_classic",$v_card_normal)
-	$as_classiccard = $val[0]
-	$as_classiccard_url = $val[1]
+Func CheckCardClassic($item)
+	CheckCardWrapper($item,"card_classic.bmp")
 EndFunc
 
-Func CheckCardJJC()
-	$as_JJC = 0
-	$as_JJC_url = ""
-	Local $val = ExecTesseract("_jjc",$v_jjc)
-	$as_JJC = $val[0]
-	$as_JJC_url = $val[1]
+Func CheckCardJJC($item)
+	GotoJJC()
+	CheckAccStatus($item)
 EndFunc
 
 Func ExecTesseract($suffix,$area)
@@ -763,6 +760,7 @@ Func ExecTesseract($suffix,$area)
 	Local $screenshotfile = $v_money_ocr&$screenshotfilename
 	Local $ocrfile = $v_money_ocr&StringReplace(_NowCalcDate(),"/","")&"_"&GetAccountInfo("uid")&$suffix
 	_ScreenCapture_Capture($screenshotfile,$money_abs[0],$money_abs[1],$money_abs[2],$money_abs[3])
+	ShellExecuteWait($v_graphicsmagickfile,"convert "&$screenshotfile&" -resize 100 "&$screenshotfile)
 	ShellExecuteWait($v_tesseractfile,$screenshotfile&" "&$ocrfile&" -psm 7 digits")
 	Local $moneyamount = StringStripWS(FileReadLine($ocrfile&".txt",1),8)
 	Local $result[2] = [$moneyamount,$screenshotfilename]

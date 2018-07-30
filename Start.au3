@@ -90,7 +90,7 @@ Func OnAutoitExit()
 			ExecStep("CloseApp")
 			RunScript()
 		Case $exitaction_shutdownpc
-			Shutdown(BitOR($SD_SHUTDOWN,$SD_FORCE)) ; shutdown PC
+			;Shutdown(BitOR($SD_SHUTDOWN,$SD_FORCE)) ; shutdown PC
 		Case $exitaction_terminatescript
 			; do nothing
 	EndSwitch
