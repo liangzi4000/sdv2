@@ -61,7 +61,7 @@ Func InstallApp()
 EndFunc
 
 Func SetupLanguageAndAgreement()
-	ClickImage("ui_startscreen.bmp", True, 20, "", $area_startscreen[0], $area_startscreen[1], $area_startscreen[2], $area_startscreen[3])
+	ClickImage("ui_startscreen.bmp", True, 60, "", $area_startscreen[0], $area_startscreen[1], $area_startscreen[2], $area_startscreen[3])
 	WaitImage("btn_ok_language.bmp")
 	Sleep(1500)
 	ClickOnRelative($btn_change_lang)
