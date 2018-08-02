@@ -199,13 +199,19 @@ Func ClickOnStartScreen()
 EndFunc   ;==>ClickOnStartScreen
 
 Func DoItLater()
-	Local $index = WaitImage("btn_doitlater.bmp,btn_nox_forever.bmp")
+	Local $index = WaitImage("btn_doitlater.bmp,btn_nox_forever.bmp",10,"DoItLaterTimeout")
 	If $index = 2 Then
 		ClickImage("btn_nox_forever.bmp")
 		ClickImage("btn_nox_reject.bmp")
 	EndIf
 	ClickImage("btn_doitlater.bmp", True)
 EndFunc   ;==>DoItLater
+
+Func DoItLaterTimeout()
+	ClickOnLastPosition() ;Close the popup window
+	Sleep(1000)
+	ClickOnLastPosition() ;re-trigger original flow
+EndFunc
 #EndRegion Wrapper_StartScreen_DoItLater
 
 #Region Wrapper_ClickUntilNotification_CloseNotification_CompleteLogin
