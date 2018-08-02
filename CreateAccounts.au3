@@ -19,7 +19,7 @@ EndFunc
 
 Func Wrapper2()
 	BeginnerTutorial()
-	;Handle2ndAnniversary()
+	Handle2ndAnniversary()
 	SetupPassword()
 EndFunc
 
