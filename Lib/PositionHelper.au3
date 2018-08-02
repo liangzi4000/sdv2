@@ -15,6 +15,12 @@ Func GetCtrlCenter()
 	Return $result
 EndFunc   ;==>GetCtrlCenter
 
+Func GetCtrlLeftBottom()
+	Local $ctrl = GetCtrlPosition()
+	Local $result[2] = [1, $ctrl[3]-1]
+	Return $result
+EndFunc
+
 ; Below function has been replaced with keyboard shortcut
 ;~ Func GetTaskListPosition()
 ;~ 	Local $winpos = GetWinPosition()
