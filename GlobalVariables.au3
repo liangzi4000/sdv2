@@ -49,9 +49,9 @@ Global $btn_createcombination = [129,103] ; 创建新牌组
 Global $btn_zhuzhanzhe_confirm[2] = [621,277] ; 决定
 Global $menu_other[2] = [619,378] ; 其他菜单
 Global $menu_duizhan[2] = [254,377] ; 对战菜单
-Global $menu_shop[2] = [0,377] ; 商店菜单 ;todo
-Global $menu_main[2] = [0,377] ; 主菜单 ;todo
-Global $menu_jjc[2] = [0,377] ; 主菜单 ;todo
+Global $menu_shop[2] = [526,377] ; 商店菜单
+Global $menu_main[2] = [70,377] ; 主菜单
+Global $menu_jjc[2] = [347,377] ; 竞技场
 
 ;;;;;;;;----------------;;;;;;;;;
 Global $opt_privatefight[3] = [555,222,0xE6E6E6] ; 私人对战
