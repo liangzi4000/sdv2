@@ -666,7 +666,7 @@ Func CheckAccountStatus()
 ;~ 	Local $as_classiccardArr = RetrieveVariablesCore($_as_classiccard)
 ;~ 	Local $as_JJCArr = RetrieveVariablesCore($_as_JJC)
 ;~ 	ExecDBQuery("[dbo].[SP_InsertAccountStatus] "&GetAccountInfo("uid")&","&$as_MoneyBeforeArr[0]&",'"&$as_MoneyBeforeArr[1]&"',"&$as_MoneyAfterArr[0]&",'"&$as_MoneyAfterArr[1]&"',"&$as_legendcardArr[0]&",'"&$as_legendcardArr[1]&"',"&$as_brigadecardArr[0]&",'"&$as_brigadecardArr[1]&"',"&$as_dawnbreakcardArr[0]&",'"&$as_dawnbreakcardArr[1]&"',"&$as_chronogenesiscardArr[0]&",'"&$as_chronogenesiscardArr[1]&"',"&$as_starforgedcardArr[0]&",'"&$as_starforgedcardArr[1]&"',"&$as_wonderlandcardArr[0]&",'"&$as_wonderlandcardArr[1]&"',"&$as_tempestcardArr[0]&",'"&$as_tempestcardArr[1]&"',"&$as_bahamutcardArr[0]&",'"&$as_bahamutcardArr[1]&"',"&$as_darknesscardArr[0]&",'"&$as_darknesscardArr[1]&"',"&$as_classiccardArr[0]&",'"&$as_classiccardArr[1]&"',"&$as_JJCArr[0]&",'"&$as_JJCArr[1]&"'")
-	ExecDBQuery("[dbo].[SP_InsertAccountStatus] "&GetAccountInfo("uid")&","&$as_MoneyBeforeArr[0]&",'"&$as_MoneyBeforeArr[1]&"',"&$as_MoneyAfterArr[0]&",'"&$as_MoneyAfterArr[1]&"',0,'',0,'',0,'',0,'',0,'',0,'',0,'',0,'',0,'',0,'',0,''")
+	ExecDBQuery("[dbo].[SP_UpdateAccountStatus] "&GetAccountInfo("uid")&","&$as_MoneyBeforeArr[0]&",'"&$as_MoneyBeforeArr[1]&"',"&$as_MoneyAfterArr[0]&",'"&$as_MoneyAfterArr[1]&"',0,'',0,'',0,'',0,'',0,'',0,'',0,'',0,'',0,'',0,'',0,''")
 
 EndFunc
 
