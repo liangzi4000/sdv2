@@ -388,7 +388,7 @@ Func CreateOrEnterFightRoom()
 	If IsFightHost() Then
 		Local $room_abs = GetAbsoluteRoomCoord($v_room)
 		_ScreenCapture_Capture($v_room_screenshot,$room_abs[0],$room_abs[1],$room_abs[2],$room_abs[3])
-		ShellExecuteWait($v_tesseractfile,$v_room_screenshot&" "&$v_room_file&" -psm 7")
+		ShellExecuteWait($v_tesseractfile,$v_room_screenshot&" "&$v_room_file&" -psm 6")
 		$fightroomnumber = StringStripWS(FileReadLine($v_room_file&".txt",1),8)
 	EndIf
 EndFunc
@@ -764,7 +764,7 @@ Func ExecTesseract($suffix,$area)
 	Local $ocrfile = $v_money_ocr&StringReplace(_NowCalcDate(),"/","")&"_"&GetAccountInfo("uid")&$suffix
 	_ScreenCapture_Capture($screenshotfile,$money_abs[0],$money_abs[1],$money_abs[2],$money_abs[3])
 	ShellExecuteWait($v_graphicsmagickfile,"convert "&$screenshotfile&" -resize 100 "&$screenshotfile)
-	ShellExecuteWait($v_tesseractfile,$screenshotfile&" "&$ocrfile&" -psm 7 digits")
+	ShellExecuteWait($v_tesseractfile,$screenshotfile&" "&$ocrfile&" -psm 6 digits")
 	Local $moneyamount = StringStripWS(FileReadLine($ocrfile&".txt",1),8)
 	Local $result[2] = [$moneyamount,$screenshotfilename]
 	Return $result

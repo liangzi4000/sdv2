@@ -92,12 +92,12 @@ Global $enemypos = [336,34]
 Global $v_battle_card_x_offset = 24
 Global $cardready = [525,371]
 
-Global $as_nextcard[2] = [67,319] ;点击切换卡包类别 todo
-Global $opt_buycards[3] = [405,183,0xB4E5E5] ; 购买卡包 ;todo
-Global $opt_twopick[6] = [258,228,0xA83221,15,5,5] ; 2 Pick ;todo
-Global $v_card_legend[4] = [597,338,623,356] ; card legend rectangle ; todo
-Global $v_card_normal[4] = [597,182,623,199] ; card legend rectangle ; todo
-Global $v_jjc[4] = [455,275,478,293] ; jjc rectangle ; todo
+Global $as_nextcard[2] = [56,279] ;点击切换卡包类别
+Global $opt_buycards[3] = [337,177,0x545454] ; 购买卡包
+Global $opt_twopick[6] = [336,190,0xBC3F2F,35,5,5] ; 2 Pick
+Global $v_card_legend[4] = [499,296,519,310] ; card legend rectangle
+Global $v_card_normal[4] = [498,165,519,180] ; card normal rectangle
+Global $v_jjc[4] = [376,243,400,257] ; jjc rectangle
 
 
 ;;;;;;;;;;;;;;;;;;;;;Privat fight activity;;;;;;;;;;;;
