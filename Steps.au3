@@ -636,11 +636,11 @@ Func CheckAccountStatus()
 	Local $_as_JJC = ["as_JJC","as_JJC_url","_jjc",$v_jjc]
 
 	CheckMoneyBefore($_as_MoneyBefore)
-	Local $gettaskrewardresult = GetTaskReward()
+	GetTaskReward()
 	CheckMoneyAfter($_as_MoneyAfter)
 	GotoCardPage()
-	CheckCardLegend($_as_legendcard)
-	CheckCardBrigade($_as_brigadecard)
+	Local $legendexist = CheckCardLegend($_as_legendcard)
+	CheckCardBrigade($_as_brigadecard, $legendexist)
 	CheckCardDawnbreak($_as_dawnbreakcard)
 	CheckCardChronogenesis($_as_chronogenesiscard)
 	CheckCardStarforged($_as_starforgedcard)
@@ -674,6 +674,8 @@ Func GotoCardPage()
 	ClickPosUntilScreenByPixel($menu_shop,$opt_buycards) ;点击 商店
 	ClickOnRelative($opt_buycards) ;点击 购买卡包
 	ClickImage("opt_buycard.bmp",True)
+	Local $pos[2] = [$as_nextcard[0],$as_nextcard[1]-60]
+	ClickPosUntilScreen($pos, "btn_switch_classic_cards.bmp", 800)
 EndFunc
 
 Func GotoJJC()
@@ -711,13 +713,23 @@ Func CheckMoneyAfter($item)
 EndFunc
 
 Func CheckCardLegend($item)
-	Local $pos[2] = [$as_nextcard[0],$as_nextcard[1]-60]
-	ClickPosUntilScreen($pos, "card_legend.bmp", 800)
-	CheckAccStatus($item)
+	Local $pos = [0,0]
+	If SearchImageActive("card_legend.bmp",$pos[0],$pos[1]) = 1 Then
+		CheckAccStatus($item)
+		Return True
+	Else
+		Assign($item[0],0,2)
+		Assign($item[1],"",2)
+		Return False
+	EndIf
 EndFunc
 
-Func CheckCardBrigade($item)
-	CheckCardWrapper($item,"card_brigade.bmp")
+Func CheckCardBrigade($item, $legendexist)
+	If $legendexist Then
+		CheckCardWrapper($item,"card_brigade.bmp")
+	Else
+		CheckAccStatus($item)
+	EndIf
 EndFunc
 
 Func CheckCardDawnbreak($item)
