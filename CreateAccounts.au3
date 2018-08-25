@@ -127,7 +127,8 @@ Func BeginnerTutorial()
 	ClickImage("btn_ok_fight_effect.bmp") ;关闭弹窗 “新手教学完成”
 	ClickPosUntilScreen($btn_ignore,"btn_ignore.bmp")
 	ClickImage("btn_ignore.bmp")
-	ClickImage("btn_ok_fight_effect.bmp") ;关闭弹窗 “登入奖励”
+	ClickImage("btn_ok_downlod.bmp")
+	ClickImage("btn_ok_fight_effect.bmp", False, 1200) ;关闭弹窗 “登入奖励”
 EndFunc
 
 Func Handle2ndAnniversary()
