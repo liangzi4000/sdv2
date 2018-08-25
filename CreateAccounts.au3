@@ -94,7 +94,7 @@ EndFunc
 
 Func BeginnerTutorial()
 	ClickImage("ui_download_completed.bmp", True, 1200)
-	ClickImage("ui_1st_chapter.bmp")
+	ClickImage("ui_1st_chapter.bmp", False, 2)
 	ClickImage("btn_qianwangjuqing.bmp")
 	ClickPosUntilScreen($btn_skipvideo,"btn_ok_fight_effect.bmp")
 	ClickImage("btn_ok_fight_effect.bmp")
