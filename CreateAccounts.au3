@@ -4,7 +4,11 @@
 
 Global $createaccountsteps = []
 _ArrayAdd($createaccountsteps,"Wrapper1")
-_ArrayAdd($createaccountsteps,"Wrapper2")
+;_ArrayAdd($createaccountsteps,"Wrapper2")
+_ArrayAdd($createaccountsteps,"BeginnerTutorial")
+_ArrayAdd($createaccountsteps,"GetDailyLoginAward")
+_ArrayAdd($createaccountsteps,"Handle2ndAnniversary")
+_ArrayAdd($createaccountsteps,"SetupPassword")
 _ArrayAdd($createaccountsteps,"CheckExit")
 
 Func Wrapper1()
@@ -19,6 +23,7 @@ EndFunc
 
 Func Wrapper2()
 	BeginnerTutorial()
+	GetDailyLoginAward()
 	Handle2ndAnniversary()
 	SetupPassword()
 EndFunc
@@ -129,6 +134,9 @@ Func BeginnerTutorial()
 	ClickPosUntilScreen($btn_ignore,"btn_ignore.bmp")
 	ClickImage("btn_ignore.bmp")
 	ClickImage("btn_ok_downlod.bmp")
+EndFunc
+
+Func GetDailyLoginAward()
 	ClickImage("btn_ok_fight_effect.bmp", False, 1200) ;关闭弹窗 “登入奖励”
 EndFunc
 
