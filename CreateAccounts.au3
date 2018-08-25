@@ -93,8 +93,9 @@ Func SetupUserName()
 EndFunc
 
 Func BeginnerTutorial()
-	ClickImage("ui_download_completed.bmp", True, 1200)
-	ClickImage("ui_1st_chapter.bmp", False, 2)
+	WaitImage("ui_download_completed.bmp", 1200)
+	ClickImageUntilScreen("ui_download_completed.bmp","ui_1st_chapter.bmp")
+	ClickImage("ui_1st_chapter.bmp")
 	ClickImage("btn_qianwangjuqing.bmp")
 	ClickPosUntilScreen($btn_skipvideo,"btn_ok_fight_effect.bmp")
 	ClickImage("btn_ok_fight_effect.bmp")
