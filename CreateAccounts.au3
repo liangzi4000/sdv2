@@ -6,9 +6,7 @@ Global $createaccountsteps = []
 _ArrayAdd($createaccountsteps,"Wrapper1")
 ;_ArrayAdd($createaccountsteps,"Wrapper2")
 _ArrayAdd($createaccountsteps,"BeginnerTutorial")
-_ArrayAdd($createaccountsteps,"GetDailyLoginAward")
-_ArrayAdd($createaccountsteps,"Handle2ndAnniversary")
-_ArrayAdd($createaccountsteps,"SetupPassword")
+_ArrayAdd($createaccountsteps,"Wrapper2")
 _ArrayAdd($createaccountsteps,"CheckExit")
 
 Func Wrapper1()
@@ -22,7 +20,7 @@ Func Wrapper1()
 EndFunc
 
 Func Wrapper2()
-	BeginnerTutorial()
+	;BeginnerTutorial()
 	GetDailyLoginAward()
 	Handle2ndAnniversary()
 	SetupPassword()
