@@ -4,6 +4,7 @@
 
 Global $createaccountsteps = []
 _ArrayAdd($createaccountsteps,"Wrapper1")
+_ArrayAdd($createaccountsteps,"BeginnerTutorial")
 _ArrayAdd($createaccountsteps,"Wrapper2")
 _ArrayAdd($createaccountsteps,"CheckExit")
 
@@ -18,7 +19,6 @@ Func Wrapper1()
 EndFunc
 
 Func Wrapper2()
-	BeginnerTutorial()
 	GetDailyLoginAward()
 	;Handle2ndAnniversary()
 	SetupPassword()
@@ -95,7 +95,9 @@ EndFunc
 
 Func BeginnerTutorial()
 	WaitImage("ui_download_completed.bmp", 1200)
-	ClickImageUntilScreen("ui_download_completed.bmp","ui_1st_chapter.bmp")
+	;ClickImageUntilScreen("ui_download_completed.bmp","ui_1st_chapter.bmp")
+	Local $wincenter = GetCtrlCenter()
+	ClickPosUntilScreen($wincenter,"ui_1st_chapter.bmp")
 	ClickImage("ui_1st_chapter.bmp")
 	ClickImage("btn_qianwangjuqing.bmp")
 	ClickPosUntilScreen($btn_skipvideo,"btn_ok_fight_effect.bmp")
