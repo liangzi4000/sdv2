@@ -14,9 +14,9 @@ _ArrayAdd($firstrun, "Wrapper_EnterUIDandPWD_LianDong")
 _ArrayAdd($firstrun, "Wrapper_StartScreen_DoItLater")
 _ArrayAdd($firstrun, "Wrapper_ClickUntilNotification_CloseNotification_CompleteLogin")
 ;_ArrayAdd($firstrun,"CloseBPInfo")
-_ArrayAdd($firstrun, "CheckAccountStatus")
 ;_ArrayAdd($firstrun, "GetPFR")
 _ArrayAdd($firstrun, "GetGift")
+_ArrayAdd($firstrun, "CheckAccountStatus")
 _ArrayAdd($firstrun, "PerformTask1")
 _ArrayAdd($firstrun, "CreateOrEnterFightRoom")
 _ArrayAdd($firstrun, "WaitForFightStart")
@@ -35,9 +35,9 @@ _ArrayAdd($steps, "Wrapper_EnterUIDandPWD_LianDong")
 _ArrayAdd($steps, "Wrapper_StartScreen_DoItLater")
 _ArrayAdd($steps, "Wrapper_ClickUntilNotification_CloseNotification_CompleteLogin")
 ;_ArrayAdd($steps,"CloseBPInfo")
-_ArrayAdd($steps, "CheckAccountStatus")
 ;_ArrayAdd($steps, "GetPFR")
 _ArrayAdd($steps, "GetGift")
+_ArrayAdd($steps, "CheckAccountStatus")
 _ArrayAdd($steps, "PerformTask1")
 _ArrayAdd($steps, "CreateOrEnterFightRoom")
 _ArrayAdd($steps, "WaitForFightStart")
@@ -289,6 +289,7 @@ Func GetGift()
 			ClickImage("btn_lingqu.bmp", True)
 			ClickImage("btn_ok_lingqu.bmp", True)
 		EndIf
+		ClickOnRelative($menu_main)
 	EndIf
 EndFunc   ;==>GetGift
 
@@ -624,6 +625,7 @@ Func CheckAccountStatus()
 	Local $_as_MoneyBefore = ["as_Money","as_Money_url","_before",$v_money]
 	Local $_as_MoneyAfter = ["as_MoneyAfter","as_MoneyAfter_url","_after",$v_money]
 	Local $_as_legendcard = ["as_legendcard","as_legendcard_url","_legend",$v_card_legend]
+	Local $_as_omencard = ["as_omencard","as_omencard_url","_omen",$v_card_normal]
 	Local $_as_brigadecard = ["as_brigadecard","as_brigadecard_url","_brigade",$v_card_normal]
 	Local $_as_dawnbreakcard = ["as_dawnbreakcard","as_dawnbreakcard_url","_dawnbreak",$v_card_normal]
 	Local $_as_chronogenesiscard = ["as_chronogenesiscard","as_chronogenesiscard_url","_chronogenesis",$v_card_normal]
@@ -640,12 +642,13 @@ Func CheckAccountStatus()
 	CheckMoneyAfter($_as_MoneyAfter)
 	GotoCardPage()
 	Local $legendexist = CheckCardLegend($_as_legendcard)
-	CheckCardBrigade($_as_brigadecard, $legendexist)
+	CheckCardOmen($_as_omencard, $legendexist)
+	CheckCardBrigade($_as_brigadecard)
 	CheckCardDawnbreak($_as_dawnbreakcard)
 	CheckCardChronogenesis($_as_chronogenesiscard)
 	CheckCardStarforged($_as_starforgedcard)
-	CheckCardWonderland($_as_wonderlandcard)
 	ClickImage("btn_switch_classic_cards.bmp",True)
+	CheckCardWonderland($_as_wonderlandcard)
 	CheckCardTempest($_as_tempestcard)
 	CheckCardBahamut($_as_bahamutcard)
 	CheckCardDarkness($_as_darknesscard)
@@ -655,6 +658,7 @@ Func CheckAccountStatus()
 	Local $as_MoneyBeforeArr = RetrieveVariablesCore($_as_MoneyBefore)
 	Local $as_MoneyAfterArr = RetrieveVariablesCore($_as_MoneyAfter)
 	Local $as_legendcardArr = RetrieveVariablesCore($_as_legendcard)
+	Local $as_omencardArr = RetrieveVariablesCore($_as_omencard)
 	Local $as_brigadecardArr = RetrieveVariablesCore($_as_brigadecard)
 	Local $as_dawnbreakcardArr = RetrieveVariablesCore($_as_dawnbreakcard)
 	Local $as_chronogenesiscardArr = RetrieveVariablesCore($_as_chronogenesiscard)
@@ -665,7 +669,7 @@ Func CheckAccountStatus()
 	Local $as_darknesscardArr = RetrieveVariablesCore($_as_darknesscard)
 	Local $as_classiccardArr = RetrieveVariablesCore($_as_classiccard)
 	Local $as_JJCArr = RetrieveVariablesCore($_as_JJC)
-	ExecDBQuery("[dbo].[SP_UpdateAccountStatus] "&GetAccountInfo("uid")&","&$as_MoneyBeforeArr[0]&",'"&$as_MoneyBeforeArr[1]&"',"&$as_MoneyAfterArr[0]&",'"&$as_MoneyAfterArr[1]&"',"&$as_legendcardArr[0]&",'"&$as_legendcardArr[1]&"',"&$as_brigadecardArr[0]&",'"&$as_brigadecardArr[1]&"',"&$as_dawnbreakcardArr[0]&",'"&$as_dawnbreakcardArr[1]&"',"&$as_chronogenesiscardArr[0]&",'"&$as_chronogenesiscardArr[1]&"',"&$as_starforgedcardArr[0]&",'"&$as_starforgedcardArr[1]&"',"&$as_wonderlandcardArr[0]&",'"&$as_wonderlandcardArr[1]&"',"&$as_tempestcardArr[0]&",'"&$as_tempestcardArr[1]&"',"&$as_bahamutcardArr[0]&",'"&$as_bahamutcardArr[1]&"',"&$as_darknesscardArr[0]&",'"&$as_darknesscardArr[1]&"',"&$as_classiccardArr[0]&",'"&$as_classiccardArr[1]&"',"&$as_JJCArr[0]&",'"&$as_JJCArr[1]&"'")
+	ExecDBQuery("[dbo].[SP_UpdateAccountStatus] "&GetAccountInfo("uid")&","&$as_MoneyBeforeArr[0]&",'"&$as_MoneyBeforeArr[1]&"',"&$as_MoneyAfterArr[0]&",'"&$as_MoneyAfterArr[1]&"',"&$as_legendcardArr[0]&",'"&$as_legendcardArr[1]&"',"&$as_omencardArr[0]&",'"&$as_omencardArr[1]&"',"&$as_brigadecardArr[0]&",'"&$as_brigadecardArr[1]&"',"&$as_dawnbreakcardArr[0]&",'"&$as_dawnbreakcardArr[1]&"',"&$as_chronogenesiscardArr[0]&",'"&$as_chronogenesiscardArr[1]&"',"&$as_starforgedcardArr[0]&",'"&$as_starforgedcardArr[1]&"',"&$as_wonderlandcardArr[0]&",'"&$as_wonderlandcardArr[1]&"',"&$as_tempestcardArr[0]&",'"&$as_tempestcardArr[1]&"',"&$as_bahamutcardArr[0]&",'"&$as_bahamutcardArr[1]&"',"&$as_darknesscardArr[0]&",'"&$as_darknesscardArr[1]&"',"&$as_classiccardArr[0]&",'"&$as_classiccardArr[1]&"',"&$as_JJCArr[0]&",'"&$as_JJCArr[1]&"'")
 ;~ 	ExecDBQuery("[dbo].[SP_UpdateAccountStatus] "&GetAccountInfo("uid")&","&$as_MoneyBeforeArr[0]&",'"&$as_MoneyBeforeArr[1]&"',"&$as_MoneyAfterArr[0]&",'"&$as_MoneyAfterArr[1]&"',0,'',0,'',0,'',0,'',0,'',0,'',0,'',0,'',0,'',0,'',0,''")
 	ClickOnRelative($menu_main)
 EndFunc
@@ -724,12 +728,16 @@ Func CheckCardLegend($item)
 	EndIf
 EndFunc
 
-Func CheckCardBrigade($item, $legendexist)
+Func CheckCardOmen($item, $legendexist)
 	If $legendexist Then
-		CheckCardWrapper($item,"card_brigade.bmp")
+		CheckCardWrapper($item,"card_omen.bmp")
 	Else
 		CheckAccStatus($item)
 	EndIf
+EndFunc
+
+Func CheckCardBrigade($item)
+	CheckCardWrapper($item,"card_brigade.bmp")
 EndFunc
 
 Func CheckCardDawnbreak($item)
