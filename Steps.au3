@@ -673,7 +673,7 @@ EndFunc
 Func GotoCardPage()
 	ClickPosUntilScreenByPixel($menu_shop,$opt_buycards) ;点击 商店
 	ClickOnRelative($opt_buycards) ;点击 购买卡包
-	ClickImage("opt_buycard.bmp",True)
+	ClickImage("opt_buycard.bmp",True,2)
 	Local $pos[2] = [$as_nextcard[0],$as_nextcard[1]-60]
 	ClickPosUntilScreen($pos, "btn_switch_classic_cards.bmp", 800)
 EndFunc
