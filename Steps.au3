@@ -269,6 +269,7 @@ Func CloseApp()
 			Local $errorscreen = $v_screenshotpath & CaptureFullScreen()
 			$v_email_Subject = "Shutdown pc triggered"
 			$v_email_AttachFiles = $errorscreen
+			$v_email_Body = GetLoginUsers()
 			_INetSmtpMailCom($v_email_SmtpServer,$v_email_FromName,$v_email_FromAddress,$v_email_ToAddress,$v_email_Subject,$v_email_Body,$v_email_AttachFiles,$v_email_CcAddress,$v_email_BccAddress,$v_email_Importance,$v_email_Username,$v_email_Password,$v_email_IPPort,$v_email_ssl)
 			;Shutdown(BitOR($SD_SHUTDOWN,$SD_FORCE)) ; shutdown PC
 			Exit
@@ -543,6 +544,14 @@ Func UpdateFightResult()
 	Local $rivalloginid = GetAccountInfo("uid")
 	SwitchWindow(True)
 	ExecDBQuery("[dbo].[SP_CompletePYFight] "&$hostloginid&","&$rivalloginid&","&$fightroomnumber)
+EndFunc
+
+Func GetLoginUsers()
+	WinActivate($v_windows[0])
+	Local $result = GetAccountInfo("uid")
+	WinActivate($v_windows[1])
+	$result = $result + "," + GetAccountInfo("uid")
+	Return $result
 EndFunc
 
 Func JinHua($card)
