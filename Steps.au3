@@ -550,7 +550,7 @@ Func GetLoginUsers()
 	WinActivate($v_windows[0])
 	Local $result = GetAccountInfo("uid")
 	WinActivate($v_windows[1])
-	$result = $result + "," + GetAccountInfo("uid")
+	$result = $result&","&GetAccountInfo("uid")
 	Return $result
 EndFunc
 
