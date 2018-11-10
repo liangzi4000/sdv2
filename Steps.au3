@@ -684,6 +684,8 @@ Func CheckAccountStatus()
 EndFunc
 
 Func GotoCardPage()
+	Local $leftbottom = GetCtrlLeftBottom()
+	ClickPosUntilScreen($leftbottom,"menu_shop.bmp")
 	ClickPosUntilScreenByPixel($menu_shop,$opt_buycards) ;点击 商店
 	ClickOnRelative($opt_buycards) ;点击 购买卡包
 	ClickImage("opt_buycard.bmp",True,2)
