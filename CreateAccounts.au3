@@ -20,7 +20,7 @@ EndFunc
 
 Func Wrapper2()
 	GetDailyLoginAward()
-	Handle2ndAnniversary()
+	;Handle2ndAnniversary()
 	SetupPassword()
 EndFunc
 
@@ -131,7 +131,7 @@ Func BeginnerTutorial()
 	ClickImage("btn_ok_fight_effect.bmp") ;关闭弹窗 “新手教学完成”
 	ClickPosUntilScreen($btn_ignore,"btn_ignore.bmp")
 	ClickImage("btn_ignore.bmp")
-	ClickImage("btn_ok_downlod.bmp")
+	ClickImage("btn_kaishixiazai.bmp")
 EndFunc
 
 Func GetDailyLoginAward()
