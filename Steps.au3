@@ -237,6 +237,8 @@ EndFunc   ;==>CompleteLogin
 #EndRegion Wrapper_ClickUntilNotification_CloseNotification_CompleteLogin
 
 Func ClickMenuOthers()
+	Local $leftbottom = GetCtrlLeftBottom()
+	ClickPosUntilScreen($leftbottom,"menu_shop.bmp")
 	ClickPosUntilScreen($menu_other,"btn_youxiziliaoliandong.bmp")
 EndFunc   ;==>ClickMenuOthers
 
