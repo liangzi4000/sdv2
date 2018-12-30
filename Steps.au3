@@ -336,7 +336,7 @@ Func PerformTask1()
 		WaitImage("btn_back.bmp",5)
 		ClickOnRelative($btn_zhuzhanzhe_confirm) ; 点击决定
 		ClickImage("ui_1st_chapter_task1.bmp",10)
-		ClickImage("btn_qianwangjuqing.bmp")
+		ClickImage("btn_wuyuyin.bmp")
 		ClickPosUntilScreen($btn_ignore,"btn_ignore.bmp") ;忽略
 		ClickImage("btn_ignore.bmp")
 		ClickImage("btn_ok_fight_effect.bmp")

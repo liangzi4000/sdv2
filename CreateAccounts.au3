@@ -20,7 +20,8 @@ EndFunc
 
 Func Wrapper2()
 	GetDailyLoginAward()
-	;Handle2ndAnniversary()
+	Handle2ndAnniversary()
+	FollowThroughSteps()
 	SetupPassword()
 EndFunc
 
@@ -107,14 +108,14 @@ Func BeginnerTutorial()
 	ClickPosUntilScreen($btn_ignore,"btn_ignore.bmp")
 	ClickImage("btn_ignore.bmp")
 	ClickImage("ui_2nd_chapter.bmp") ;第二章
-	ClickImage("btn_qianwangjuqing.bmp")
+	ClickImage("btn_wuyuyin.bmp")
 	ClickPosUntilScreen($btn_ignore,"btn_ignore.bmp")
 	ClickImage("btn_ignore.bmp")
 	ClickImage("btn_ok_fight_effect.bmp", False, 40)
 	ClickPosUntilScreen($btn_ignore,"btn_ignore.bmp")
 	ClickImage("btn_ignore.bmp")
 	ClickImage("ui_3rd_chapter.bmp") ;第三章
-	ClickImage("btn_qianwangjuqing.bmp")
+	ClickImage("btn_wuyuyin.bmp")
 	ClickImage("btn_ok_fight_effect.bmp", False, 40)
 	ClickImage("btn_ok_beginner.bmp") ;关闭弹窗 “新手教学”
 	Sleep(800)
@@ -145,14 +146,35 @@ Func Handle2ndAnniversary()
 	ClickImage("btn_ok_fight_effect.bmp") ; 2-years anniversary
 EndFunc
 
-Func SetupPassword()
+Func FollowThroughSteps()
 	Local $wincenter = GetCtrlCenter()
 	ClickPosUntilScreen($wincenter,"btn_ok_beginner.bmp")
-	ClickImage("btn_ok_beginner.bmp") ;选择单人游戏-确定
-	ClickImage("menu_single_mode.bmp") ;单人游戏
-	Sleep(800)
-	ClickOnRelative($opt_zhuxian) ; 主线剧情
-	ClickImage("menu_others_v2.bmp")
+	ClickImage("btn_ok_beginner.bmp")
+	ClickPosUntilScreen($side_gift, "btn_getall_gifts_v2.bmp")
+	ClickImage("btn_getall_gifts_v2.bmp", True)
+	ClickImage("btn_lingqu.bmp", True)
+	ClickImage("btn_ok_lingqu.bmp")
+	ClickImage("btn_ok_lingqu.bmp")
+
+	ClickPosUntilScreenByPixel($menu_shop,$opt_buycards) ;点击 商店
+	ClickOnRelative($opt_buycards) ;点击 购买卡包
+	ClickImageUntilScreen("opt_buycard.bmp", "btn_goumai.bmp")
+	ClickImage("btn_goumai.bmp")
+	ClickImage("btn_shiyongduihuanquan.bmp")
+	ClickImage("btn_confirm_buy.bmp")
+
+	ClickPosUntilScreen($btn_ignore,"btn_back.bmp")
+	ClickPosUntilScreen($menu_other,"btn_youxiziliaoliandong.bmp")
+EndFunc
+
+Func SetupPassword()
+	;Local $wincenter = GetCtrlCenter()
+	;ClickPosUntilScreen($wincenter,"btn_ok_beginner.bmp")
+	;ClickImage("btn_ok_beginner.bmp") ;选择单人游戏-确定
+	;ClickImage("menu_single_mode.bmp") ;单人游戏
+	;Sleep(800)
+	;ClickOnRelative($opt_zhuxian) ; 主线剧情
+	;ClickImage("menu_others_v2.bmp")
 	ClickImage("btn_youxiziliaoliandong.bmp")
 	ClickImage("btn_liandongziliao_v2.bmp")
 	Sleep(300)
