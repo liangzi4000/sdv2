@@ -25,6 +25,10 @@ Func SearchPixel($pixelinfo_var)
 	$area[3] = $winpos[1] + $ctrlpos[1] + $pixelinfo[1] + $pixelinfo[4]
 	Local $aCoord = PixelSearch($area[0], $area[1], $area[2], $area[3], $pixelinfo[2], $pixelinfo[3])
 	If Not @error Then
+		If _ArrayToString($aCoord) = -1 Then
+			If $debug Then WriteLog("SearchPixel unable to find " & _ArrayToString($pixelinfo))
+			Return $pixel_empty
+		EndIf
 		If $debug Then WriteLog("SearchPixel found " & _ArrayToString($pixelinfo))
 		Return $aCoord
 	Else
@@ -110,8 +114,14 @@ Func ClickPosUntilScreenByPixel($pos, $untilpixel, $interval = 700, $timeout = 6
 		ClickOn($mypos)
 		Sleep($interval)
 		If UBound($untilpixel,0) = 2 Then ; two dimensional array
-			For $row = 0 To UBound($untilpixel) - 1
-				Local $pixelresult = SearchPixel($untilpixel[$row])
+			For $row = 0 To UBound($untilpixel,1) - 1
+				Local $elem = []
+				For $col = 0 To UBound($untilpixel,2) - 1
+					_ArrayAdd($elem, $untilpixel[$row][$col])
+				Next
+				_ArrayDelete($elem,0)
+				Local $pixelresult = SearchPixel($elem)
+
 				If $pixelresult[0] <> $pixel_empty[0] Or $pixelresult[1] <> $pixel_empty[1] Then
 					$index = $row
 					ExitLoop
