@@ -92,6 +92,7 @@ Func ClickPosUntilScreenByPixel($pos, $untilpixel, $interval = 700, $timeout = 6
 	Local $mypos = $convertposition = True ? ConvertRelativePosToAbsolutePos($pos) : $pos
 	Local $x = 0, $y = 0
 	Local $hTimer = TimerInit()
+	Local $index = -1
 	Do
 		If TimerDiff($hTimer) > $timeout * 1000 Then
 			If $timeoutcall <> "" Then
@@ -108,8 +109,22 @@ Func ClickPosUntilScreenByPixel($pos, $untilpixel, $interval = 700, $timeout = 6
 
 		ClickOn($mypos)
 		Sleep($interval)
-		Local $pixelresult = SearchPixel($untilpixel)
-	Until $pixelresult[0] <> $pixel_empty[0] Or $pixelresult[1] <> $pixel_empty[1]
+		If UBound($untilpixel,0) = 2 Then ; two dimensional array
+			For $row = 0 To UBound($untilpixel) - 1
+				Local $pixelresult = SearchPixel($untilpixel[$row])
+				If $pixelresult[0] <> $pixel_empty[0] Or $pixelresult[1] <> $pixel_empty[1] Then
+					$index = $row
+					ExitLoop
+				EndIf
+			Next
+		Else ; one dimensional array
+			Local $pixelresult = SearchPixel($untilpixel)
+			If $pixelresult[0] <> $pixel_empty[0] Or $pixelresult[1] <> $pixel_empty[1] Then
+				$index = 0
+			EndIf
+		EndIf
+	Until $index > -1
+	Return $index
 	If $debug Then WriteLog("ClickPosUntilScreenByPixel found pixel " & _ArrayToString($untilpixel))
 EndFunc
 
