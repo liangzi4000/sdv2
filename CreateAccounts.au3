@@ -20,7 +20,7 @@ EndFunc
 
 Func Wrapper2()
 	GetDailyLoginAward()
-	Handle2ndAnniversary()
+;~ 	Handle2ndAnniversary()
 	FollowThroughSteps()
 	SetupPassword()
 EndFunc
