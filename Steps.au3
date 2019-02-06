@@ -333,7 +333,7 @@ Func PerformTask1()
 		ClickImage("menu_single_mode.bmp",True)
 		Sleep(2000)
 		ClickOnRelative($opt_zhuxian) ; 点击 主线剧情
-		WaitImage("btn_back.bmp",5)
+		WaitImage("btn_back.bmp")
 		ClickOnRelative($btn_zhuzhanzhe_confirm) ; 点击决定
 		ClickImage("ui_1st_chapter_task1.bmp",10)
 		ClickImage("btn_wuyuyin.bmp")
