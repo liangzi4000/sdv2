@@ -187,7 +187,7 @@ Func SetupPassword()
 	ClickPosUntilScreen($txt_setpwd, "btn_queding.bmp", 800)
 	SendPasteKeys() ; 黏贴
 	ClickImage("btn_queding.bmp") ;点击确定
-	Sleep(500)
+	Sleep(2000)
 	ClickPosUntilScreen($txt_setpwd_confirm, "btn_queding.bmp", 800)
 	SendPasteKeys() ; 黏贴
 	ClickImage("btn_queding.bmp") ;点击确定
