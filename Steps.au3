@@ -322,18 +322,19 @@ Func PerformTask1()
 		EndIf
 		ClickImage("ui_zhidingxilie.bmp",True)
 		WaitImage("btn_back.bmp")
-		ClickOnRelative($btn_createcombination) ; 点击 创建新牌组
-		ClickImage("btn_zidongbianji.bmp"); 点击 自动编辑
-		Sleep(300)
-		ClickPosUntilScreen($btn_zhuzhanzhe_confirm,"btn_save.bmp") ; 点击决定
-		ClickImage("btn_save.bmp")
-		ClickImage("btn_jueding_bianjicard.bmp",True)
-		ClickImage("btn_ok_card_saved.bmp",True)
-		ClickImage("btn_ok_fight_effect.bmp",True)
+		If SearchImageActive("ui_task1_half_flag.bmp",$mypos[0],$mypos[1]) = 0 Then
+			ClickOnRelative($btn_createcombination) ; 点击 创建新牌组
+			ClickImage("btn_zidongbianji.bmp"); 点击 自动编辑
+			Sleep(300)
+			ClickPosUntilScreen($btn_zhuzhanzhe_confirm,"btn_save.bmp") ; 点击决定
+			ClickImage("btn_save.bmp")
+			ClickImage("btn_jueding_bianjicard.bmp",True)
+			ClickImage("btn_ok_card_saved.bmp",True)
+			ClickImage("btn_ok_fight_effect.bmp",True)
+		EndIf
 		ClickImage("menu_single_mode.bmp",True)
-		Sleep(2000)
-		ClickOnRelative($opt_zhuxian) ; 点击 主线剧情
-		WaitImage("btn_back.bmp")
+		Sleep(1000)
+		ClickPosUntilScreen($opt_zhuxian,"btn_back.bmp") ; 点击 主线剧情
 		ClickOnRelative($btn_zhuzhanzhe_confirm) ; 点击决定
 		ClickImage("ui_1st_chapter_task1.bmp",10)
 		ClickImage("btn_wuyuyin.bmp")
