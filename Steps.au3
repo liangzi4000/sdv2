@@ -369,14 +369,13 @@ EndFunc
 Func CreateOrEnterFightRoom()
 	If Not IsFightAllow() Then Return
 	ClickPosUntilScreenByPixel($menu_duizhan,$opt_privatefight) ;点击 对战
+	ClickOnRelative($opt_privatefight)
 	If IsFightHost() Then
-		ClickPosUntilScreen($opt_privatefight,"sdv_fight_duizhan.bmp")
-		ClickImage("sdv_fight_duizhan.bmp") ; 建立对战室
+		ClickImage("sdv_fight_duizhan.bmp",False,10) ; 建立对战室
 		ClickImage("sdv_fight_normalfight.bmp") ; 一般对战
 		ClickImage("sdv_button_jianliduizhanshi.bmp") ; 点击 建立对战室 按钮
 	Else
-		ClickPosUntilScreen($opt_privatefight,"sdv_fight_jinruduizhan.bmp")
-		ClickImage("sdv_fight_jinruduizhan.bmp") ; 进入对战室
+		ClickImage("sdv_fight_jinruduizhan.bmp",False,10) ; 进入对战室
 		Sleep(500)
 		Local $roomnumber = StringSplit($fightroomnumber,"")
 		For $i = 1 To UBound($roomnumber)-1
