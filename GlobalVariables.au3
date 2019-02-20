@@ -8,6 +8,7 @@ Global $shutdownpc = False						; Shut down pc after script completed
 Global $exitaction = $exitaction_restart 		; Action to take upon exit, default is to restart program
 Global $winleftready = False 					; Align window left flag
 Global $winrightready = False 					; Align window right flag
+Global $morethantwonox = False					; More than two NOX instance
 Global $timeoutcount = 0 						; Count number of timeout for function that invoking itself
 Global Const $lastclickposition = "lastclicked" ; Name const of last clicked position
 Global Const $lastimageposition = "lastimage"	; Name const of last image center position

@@ -107,10 +107,12 @@ Func GetNextRecord()
 	Local $acctinfo = ""
 	Local $result = False
 	Local $siblingloginid = 0
-	If Not IsFightHost() Then
-		SwitchWindow(True)
-		$siblingloginid = Number(GetAccountInfo("uid"))
-		SwitchWindow(False)
+	If $morethantwonox = False Then
+		If Not IsFightHost() Then
+			SwitchWindow(True)
+			$siblingloginid = Number(GetAccountInfo("uid"))
+			SwitchWindow(False)
+		EndIf
 	EndIf
 
 	For $x = 1 To 5
