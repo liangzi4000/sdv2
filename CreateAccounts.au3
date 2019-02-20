@@ -20,7 +20,6 @@ EndFunc
 
 Func Wrapper2()
 	GetDailyLoginAward()
-	Handle2ndAnniversary()
 	FollowThroughSteps()
 	SetupPassword()
 EndFunc
@@ -140,15 +139,13 @@ Func GetDailyLoginAward()
 EndFunc
 
 Func Handle2ndAnniversary()
-	Sleep(1000)
-	Local $wincenter = GetCtrlCenter()
-	ClickPosUntilScreen($wincenter,"btn_ok_fight_effect.bmp") ; 2-years anniversary
-	ClickImage("btn_ok_fight_effect.bmp") ; 2-years anniversary
+	Local $pos = [0,0]
+	If SearchImageActive("btn_ok_fight_effect.bmp",$pos[0],$pos[1]) = 1 Then ClickImage("btn_ok_fight_effect.bmp")
 EndFunc
 
 Func FollowThroughSteps()
 	Local $wincenter = GetCtrlCenter()
-	ClickPosUntilScreen($wincenter,"btn_ok_beginner.bmp")
+	ClickPosUntilScreenExt($wincenter,"btn_ok_beginner.bmp","Handle2ndAnniversary")
 	ClickImage("btn_ok_beginner.bmp")
 	ClickPosUntilScreen($side_gift, "btn_getall_gifts_v2.bmp")
 	ClickImage("btn_getall_gifts_v2.bmp", True)

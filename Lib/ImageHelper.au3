@@ -212,7 +212,7 @@ EndFunc   ;==>ClickImageUntilScreen
 	Wait and click on specified position in active window until targe image appear in active window.
 	The $pos by default is relative position
 #comments-end
-Func ClickPosUntilScreen($pos, $untilimage, $interval = 700, $timeout = 60, $timeoutcall = "", $convertposition = True)
+Func ClickPosUntilScreen($pos, $untilimage, $interval = 700, $timeout = 60, $timeoutcall = "", $convertposition = True, $ext = Default)
 	Local $mypos = $convertposition = True ? ConvertRelativePosToAbsolutePos($pos) : $pos
 	Local $x = 0, $y = 0
 	Local $hTimer = TimerInit()
@@ -232,9 +232,14 @@ Func ClickPosUntilScreen($pos, $untilimage, $interval = 700, $timeout = 60, $tim
 
 		ClickOn($mypos)
 		Sleep($interval)
+		If $ext <> Default Then Call($ext)
 	WEnd
 	If $debug Then WriteLog("ClickPosUntilScreen found image " & $untilimage)
 EndFunc   ;==>ClickPosUntilScreen
+
+Func ClickPosUntilScreenExt($pos, $untilimage, $ext)
+	ClickPosUntilScreen($pos, $untilimage, 700, 60, "", True, $ext)
+EndFunc
 
 Func DragImage($image, $to_pos, $relaive = True)
 	WaitImage($image)
