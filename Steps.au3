@@ -299,6 +299,9 @@ Func GetGift()
 EndFunc   ;==>GetGift
 
 Func GetTaskReward()
+	Local $leftbottom = GetCtrlLeftBottom()
+	ClickOnRelative($leftbottom)
+
 	ClickPosUntilScreen($side_task, "btn_back.bmp")
 	ClickOnRelative($side_task_chengjiu)
 	Local $img = WaitImage("btn_getall_rewards.bmp,btn_getall_rewards_greyout.bmp")
@@ -315,6 +318,10 @@ EndFunc
 Func PerformTask1()
 	If GetAccountInfo("task1") = 0 Then
 		ClickImage("menu_card.bmp",True) ; 点击卡片菜单
+		Local $leftbottom = GetCtrlLeftBottom()
+		ClickOnRelative($leftbottom)
+		ClickImage("menu_card.bmp",True) ; 点击卡片菜单
+
 		Sleep(500)
 		ClickPosUntilScreen($opt_zhuxian,"ui_zhidingxilie.bmp") ;点击直到出现 指定系列
 		Sleep(500)
