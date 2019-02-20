@@ -20,7 +20,7 @@ EndFunc
 
 Func Wrapper2()
 	GetDailyLoginAward()
-;~ 	Handle2ndAnniversary()
+	Handle2ndAnniversary()
 	FollowThroughSteps()
 	SetupPassword()
 EndFunc
@@ -158,7 +158,8 @@ Func FollowThroughSteps()
 
 	ClickPosUntilScreenByPixel($menu_shop,$opt_buycards) ;点击 商店
 	ClickOnRelative($opt_buycards) ;点击 购买卡包
-	ClickImageUntilScreen("opt_buycard.bmp", "btn_goumai.bmp")
+	ClickImageUntilScreen("opt_buycard.bmp", "btn_ok_card_saved.bmp")
+	ClickImage("btn_ok_card_saved.bmp")
 	ClickImage("btn_goumai.bmp")
 	ClickImage("btn_shiyongduihuanquan.bmp")
 	ClickImage("btn_confirm_buy.bmp")
