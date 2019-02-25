@@ -4,7 +4,7 @@
 
 Global $firstrun = []
 _ArrayAdd($firstrun, "OpenApp")
-_ArrayAdd($firstrun, "StartScreen")
+_ArrayAdd($firstrun, "StartScreenEx")
 _ArrayAdd($firstrun, "MoveWindow")
 _ArrayAdd($firstrun, "OpenLoginUI")
 _ArrayAdd($firstrun, "ClickBtnLianDongZiLiang")
@@ -64,9 +64,9 @@ Func ExecStep($index)
 EndFunc   ;==>ExecStep
 
 Func MoveWindow()
-	Local $toolbarpos = GetHideToolBarPosition()
+;~ 	Local $toolbarpos = GetHideToolBarPosition()
 	Local $ctrlpos = GetCtrlPosition()
-	ClickOn($toolbarpos)
+;~ 	ClickOn($toolbarpos)
 	Sleep(500)
 	If Not $winleftready Then
 		WinMove($activewindow, "", 0, 0)
@@ -87,7 +87,8 @@ Func MoveWindow()
 EndFunc   ;==>MoveWindow
 
 Func OpenApp()
-	ClickImage("app_icon_home.bmp")
+	;ClickImage("app_icon_home.bmp")
+	ShellExecuteWait($v_noxpath&"noxconsole","runapp -name:"&$activewindow&" -packagename:"&$v_packagename)
 EndFunc   ;==>OpenApp
 
 Func OpenLoginUI()
@@ -187,12 +188,15 @@ Func Wrapper_StartScreen_DoItLater()
 	DoItLater()
 EndFunc   ;==>Wrapper_StartScreen_DoItLater
 
+Func StartScreenEx()
+	WaitImageDesktop("ui_startscreen.bmp", 600, "", False)
+EndFunc
+
 Func StartScreen()
 	; Extra check to ensure Ok button is clicked
 	Local $pos = [0,0]
 	If SearchImageActive("btn_ok.bmp",$pos[0],$pos[1]) = 1 Then ClickImage("btn_ok.bmp")
 	If SearchImageActive("btn_ok_v2.bmp",$pos[0],$pos[1]) = 1 Then ClickImage("btn_ok_v2.bmp")
-
 	WaitImage("ui_startscreen.bmp", 600, "", False, $area_startscreen[0], $area_startscreen[1], $area_startscreen[2], $area_startscreen[3])
 EndFunc   ;==>StartScreen
 
@@ -249,40 +253,43 @@ Func ClickBtnGameLink()
 EndFunc   ;==>ClickBtnGameLink
 
 Func CloseApp()
-	Local $pos = [0, 0]
-	Local $mycount = 5
-	Do
-		Send("{PGUP}")
-		Sleep(3000)
-		If SearchImageActive("app_icon_tasklist_vertical.bmp", $pos[0], $pos[1]) = 1 Then
-			ClickImage("app_icon_tasklist_vertical.bmp")
-			Sleep(1000)
-		EndIf
-		$mycount = $mycount - 1
-	Until (SearchImageActive("app_icon_tasklist.bmp", $pos[0], $pos[1]) = 1 Or $mycount = 0)
-	Slide($pos[0], $pos[1]+120, $pos[0], 0)
-	Sleep(2000)
-	Local $count = 0, $maxretry = 5
-	While SearchImageActive("app_icon_home.bmp", $pos[0], $pos[1]) <> 1 And $count < $maxretry
-		Send("{HOME}")
-		$count += 1
-		Sleep(3000)
-	WEnd
-	If $count >= $maxretry Then
-		If $v_onunexpectederrortoshutdownpc Then
-			Local $errorscreen = $v_screenshotpath & CaptureFullScreen()
-			$v_email_Subject = "Shutdown pc triggered"
-			$v_email_AttachFiles = $errorscreen
-			$v_email_Body = GetLoginUsers()
-			_INetSmtpMailCom($v_email_SmtpServer,$v_email_FromName,$v_email_FromAddress,$v_email_ToAddress,$v_email_Subject,$v_email_Body,$v_email_AttachFiles,$v_email_CcAddress,$v_email_BccAddress,$v_email_Importance,$v_email_Username,$v_email_Password,$v_email_IPPort,$v_email_ssl)
-			;Shutdown(BitOR($SD_SHUTDOWN,$SD_FORCE)) ; shutdown PC
-			Exit
-		Else
-			Exit
-		EndIf
-	EndIf
-	Local $toolbarpos = GetOpenToolBarPosition()
-	ClickOn($toolbarpos)
+	;adb shell am force-stop “package_name”
+	ShellExecuteWait($v_noxpath&"adb","-s 127.0.0.1:"&$oDictionary.Item($activewindow)&" shell am force-stop "&$v_packagename)
+;~
+;~ 	Local $pos = [0, 0]
+;~ 	Local $mycount = 5
+;~ 	Do
+;~ 		Send("{PGUP}")
+;~ 		Sleep(3000)
+;~ 		If SearchImageActive("app_icon_tasklist_vertical.bmp", $pos[0], $pos[1]) = 1 Then
+;~ 			ClickImage("app_icon_tasklist_vertical.bmp")
+;~ 			Sleep(1000)
+;~ 		EndIf
+;~ 		$mycount = $mycount - 1
+;~ 	Until (SearchImageActive("app_icon_tasklist.bmp", $pos[0], $pos[1]) = 1 Or $mycount = 0)
+;~ 	Slide($pos[0], $pos[1]+120, $pos[0], 0)
+;~ 	Sleep(2000)
+;~ 	Local $count = 0, $maxretry = 5
+;~ 	While SearchImageActive("app_icon_home.bmp", $pos[0], $pos[1]) <> 1 And $count < $maxretry
+;~ 		Send("{HOME}")
+;~ 		$count += 1
+;~ 		Sleep(3000)
+;~ 	WEnd
+;~ 	If $count >= $maxretry Then
+;~ 		If $v_onunexpectederrortoshutdownpc Then
+;~ 			Local $errorscreen = $v_screenshotpath & CaptureFullScreen()
+;~ 			$v_email_Subject = "Shutdown pc triggered"
+;~ 			$v_email_AttachFiles = $errorscreen
+;~ 			$v_email_Body = GetLoginUsers()
+;~ 			_INetSmtpMailCom($v_email_SmtpServer,$v_email_FromName,$v_email_FromAddress,$v_email_ToAddress,$v_email_Subject,$v_email_Body,$v_email_AttachFiles,$v_email_CcAddress,$v_email_BccAddress,$v_email_Importance,$v_email_Username,$v_email_Password,$v_email_IPPort,$v_email_ssl)
+;~ 			;Shutdown(BitOR($SD_SHUTDOWN,$SD_FORCE)) ; shutdown PC
+;~ 			Exit
+;~ 		Else
+;~ 			Exit
+;~ 		EndIf
+;~ 	EndIf
+;~ 	Local $toolbarpos = GetOpenToolBarPosition()
+;~ 	ClickOn($toolbarpos)
 EndFunc   ;==>CloseApp
 
 Func GetGift()

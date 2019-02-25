@@ -1,4 +1,3 @@
 DEL log\*.log
-DEL Db\money\*.jpg
-DEL Db\money\*.txt
+DEL Db\money\*.*
 DEL Assets\screenshot\*.jpg
