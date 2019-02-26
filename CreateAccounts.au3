@@ -36,7 +36,7 @@ Func CreateNextRecord()
 EndFunc
 
 Func LaunchNox()
-	ShellExecuteWait($v_noxpath&"noxconsole","runapp -name:"&$activewindow)
+	ShellExecuteWait($v_noxpath&"noxconsole","launch -name:"&$activewindow)
 EndFunc
 
 Func DeleteApp()
