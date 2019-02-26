@@ -60,7 +60,7 @@ Func Main()
 	While UBound($inactivewindows) > 1
 		_ArrayPop($inactivewindows)
 	WEnd
-
+	Sleep(20000) ; sleep 20 seconds for nox to close
 	ExecStep("LaunchNox")
 	Sleep(50000) ; sleep 50 seconds for nox completion
 	While UBound($inactivewindows)-1 <> UBound($v_windows)
