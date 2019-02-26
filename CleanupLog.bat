@@ -1,3 +1,3 @@
 DEL log\*.log
-DEL Db\money\*.*
+DEL /Q Db\money\*.*
 DEL Assets\screenshot\*.jpg

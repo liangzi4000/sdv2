@@ -35,30 +35,37 @@ Func CreateNextRecord()
 	Return True
 EndFunc
 
-Func DeleteApp()
-	Local $pos = [0, 0]
-	Do
-		Send("{HOME}")
-		WriteLog("Press Home key")
-		Sleep(1500)
-	Until SearchImageActive("app_icon_home.bmp", $pos[0], $pos[1]) = 1
+Func LaunchNox()
+	ShellExecuteWait($v_noxpath&"noxconsole","runapp -name:"&$activewindow)
+EndFunc
 
-	DragImage("app_icon_home.bmp",$ico_bin)
-	ClickImage("btn_delete_app_queding.bmp")
+Func DeleteApp()
+	ShellExecuteWait($v_noxpath&"adb","-s 127.0.0.1:"&$oDictionary.Item($activewindow)&" uninstall "&$v_packagename)
+;~ 	Local $pos = [0, 0]
+;~ 	Do
+;~ 		Send("{HOME}")
+;~ 		WriteLog("Press Home key")
+;~ 		Sleep(1500)
+;~ 	Until SearchImageActive("app_icon_home.bmp", $pos[0], $pos[1]) = 1
+
+;~ 	DragImage("app_icon_home.bmp",$ico_bin)
+;~ 	ClickImage("btn_delete_app_queding.bmp")
 EndFunc
 
 Func InstallApp()
-	Local $pos = [0, 0]
-	Do
-		WinActivate($activewindow)
-		Send("^3")
-		Sleep(1500)
-	Until SearchImageDesktop("openphoneapkfolder.bmp", $pos[0], $pos[1]) = 1
-	ClickImageDesktop("openphoneapkfolder.bmp") ; Click on "Open Phone Folder" of APK files
-	ClickImage("shadowverseapk.bmp") ; Click on "Shadowverse" apk file
-	ClickImage("btn_next.bmp")
-	ClickImage("btn_install.bmp")
-	ClickImage("btn_open.bmp")
+	ShellExecuteWait($v_noxpath&"adb","-s 127.0.0.1:"&$oDictionary.Item($activewindow)&" install "&@ScriptDir&"\Assets\Apk\Shadowverse.apk")
+	ShellExecuteWait($v_noxpath&"noxconsole","runapp -name:"&$activewindow&" -packagename:"&$v_packagename)
+;~ 	Local $pos = [0, 0]
+;~ 	Do
+;~ 		WinActivate($activewindow)
+;~ 		Send("^3")
+;~ 		Sleep(1500)
+;~ 	Until SearchImageDesktop("openphoneapkfolder.bmp", $pos[0], $pos[1]) = 1
+;~ 	ClickImageDesktop("openphoneapkfolder.bmp") ; Click on "Open Phone Folder" of APK files
+;~ 	ClickImage("shadowverseapk.bmp") ; Click on "Shadowverse" apk file
+;~ 	ClickImage("btn_next.bmp")
+;~ 	ClickImage("btn_install.bmp")
+;~ 	ClickImage("btn_open.bmp")
 EndFunc
 
 Func SetupLanguageAndAgreement()

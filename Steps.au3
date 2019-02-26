@@ -253,8 +253,8 @@ Func ClickBtnGameLink()
 EndFunc   ;==>ClickBtnGameLink
 
 Func CloseApp()
-	;adb shell am force-stop “package_name”
-	ShellExecuteWait($v_noxpath&"adb","-s 127.0.0.1:"&$oDictionary.Item($activewindow)&" shell am force-stop "&$v_packagename)
+	;ShellExecuteWait($v_noxpath&"adb","-s 127.0.0.1:"&$oDictionary.Item($activewindow)&" shell am force-stop "&$v_packagename)
+	ShellExecuteWait($v_noxpath&"noxconsole.exe","quit -name:"&$activewindow)
 ;~
 ;~ 	Local $pos = [0, 0]
 ;~ 	Local $mycount = 5

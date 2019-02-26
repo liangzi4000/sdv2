@@ -61,6 +61,8 @@ Func Main()
 		_ArrayPop($inactivewindows)
 	WEnd
 
+	ExecStep("LaunchNox")
+	Sleep(50000) ; sleep 50 seconds for nox completion
 	While UBound($inactivewindows)-1 <> UBound($v_windows)
 		For $x=0 To UBound($createaccountsteps)-1
 			ExecStep($createaccountsteps[$x])
