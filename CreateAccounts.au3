@@ -36,10 +36,12 @@ Func CreateNextRecord()
 EndFunc
 
 Func LaunchNox()
+	WriteLog("LaunchNox")
 	ShellExecuteWait($v_noxpath&"noxconsole","launch -name:"&$activewindow)
 EndFunc
 
 Func DeleteApp()
+	WriteLog("DeleteApp cmd: "&$v_noxpath&"adb "&"-s 127.0.0.1:"&$oDictionary.Item($activewindow)&" uninstall "&$v_packagename)
 	ShellExecuteWait($v_noxpath&"adb","-s 127.0.0.1:"&$oDictionary.Item($activewindow)&" uninstall "&$v_packagename)
 ;~ 	Local $pos = [0, 0]
 ;~ 	Do
@@ -53,7 +55,9 @@ Func DeleteApp()
 EndFunc
 
 Func InstallApp()
+	WriteLog("InstallApp cmd: "&$v_noxpath&"adb "&"-s 127.0.0.1:"&$oDictionary.Item($activewindow)&" install "&@ScriptDir&"\Assets\Apk\Shadowverse.apk")
 	ShellExecuteWait($v_noxpath&"adb","-s 127.0.0.1:"&$oDictionary.Item($activewindow)&" install "&@ScriptDir&"\Assets\Apk\Shadowverse.apk")
+	WriteLog("LaunchApp cmd: "&$v_noxpath&"noxconsole "&"runapp -name:"&$activewindow&" -packagename:"&$v_packagename)
 	ShellExecuteWait($v_noxpath&"noxconsole","runapp -name:"&$activewindow&" -packagename:"&$v_packagename)
 ;~ 	Local $pos = [0, 0]
 ;~ 	Do
