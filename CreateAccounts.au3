@@ -59,6 +59,7 @@ Func InstallApp()
 	ShellExecuteWait($v_noxpath&"adb","-s 127.0.0.1:"&$oDictionary.Item($activewindow)&" install "&@ScriptDir&"\Assets\Apk\Shadowverse.apk")
 	WriteLog("LaunchApp cmd: "&$v_noxpath&"noxconsole "&"runapp -name:"&$activewindow&" -packagename:"&$v_packagename)
 	ShellExecuteWait($v_noxpath&"noxconsole","runapp -name:"&$activewindow&" -packagename:"&$v_packagename)
+	Sleep(3000)
 ;~ 	Local $pos = [0, 0]
 ;~ 	Do
 ;~ 		WinActivate($activewindow)
