@@ -35,7 +35,6 @@ EndFunc
 Func ShutdownAfterFinish()
 	BlockInput($BI_DISABLE)
 	WriteLog("Ctrl+G pressed.")
-	$shutdownpc = True
 EndFunc
 
 Func Main()
@@ -70,13 +69,10 @@ Func Main()
 	WEnd
 	WriteLog("Accounts creation completed.")
 
-	; Default to terminate program without shutdown PC
-	If $exitaction = $exitaction_restart Then
-		$exitaction = $exitaction_terminatescript
-	EndIf
-
 	If $shutdownpc Then
 		$exitaction = $exitaction_shutdownpc
+	Else
+		$exitaction = $exitaction_terminatescript
 	EndIf
 	Exit
 EndFunc
@@ -93,7 +89,7 @@ Func OnAutoitExit()
 			ExecStep("CloseApp")
 			RunScript()
 		Case $exitaction_shutdownpc
-			;Shutdown(BitOR($SD_SHUTDOWN,$SD_FORCE)) ; shutdown PC
+			Shutdown(BitOR($SD_SHUTDOWN,$SD_FORCE)) ; shutdown PC
 		Case $exitaction_terminatescript
 			; do nothing
 	EndSwitch

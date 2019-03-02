@@ -22,6 +22,9 @@ Global $v_allowgetpyr = False					; Flag to config execution of function GetPFR
 Global $v_onunexpectederrortoshutdownpc = True	; Flag to config shutdown pc when unexpected error happens
 Global $v_noxpath = "C:\Program Files\Nox\bin\"	; Nox installation path
 Global $v_packagename = "com.cygames.Shadowverse" ; Package name
+Global $v_windows = StringSplit(IniRead("start.ini","NoxInstances","NameList",""),",",2)
+If UBound($v_windows) > 2 Then $morethantwonox = True
+If IniRead("start.ini","NoxInstances","ShutdownPC","") = "True" Then $shutdownpc = True
 
 Global $v_winctrlclassname = "subWin1"
 Global Const $v_imagepath = @ScriptDir & "\Assets\identifier\"
