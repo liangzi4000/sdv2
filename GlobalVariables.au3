@@ -25,6 +25,10 @@ Global $v_packagename = "com.cygames.Shadowverse" ; Package name
 Global $v_windows = StringSplit(IniRead("start.ini","NoxInstances","NameList",""),",",2)
 If UBound($v_windows) > 2 Then $morethantwonox = True
 If IniRead("start.ini","NoxInstances","ShutdownPC","") = "True" Then $shutdownpc = True
+Global $v_installfile1 = IniRead("start.ini","Install","file1","")
+Global $v_installfile2 = IniRead("start.ini","Install","file2","")
+Global $v_installfolder1 = IniRead("start.ini","Install","folder1","")
+Global $v_installfolder2 = IniRead("start.ini","Install","folder2","")
 
 Global $v_winctrlclassname = "subWin1"
 Global Const $v_imagepath = @ScriptDir & "\Assets\identifier\"

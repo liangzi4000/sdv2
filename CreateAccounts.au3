@@ -11,7 +11,6 @@ _ArrayAdd($createaccountsteps,"CheckExit")
 Func Wrapper1()
 	Local $success = CreateNextRecord()
 	If $success Then
-		DeleteApp()
 		InstallApp()
 		SetupLanguageAndAgreement()
 		SetupUserName()
@@ -40,9 +39,9 @@ Func LaunchNox()
 	ShellExecuteWait($v_noxpath&"noxconsole","launch -name:"&$activewindow)
 EndFunc
 
-Func DeleteApp()
-	WriteLog("DeleteApp cmd: "&$v_noxpath&"adb "&"-s 127.0.0.1:"&$oDictionary.Item($activewindow)&" uninstall "&$v_packagename)
-	ShellExecuteWait($v_noxpath&"adb","-s 127.0.0.1:"&$oDictionary.Item($activewindow)&" uninstall "&$v_packagename)
+;~ Func DeleteApp()
+;~ 	WriteLog("DeleteApp cmd: "&$v_noxpath&"adb "&"-s 127.0.0.1:"&$oDictionary.Item($activewindow)&" uninstall "&$v_packagename)
+;~ 	ShellExecuteWait($v_noxpath&"adb","-s 127.0.0.1:"&$oDictionary.Item($activewindow)&" uninstall "&$v_packagename)
 ;~ 	Local $pos = [0, 0]
 ;~ 	Do
 ;~ 		Send("{HOME}")
@@ -52,11 +51,13 @@ Func DeleteApp()
 
 ;~ 	DragImage("app_icon_home.bmp",$ico_bin)
 ;~ 	ClickImage("btn_delete_app_queding.bmp")
-EndFunc
+;~ EndFunc
 
 Func InstallApp()
-	WriteLog("InstallApp cmd: "&$v_noxpath&"adb "&"-s 127.0.0.1:"&$oDictionary.Item($activewindow)&" install "&@ScriptDir&"\Assets\Apk\Shadowverse.apk")
-	ShellExecuteWait($v_noxpath&"adb","-s 127.0.0.1:"&$oDictionary.Item($activewindow)&" install "&@ScriptDir&"\Assets\Apk\Shadowverse.apk")
+	WriteLog("push template file into destination folder")
+	ShellExecuteWait($v_noxpath&"adb","-s 127.0.0.1:"&$oDictionary.Item($activewindow)&" push "&@ScriptDir&"\"&$v_installfile1&" "&$v_installfolder1)
+	ShellExecuteWait($v_noxpath&"adb","-s 127.0.0.1:"&$oDictionary.Item($activewindow)&" push "&@ScriptDir&"\"&$v_installfile2&" "&$v_installfolder2)
+
 	WriteLog("LaunchApp cmd: "&$v_noxpath&"noxconsole "&"runapp -name:"&$activewindow&" -packagename:"&$v_packagename)
 	ShellExecuteWait($v_noxpath&"noxconsole","runapp -name:"&$activewindow&" -packagename:"&$v_packagename)
 	Sleep(3000)
@@ -102,7 +103,7 @@ Func SetupUserName()
 	Sleep(500)
 	ClickImage("btn_jueding_name.bmp")
 	Sleep(500)
-	ClickImageUntilScreen("btn_ok_complete_registration.bmp","initial_downloading.bmp")
+	ClickImageUntilScreen("btn_ok_complete_registration.bmp","ui_download_completed.bmp")
 EndFunc
 
 Func BeginnerTutorial()
@@ -143,7 +144,7 @@ Func BeginnerTutorial()
 	ClickImage("btn_ok_fight_effect.bmp") ;关闭弹窗 “新手教学完成”
 	ClickPosUntilScreen($btn_ignore,"btn_ignore.bmp")
 	ClickImage("btn_ignore.bmp")
-	ClickImage("btn_kaishixiazai.bmp")
+;~ 	ClickImage("btn_kaishixiazai.bmp")
 EndFunc
 
 Func GetDailyLoginAward()
