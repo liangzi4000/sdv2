@@ -21,6 +21,7 @@ Func Wrapper2()
 	GetDailyLoginAward()
 	FollowThroughSteps()
 	SetupPassword()
+	CloseGame()
 EndFunc
 
 Func CreateNextRecord()
@@ -39,6 +40,11 @@ Func LaunchNox()
 	ShellExecuteWait($v_noxpath&"noxconsole","launch -name:"&$activewindow)
 EndFunc
 
+Func CloseGame()
+	ShellExecuteWait($v_noxpath&"adb","-s 127.0.0.1:"&$oDictionary.Item($activewindow)&" shell am force-stop "&$v_packagename)
+EndFunc
+
+
 ;~ Func DeleteApp()
 ;~ 	WriteLog("DeleteApp cmd: "&$v_noxpath&"adb "&"-s 127.0.0.1:"&$oDictionary.Item($activewindow)&" uninstall "&$v_packagename)
 ;~ 	ShellExecuteWait($v_noxpath&"adb","-s 127.0.0.1:"&$oDictionary.Item($activewindow)&" uninstall "&$v_packagename)
@@ -55,8 +61,8 @@ EndFunc
 
 Func InstallApp()
 	WriteLog("push template file into destination folder")
-	ShellExecuteWait($v_noxpath&"adb","-s 127.0.0.1:"&$oDictionary.Item($activewindow)&" push "&@ScriptDir&"\"&$v_installfile1&" "&$v_installfolder1)
-	ShellExecuteWait($v_noxpath&"adb","-s 127.0.0.1:"&$oDictionary.Item($activewindow)&" push "&@ScriptDir&"\"&$v_installfile2&" "&$v_installfolder2)
+	ShellExecuteWait($v_noxpath&"adb","-s 127.0.0.1:"&$oDictionary.Item($activewindow)&" push "&@ScriptDir&"\Assets\apk\"&$v_installfile1&" "&$v_installfolder1)
+	ShellExecuteWait($v_noxpath&"adb","-s 127.0.0.1:"&$oDictionary.Item($activewindow)&" push "&@ScriptDir&"\Assets\apk\"&$v_installfile2&" "&$v_installfolder2)
 
 	WriteLog("LaunchApp cmd: "&$v_noxpath&"noxconsole "&"runapp -name:"&$activewindow&" -packagename:"&$v_packagename)
 	ShellExecuteWait($v_noxpath&"noxconsole","runapp -name:"&$activewindow&" -packagename:"&$v_packagename)
@@ -76,18 +82,18 @@ EndFunc
 
 Func SetupLanguageAndAgreement()
 	ClickImage("ui_startscreen.bmp", True, 60, "", $area_startscreen[0], $area_startscreen[1], $area_startscreen[2], $area_startscreen[3])
-	WaitImage("btn_ok_language.bmp")
-	Sleep(1500)
-	ClickOnRelative($btn_change_lang)
-	WaitImage("btn_ok_cht.bmp")
-	Sleep(500)
-	ClickOnRelative($opt_lang_cht)
-	ClickImage("btn_ok_cht.bmp")
-	Sleep(500)
-	ClickImage("btn_ok_language.bmp")
-	Sleep(500)
-	ClickImage("btn_ok_language_confirm.bmp")
-	Sleep(500)
+;~ 	WaitImage("btn_ok_language.bmp")
+;~ 	Sleep(1500)
+;~ 	ClickOnRelative($btn_change_lang)
+;~ 	WaitImage("btn_ok_cht.bmp")
+;~ 	Sleep(500)
+;~ 	ClickOnRelative($opt_lang_cht)
+;~ 	ClickImage("btn_ok_cht.bmp")
+;~ 	Sleep(500)
+;~ 	ClickImage("btn_ok_language.bmp")
+;~ 	Sleep(500)
+;~ 	ClickImage("btn_ok_language_confirm.bmp")
+;~ 	Sleep(500)
 	ClickImage("btn_agree.bmp")
 	Sleep(800)
 	ClickImage("btn_agree.bmp",True)
@@ -103,7 +109,8 @@ Func SetupUserName()
 	Sleep(500)
 	ClickImage("btn_jueding_name.bmp")
 	Sleep(500)
-	ClickImageUntilScreen("btn_ok_complete_registration.bmp","ui_download_completed.bmp")
+	ClickImage("btn_ok_complete_registration.bmp")
+	;ClickImageUntilScreen("btn_ok_complete_registration.bmp","ui_download_completed.bmp")
 EndFunc
 
 Func BeginnerTutorial()
