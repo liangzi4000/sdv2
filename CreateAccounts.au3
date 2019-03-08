@@ -109,7 +109,7 @@ Func SetupUserName()
 	Sleep(500)
 	ClickImage("btn_jueding_name.bmp")
 	Sleep(500)
-	ClickImage("btn_ok_complete_registration.bmp")
+	ClickImage("btn_ok_complete_registration.bmp",True)
 	;ClickImageUntilScreen("btn_ok_complete_registration.bmp","ui_download_completed.bmp")
 EndFunc
 
@@ -175,7 +175,7 @@ Func FollowThroughSteps()
 
 	ClickPosUntilScreenByPixel($menu_shop,$opt_buycards) ;点击 商店
 	ClickOnRelative($opt_buycards) ;点击 购买卡包
-	ClickImageUntilScreen("opt_buycard.bmp", "btn_ok_card_saved.bmp")
+	ClickImage("opt_buycard.bmp")
 	ClickImage("btn_ok_card_saved.bmp")
 	ClickImage("btn_goumai.bmp")
 	ClickImage("btn_shiyongduihuanquan.bmp")
