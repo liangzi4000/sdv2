@@ -3,9 +3,32 @@
 #include <Array.au3>
 
 Global $createaccountsteps = []
-_ArrayAdd($createaccountsteps,"Wrapper1")
-_ArrayAdd($createaccountsteps,"BeginnerTutorial")
-_ArrayAdd($createaccountsteps,"Wrapper2")
+;~ _ArrayAdd($createaccountsteps,"Wrapper1")
+;~ _ArrayAdd($createaccountsteps,"BeginnerTutorial")
+;~ _ArrayAdd($createaccountsteps,"Wrapper2")
+;~ _ArrayAdd($createaccountsteps,"CheckExit")
+
+_ArrayAdd($createaccountsteps,"CreateNextRecord")
+_ArrayAdd($createaccountsteps,"InstallApp")
+_ArrayAdd($createaccountsteps,"SetupLanguageAndAgreement")
+_ArrayAdd($createaccountsteps,"SetupUserName")
+_ArrayAdd($createaccountsteps,"Tutorial1")
+_ArrayAdd($createaccountsteps,"Tutorial2")
+_ArrayAdd($createaccountsteps,"Tutorial3")
+_ArrayAdd($createaccountsteps,"Tutorial4")
+_ArrayAdd($createaccountsteps,"Tutorial5")
+_ArrayAdd($createaccountsteps,"Tutorial6")
+_ArrayAdd($createaccountsteps,"Tutorial7")
+_ArrayAdd($createaccountsteps,"Tutorial8")
+_ArrayAdd($createaccountsteps,"Tutorial9")
+_ArrayAdd($createaccountsteps,"Tutorial10")
+_ArrayAdd($createaccountsteps,"Tutorial11")
+_ArrayAdd($createaccountsteps,"Tutorial12")
+_ArrayAdd($createaccountsteps,"Tutorial13")
+_ArrayAdd($createaccountsteps,"GetDailyLoginAward")
+_ArrayAdd($createaccountsteps,"FollowThroughSteps")
+_ArrayAdd($createaccountsteps,"SetupPassword")
+_ArrayAdd($createaccountsteps,"CloseGame")
 _ArrayAdd($createaccountsteps,"CheckExit")
 
 Func Wrapper1()
@@ -111,6 +134,80 @@ Func SetupUserName()
 	Sleep(500)
 	ClickImage("btn_ok_complete_registration.bmp",True)
 	;ClickImageUntilScreen("btn_ok_complete_registration.bmp","ui_download_completed.bmp")
+EndFunc
+
+Func Tutorial1()
+	WaitImage("ui_download_completed.bmp", 1200)
+	;ClickImageUntilScreen("ui_download_completed.bmp","ui_1st_chapter.bmp")
+	Local $wincenter = GetCtrlCenter()
+	ClickPosUntilScreen($wincenter,"ui_1st_chapter.bmp")
+EndFunc
+
+Func Tutorial2()
+	ClickImage("ui_1st_chapter.bmp")
+	ClickImage("btn_qianwangjuqing.bmp")
+EndFunc
+
+Func Tutorial3()
+	ClickPosUntilScreen($btn_skipvideo,"btn_ok_fight_effect.bmp")
+	ClickImage("btn_ok_fight_effect.bmp")
+EndFunc
+
+Func Tutorial4()
+	ClickImage("btn_ok_fight_effect.bmp", False, 40)
+	ClickPosUntilScreen($btn_ignore,"btn_ignore.bmp")
+	ClickImage("btn_ignore.bmp")
+EndFunc
+
+Func Tutorial5()
+	ClickImage("ui_2nd_chapter.bmp") ;第二章
+	ClickImage("btn_wuyuyin.bmp")
+EndFunc
+
+Func Tutorial6()
+	ClickPosUntilScreen($btn_ignore,"btn_ignore.bmp")
+	ClickImage("btn_ignore.bmp")
+EndFunc
+
+Func Tutorial7()
+	ClickImage("btn_ok_fight_effect.bmp", False, 40)
+	ClickPosUntilScreen($btn_ignore,"btn_ignore.bmp")
+	ClickImage("btn_ignore.bmp")
+EndFunc
+
+Func Tutorial8()
+	ClickImage("ui_3rd_chapter.bmp") ;第三章
+	ClickImage("btn_wuyuyin.bmp")
+EndFunc
+
+Func Tutorial9()
+	ClickImage("btn_ok_fight_effect.bmp", False, 40)
+	ClickImage("btn_ok_beginner.bmp") ;关闭弹窗 “新手教学”
+EndFunc
+
+Func Tutorial10()
+	SlideRelative($sld_card1[0],$sld_card1[1],$sld_card1[2],$sld_card1[3]) ; 交换中间卡牌
+	SlideRelative($sld_card2[0],$sld_card2[1],$sld_card2[2],$sld_card2[3]) ; 交换右边卡牌
+	ClickImage("btn_ok_beginner.bmp") ;关闭弹窗 “新手教学”
+	Sleep(300)
+	ClickOnRelative($btn_fight_confirm)
+EndFunc
+
+Func Tutorial11()
+	ClickImage("btn_ok_fight_effect.bmp") ;关闭弹窗 “后攻的第一回合”
+	Sleep(300)
+EndFunc
+
+Func Tutorial12()
+	ClickImage("btn_ok_fight_effect.bmp") ;关闭弹窗 “宝战”
+	ClickPosUntilScreen($btn_ignore,"btn_ignore.bmp")
+	ClickImage("btn_ignore.bmp")
+EndFunc
+
+Func Tutorial13()
+	ClickImage("btn_ok_fight_effect.bmp") ;关闭弹窗 “新手教学完成”
+	ClickPosUntilScreen($btn_ignore,"btn_ignore.bmp")
+	ClickImage("btn_ignore.bmp")
 EndFunc
 
 Func BeginnerTutorial()
