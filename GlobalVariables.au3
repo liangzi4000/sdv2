@@ -20,16 +20,17 @@ Global $skipsecondwindowexecution = False		; Skip second window execution flag
 Global $fightroomnumber = ""					; Fight room number
 Global $v_allowgetpyr = False					; Flag to config execution of function GetPFR
 Global $v_onunexpectederrortoshutdownpc = True	; Flag to config shutdown pc when unexpected error happens
-Global $v_noxpath = IniRead("start.ini","Install","NoxPath","C:\Program Files\Nox\bin\")
+Local Const $cfgfile = @ScriptDir & "\start.ini"
+Global $v_noxpath = IniRead($cfgfile,"Install","NoxPath","C:\Program Files\Nox\bin\")
 Global $v_packagename = "com.cygames.Shadowverse" ; Package name
-Global $v_windows = StringSplit(IniRead("start.ini","NoxInstances","NameList",""),",",2)
+Global $v_windows = StringSplit(IniRead($cfgfile,"Install","NameList",""),",",2)
 If UBound($v_windows) > 2 Then $morethantwonox = True
-If IniRead("start.ini","NoxInstances","ShutdownPC","") = "True" Then $shutdownpc = True
-Global $v_installfile1 = IniRead("start.ini","Install","file1","")
-Global $v_installfile2 = IniRead("start.ini","Install","file2","")
-Global $v_installfolder1 = IniRead("start.ini","Install","folder1","")
-Global $v_installfolder2 = IniRead("start.ini","Install","folder2","")
-Global $v_sqlcmdfile = IniRead("start.ini","Install","SQLCMD","C:\Program Files (x86)\Microsoft SQL Server\Client SDK\ODBC\130\Tools\Binn\SQLCMD.exe")
+If IniRead($cfgfile,"Install","ShutdownPC","") = "True" Then $shutdownpc = True
+Global $v_installfile1 = IniRead($cfgfile,"Install","file1","")
+Global $v_installfile2 = IniRead($cfgfile,"Install","file2","")
+Global $v_installfolder1 = IniRead($cfgfile,"Install","folder1","")
+Global $v_installfolder2 = IniRead($cfgfile,"Install","folder2","")
+Global $v_sqlcmdfile = IniRead($cfgfile,"Install","SQLCMD","C:\Program Files (x86)\Microsoft SQL Server\Client SDK\ODBC\130\Tools\Binn\SQLCMD.exe")
 
 Global $v_winctrlclassname = "subWin1"
 Global Const $v_imagepath = @ScriptDir & "\Assets\identifier\"
