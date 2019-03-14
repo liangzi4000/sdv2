@@ -155,12 +155,14 @@ Func EnterUIDandPWD()
 	_ClipBoard_SetData(GetAccountInfo("uid")) ; 读取UID到粘贴板
 	ClickPosUntilScreen($txt_uid, "btn_queding.bmp", 800)
 	SendPasteKeys() ; 黏贴
+	sleep(500)
 	ClickImage("btn_queding.bmp") ;点击确定
 	Sleep(800)
 
 	_ClipBoard_SetData(GetAccountInfo("pwd")) ; 读取password到粘贴板
 	ClickPosUntilScreen($txt_pwd, "btn_queding.bmp", 800)
 	SendPasteKeys() ; 黏贴
+	sleep(500)
 	ClickImage("btn_queding.bmp") ;点击确定
 	Sleep(700)
 EndFunc   ;==>EnterUIDandPWD
