@@ -128,6 +128,7 @@ Func SetupUserName()
 	_ClipBoard_SetData($acctinfoarr[1]) ; 读取用户名到粘贴板
 	ClickPosUntilScreen($txt_username, "btn_queding.bmp", 800)
 	SendPasteKeys() ; 黏贴
+	Sleep(500)
 	ClickImage("btn_queding.bmp") ;点击确定
 	Sleep(500)
 	ClickImage("btn_jueding_name.bmp")
@@ -137,7 +138,7 @@ Func SetupUserName()
 EndFunc
 
 Func Tutorial1()
-	WaitImage("ui_download_completed.bmp", 1200)
+	WaitImage("ui_download_completed.bmp")
 	;ClickImageUntilScreen("ui_download_completed.bmp","ui_1st_chapter.bmp")
 	Local $wincenter = GetCtrlCenter()
 	ClickPosUntilScreen($wincenter,"ui_1st_chapter.bmp")
@@ -211,7 +212,7 @@ Func Tutorial13()
 EndFunc
 
 Func BeginnerTutorial()
-	WaitImage("ui_download_completed.bmp", 1200)
+	WaitImage("ui_download_completed.bmp")
 	;ClickImageUntilScreen("ui_download_completed.bmp","ui_1st_chapter.bmp")
 	Local $wincenter = GetCtrlCenter()
 	ClickPosUntilScreen($wincenter,"ui_1st_chapter.bmp")
