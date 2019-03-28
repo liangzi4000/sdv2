@@ -655,6 +655,7 @@ Func CheckAccountStatus()
 	Local $_as_MoneyBefore = ["as_Money","as_Money_url","_before",$v_money]
 	Local $_as_MoneyAfter = ["as_MoneyAfter","as_MoneyAfter_url","_after",$v_money]
 	Local $_as_legendcard = ["as_legendcard","as_legendcard_url","_legend",$v_card_legend]
+	Local $_as_rebellioncard = ["as_rebellioncard","as_rebellioncard_url","_rebellion",$v_card_normal]
 	Local $_as_alterpherecard = ["as_alterpherecard","as_alterpherecard_url","_alterphere",$v_card_normal]
 	Local $_as_omencard = ["as_omencard","as_omencard_url","_omen",$v_card_normal]
 	Local $_as_brigadecard = ["as_brigadecard","as_brigadecard_url","_brigade",$v_card_normal]
@@ -673,12 +674,13 @@ Func CheckAccountStatus()
 	CheckMoneyAfter($_as_MoneyAfter)
 	GotoCardPage()
 	Local $legendexist = CheckCardLegend($_as_legendcard)
-	CheckCardAlterphere($_as_alterpherecard, $legendexist)
+	CheckCardRebellion($_as_rebellioncard, $legendexist)
+	CheckCardAlterphere($_as_alterpherecard)
 	CheckCardOmen($_as_omencard)
 	CheckCardBrigade($_as_brigadecard)
 	CheckCardDawnbreak($_as_dawnbreakcard)
-	CheckCardChronogenesis($_as_chronogenesiscard)
 	ClickImage("btn_switch_classic_cards.bmp",True)
+	CheckCardChronogenesis($_as_chronogenesiscard)
 	CheckCardStarforged($_as_starforgedcard)
 	CheckCardWonderland($_as_wonderlandcard)
 	CheckCardTempest($_as_tempestcard)
@@ -690,6 +692,7 @@ Func CheckAccountStatus()
 	Local $as_MoneyBeforeArr = RetrieveVariablesCore($_as_MoneyBefore)
 	Local $as_MoneyAfterArr = RetrieveVariablesCore($_as_MoneyAfter)
 	Local $as_legendcardArr = RetrieveVariablesCore($_as_legendcard)
+	Local $as_rebellioncardArr = RetrieveVariablesCore($_as_rebellioncard)
 	Local $as_alterpherecardArr = RetrieveVariablesCore($_as_alterpherecard)
 	Local $as_omencardArr = RetrieveVariablesCore($_as_omencard)
 	Local $as_brigadecardArr = RetrieveVariablesCore($_as_brigadecard)
@@ -703,7 +706,8 @@ Func CheckAccountStatus()
 	Local $as_classiccardArr = RetrieveVariablesCore($_as_classiccard)
 	Local $as_JJCArr = RetrieveVariablesCore($_as_JJC)
 	;ExecDBQuery("[dbo].[SP_UpdateAccountStatus] "&GetAccountInfo("uid")&","&$as_MoneyBeforeArr[0]&",'"&$as_MoneyBeforeArr[1]&"',"&$as_MoneyAfterArr[0]&",'"&$as_MoneyAfterArr[1]&"',"&$as_legendcardArr[0]&",'"&$as_legendcardArr[1]&"',"&$as_omencardArr[0]&",'"&$as_omencardArr[1]&"',"&$as_brigadecardArr[0]&",'"&$as_brigadecardArr[1]&"',"&$as_dawnbreakcardArr[0]&",'"&$as_dawnbreakcardArr[1]&"',"&$as_chronogenesiscardArr[0]&",'"&$as_chronogenesiscardArr[1]&"',"&$as_starforgedcardArr[0]&",'"&$as_starforgedcardArr[1]&"',"&$as_wonderlandcardArr[0]&",'"&$as_wonderlandcardArr[1]&"',"&$as_tempestcardArr[0]&",'"&$as_tempestcardArr[1]&"',"&$as_bahamutcardArr[0]&",'"&$as_bahamutcardArr[1]&"',"&$as_darknesscardArr[0]&",'"&$as_darknesscardArr[1]&"',"&$as_classiccardArr[0]&",'"&$as_classiccardArr[1]&"',"&$as_JJCArr[0]&",'"&$as_JJCArr[1]&"'")
-	ExecDBQuery("[dbo].[SP_UpdateAccountStatus] "&GetAccountInfo("uid")&","&$as_MoneyBeforeArr[0]&",'"&$as_MoneyBeforeArr[1]&"',"&$as_MoneyAfterArr[0]&",'"&$as_MoneyAfterArr[1]&"',"&$as_legendcardArr[0]&",'"&$as_legendcardArr[1]&"',"&$as_alterpherecardArr[0]&",'"&$as_alterpherecardArr[1]&"',"&$as_omencardArr[0]&",'"&$as_omencardArr[1]&"',"&$as_brigadecardArr[0]&",'"&$as_brigadecardArr[1]&"',"&$as_dawnbreakcardArr[0]&",'"&$as_dawnbreakcardArr[1]&"',"&$as_chronogenesiscardArr[0]&",'"&$as_chronogenesiscardArr[1]&"',"&$as_starforgedcardArr[0]&",'"&$as_starforgedcardArr[1]&"',"&$as_wonderlandcardArr[0]&",'"&$as_wonderlandcardArr[1]&"',"&$as_tempestcardArr[0]&",'"&$as_tempestcardArr[1]&"',"&$as_bahamutcardArr[0]&",'"&$as_bahamutcardArr[1]&"',"&$as_darknesscardArr[0]&",'"&$as_darknesscardArr[1]&"',"&$as_classiccardArr[0]&",'"&$as_classiccardArr[1]&"',"&$as_JJCArr[0]&",'"&$as_JJCArr[1]&"'")
+	;ExecDBQuery("[dbo].[SP_UpdateAccountStatus] "&GetAccountInfo("uid")&","&$as_MoneyBeforeArr[0]&",'"&$as_MoneyBeforeArr[1]&"',"&$as_MoneyAfterArr[0]&",'"&$as_MoneyAfterArr[1]&"',"&$as_legendcardArr[0]&",'"&$as_legendcardArr[1]&"',"&$as_alterpherecardArr[0]&",'"&$as_alterpherecardArr[1]&"',"&$as_omencardArr[0]&",'"&$as_omencardArr[1]&"',"&$as_brigadecardArr[0]&",'"&$as_brigadecardArr[1]&"',"&$as_dawnbreakcardArr[0]&",'"&$as_dawnbreakcardArr[1]&"',"&$as_chronogenesiscardArr[0]&",'"&$as_chronogenesiscardArr[1]&"',"&$as_starforgedcardArr[0]&",'"&$as_starforgedcardArr[1]&"',"&$as_wonderlandcardArr[0]&",'"&$as_wonderlandcardArr[1]&"',"&$as_tempestcardArr[0]&",'"&$as_tempestcardArr[1]&"',"&$as_bahamutcardArr[0]&",'"&$as_bahamutcardArr[1]&"',"&$as_darknesscardArr[0]&",'"&$as_darknesscardArr[1]&"',"&$as_classiccardArr[0]&",'"&$as_classiccardArr[1]&"',"&$as_JJCArr[0]&",'"&$as_JJCArr[1]&"'")
+	ExecDBQuery("[dbo].[SP_UpdateAccountStatus] "&GetAccountInfo("uid")&","&$as_MoneyBeforeArr[0]&",'"&$as_MoneyBeforeArr[1]&"',"&$as_MoneyAfterArr[0]&",'"&$as_MoneyAfterArr[1]&"',"&$as_legendcardArr[0]&",'"&$as_legendcardArr[1]&"',"&$as_rebellioncardArr[0]&",'"&$as_rebellioncardArr[1]&"',"&$as_alterpherecardArr[0]&",'"&$as_alterpherecardArr[1]&"',"&$as_omencardArr[0]&",'"&$as_omencardArr[1]&"',"&$as_brigadecardArr[0]&",'"&$as_brigadecardArr[1]&"',"&$as_dawnbreakcardArr[0]&",'"&$as_dawnbreakcardArr[1]&"',"&$as_chronogenesiscardArr[0]&",'"&$as_chronogenesiscardArr[1]&"',"&$as_starforgedcardArr[0]&",'"&$as_starforgedcardArr[1]&"',"&$as_wonderlandcardArr[0]&",'"&$as_wonderlandcardArr[1]&"',"&$as_tempestcardArr[0]&",'"&$as_tempestcardArr[1]&"',"&$as_bahamutcardArr[0]&",'"&$as_bahamutcardArr[1]&"',"&$as_darknesscardArr[0]&",'"&$as_darknesscardArr[1]&"',"&$as_classiccardArr[0]&",'"&$as_classiccardArr[1]&"',"&$as_JJCArr[0]&",'"&$as_JJCArr[1]&"'")
 	ClickOnRelative($menu_main)
 EndFunc
 
@@ -763,14 +767,17 @@ Func CheckCardLegend($item)
 	EndIf
 EndFunc
 
-Func CheckCardAlterphere($item, $legendexist)
+Func CheckCardRebellion($item, $legendexist)
 	If $legendexist Then
-		CheckCardWrapper($item,"card_alterphere.bmp")
+		CheckCardWrapper($item,"card_rebellion.bmp")
 	Else
 		CheckAccStatus($item)
 	EndIf
 EndFunc
 
+Func CheckCardAlterphere($item, $legendexist)
+	CheckCardWrapper($item,"card_alterphere.bmp")
+EndFunc
 
 Func CheckCardOmen($item)
 	CheckCardWrapper($item,"card_omen.bmp")
