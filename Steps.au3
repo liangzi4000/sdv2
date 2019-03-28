@@ -775,7 +775,7 @@ Func CheckCardRebellion($item, $legendexist)
 	EndIf
 EndFunc
 
-Func CheckCardAlterphere($item, $legendexist)
+Func CheckCardAlterphere($item)
 	CheckCardWrapper($item,"card_alterphere.bmp")
 EndFunc
 
