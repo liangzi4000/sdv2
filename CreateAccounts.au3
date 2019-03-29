@@ -134,6 +134,7 @@ Func SetupUserName()
 	ClickImage("btn_jueding_name.bmp")
 	Sleep(500)
 	ClickImage("btn_ok_complete_registration.bmp",True)
+	ClickImage("btn_xiazai01.bmp")
 	;ClickImageUntilScreen("btn_ok_complete_registration.bmp","ui_download_completed.bmp")
 EndFunc
 
@@ -209,6 +210,7 @@ Func Tutorial13()
 	ClickImage("btn_ok_fight_effect.bmp") ;关闭弹窗 “新手教学完成”
 	ClickPosUntilScreen($btn_ignore,"btn_ignore.bmp")
 	ClickImage("btn_ignore.bmp")
+	ClickImage("btn_kaishixiazai.bmp")
 EndFunc
 
 Func BeginnerTutorial()
@@ -249,7 +251,7 @@ Func BeginnerTutorial()
 	ClickImage("btn_ok_fight_effect.bmp") ;关闭弹窗 “新手教学完成”
 	ClickPosUntilScreen($btn_ignore,"btn_ignore.bmp")
 	ClickImage("btn_ignore.bmp")
-;~ 	ClickImage("btn_kaishixiazai.bmp")
+	ClickImage("btn_kaishixiazai.bmp")
 EndFunc
 
 Func GetDailyLoginAward()
@@ -293,7 +295,7 @@ Func SetupPassword()
 	;ClickImage("menu_others_v2.bmp")
 	ClickImage("btn_youxiziliaoliandong.bmp")
 	ClickImage("btn_liandongziliao_v2.bmp")
-	Sleep(300)
+	Sleep(1000)
 	ClickOnRelative($btn_setpwd)
 	ClickImage("btn_sheding.bmp")
 
@@ -302,12 +304,14 @@ Func SetupPassword()
 	_ClipBoard_SetData($acctinfoarr[2]) ; 读取密码到粘贴板
 	ClickPosUntilScreen($txt_setpwd, "btn_queding.bmp", 800)
 	SendPasteKeys() ; 黏贴
+	Sleep(300)
 	ClickImage("btn_queding.bmp") ;点击确定
-	Sleep(2000)
+	Sleep(1700)
 	ClickPosUntilScreen($txt_setpwd_confirm, "btn_queding.bmp", 800)
 	SendPasteKeys() ; 黏贴
+	Sleep(300)
 	ClickImage("btn_queding.bmp") ;点击确定
-	Sleep(800)
+	Sleep(1300)
 	ClickOnRelative($chk_agreeprivacy)
 	ClickImage("btn_sheding_confirm.bmp",True,5) ; 设置密码
 	ClickImage("btn_copy_uid.bmp",True)
