@@ -211,11 +211,11 @@ Func DoItLater()
 	ClickImage("btn_doitlater.bmp", True)
 EndFunc   ;==>DoItLater
 
-Func DoItLaterTimeout()
-	ClickOnLastPosition() ;Close the popup window
-	Sleep(1000)
-	ClickOnLastPosition() ;re-trigger original flow
-EndFunc
+;~ Func DoItLaterTimeout()
+;~ 	ClickOnLastPosition() ;Close the popup window
+;~ 	Sleep(1000)
+;~ 	ClickOnLastPosition() ;re-trigger original flow
+;~ EndFunc
 #EndRegion Wrapper_StartScreen_DoItLater
 
 #Region Wrapper_ClickUntilNotification_CloseNotification_CompleteLogin
@@ -226,8 +226,24 @@ Func Wrapper_ClickUntilNotification_CloseNotification_CompleteLogin()
 EndFunc   ;==>Wrapper_ClickUntilNotification_CloseNotification_CompleteLogin
 
 Func ClickUntilNotification()
-	ClickPosUntilScreen($btn_ignore, "btn_close.bmp")
+	WaitUntilNextScreen("ui_startscreen.bmp")
+	DownloadFile()
+	ClickPosUntilScreenExt($btn_ignore, "btn_close.bmp", Default)
 EndFunc   ;==>ClickUntilNotification
+
+Func DownloadFile()
+	Local $pos = [0,0]
+	If SearchImageActive("btn_kaishixiazai.bmp",$pos[0],$pos[1]) = 1 Then ClickImage("btn_kaishixiazai.bmp")
+EndFunc
+
+Func WaitUntilNextScreen($currentscreenimage)
+	Sleep(500)
+	Local $pos = [0,0]
+	While SearchImageActive($currentscreenimage,$pos[0],$pos[1]) = 1
+		Sleep(200)
+	WEnd
+	Sleep(500)
+EndFunc
 
 Func CloseNotification()
 	ClickImage("btn_close.bmp", True)

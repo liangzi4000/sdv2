@@ -238,7 +238,7 @@ Func ClickPosUntilScreen($pos, $untilimage, $interval = 700, $timeout = 60, $tim
 EndFunc   ;==>ClickPosUntilScreen
 
 Func ClickPosUntilScreenExt($pos, $untilimage, $ext)
-	ClickPosUntilScreen($pos, $untilimage, 700, 60, "", True, $ext)
+	ClickPosUntilScreen($pos, $untilimage, 700, 120, "", True, $ext)
 EndFunc
 
 Func DragImage($image, $to_pos, $relaive = True)
