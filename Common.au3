@@ -8,6 +8,7 @@
 #include "Lib/ImageHelper.au3"
 #include "Lib/PixelHelper.au3"
 #include "Lib/BasicActions.au3"
+#include "Lib/ProcessHelper.au3"
 #include <MsgBoxConstants.au3>
 #include <FileConstants.au3>
 #include <AutoItConstants.au3>

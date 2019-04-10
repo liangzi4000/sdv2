@@ -38,6 +38,7 @@ Func ShutdownAfterFinish()
 EndFunc
 
 Func Main()
+	StartProcess("Guardian.exe")
 	BlockInput($BI_DISABLE)
 	ExecDBQuery("[dbo].[SP_ResetDailyTaskStatus] '"&$v_windows[0]&"'")
 	Local $firstrunflag = True
@@ -78,6 +79,7 @@ Func Main()
 EndFunc
 
 Func OnAutoitExit()
+	CloseProcess("Guardian.exe")
 	WriteLog("OnAutoitExit Called.")
 	Switch $exitaction
 		Case $exitaction_restart
@@ -89,7 +91,7 @@ Func OnAutoitExit()
 			ExecStep("CloseApp")
 			RunScript()
 		Case $exitaction_shutdownpc
-			Shutdown(BitOR($SD_SHUTDOWN,$SD_FORCE)) ; shutdown PC
+			Shutdown($SD_STANDBY) ; Shutdown(BitOR($SD_SHUTDOWN,$SD_FORCE)) ; shutdown PC
 		Case $exitaction_terminatescript
 			; do nothing
 	EndSwitch
