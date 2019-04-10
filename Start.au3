@@ -82,7 +82,7 @@ Func OnAutoitExit()
 	Switch $exitaction
 		Case $exitaction_restart
 			Local $errorscreen = $v_screenshotpath & CaptureFullScreen()
-			$v_email_Subject = "Program auto restart triggered"
+			$v_email_Subject = "Program auto restart triggered - " & _ArrayToString($v_windows)
 			$v_email_AttachFiles = $errorscreen
 			$v_email_Body = GetLoginUsers()
 			_INetSmtpMailCom($v_email_SmtpServer,$v_email_FromName,$v_email_FromAddress,$v_email_ToAddress,$v_email_Subject,$v_email_Body,$v_email_AttachFiles,$v_email_CcAddress,$v_email_BccAddress,$v_email_Importance,$v_email_Username,$v_email_Password,$v_email_IPPort,$v_email_ssl)
