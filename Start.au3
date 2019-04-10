@@ -69,6 +69,7 @@ Func Main()
 		Next
 	WEnd
 	WriteLog("Accounts creation completed.")
+	CloseProcess("Nox.exe")
 
 	If $shutdownpc Then
 		$exitaction = $exitaction_shutdownpc
