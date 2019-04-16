@@ -1,10 +1,8 @@
 #include-once
-#include "AutoItConstants.au3"
 #include "../GlobalVariables.au3"
 #include "PositionHelper.au3"
 #include "Logger.au3"
 #include "BasicActions.au3"
-
 
 #comments-start
 	$pixelinfo is an array with following format:
@@ -55,9 +53,11 @@ Func FormatPixelInfo($pixelinfo)
 	Return $pixelinfo
 EndFunc   ;==>FormatPixelInfo
 
-Func WaitPixel($pixelinfo, $timeout = 60, $timeoutcall = "", $click = False)
-	Local $hTimer = TimerInit()
+Func WaitPixel($pixelinfo, $timeout = Default, $timeoutcall = Default, $click = Default)
+	If $timeout = Default Then $timeout = 60
+	If $click = Default Then $click = False
 
+	Local $hTimer = TimerInit()
 	While 1
 		Local $pixelresult = SearchPixel($pixelinfo)
 		If $pixelresult[0] <> $pixel_empty[0] Or $pixelresult[1] <> $pixel_empty[1] Then
@@ -67,7 +67,7 @@ Func WaitPixel($pixelinfo, $timeout = 60, $timeoutcall = "", $click = False)
 		EndIf
 
 		If TimerDiff($hTimer) > $timeout * 1000 Then
-			If $timeoutcall <> "" Then
+			If $timeoutcall <> Default Then
 				WriteLog("WaitPixel time out after " & $timeout & " seconds waiting for pixel " & _ArrayToString($pixelinfo) & ", $timeoutcall=" & $timeoutcall, $v_exception)
 				Call($timeoutcall)
 			ElseIf $timeoutcount < 1 Then
@@ -88,23 +88,39 @@ Func WaitPixel($pixelinfo, $timeout = 60, $timeoutcall = "", $click = False)
 	WEnd
 EndFunc   ;==>WaitPixel
 
-Func ClickPixel($pixelinfo, $timeout = 60, $timeoutcall = "")
+Func ClickPixel($pixelinfo, $timeout = Default, $timeoutcall = Default)
 	WaitPixel($pixelinfo, $timeout, $timeoutcall, True)
 	If $debug Then WriteLog("ClickPixel clicked on pixel " & _ArrayToString($pixelinfo))
 EndFunc   ;==>ClickPixel
 
-Func ClickPosUntilScreenByPixel($pos, $untilpixel, $interval = 700, $timeout = 60, $timeoutcall = "", $convertposition = True)
+Func ClickImageUntilScreenByPixel($waitimage, $untilpixel, $interval = Default, $timeout = Default, $timeoutcall = Default, $convertposition = Default)
+	Local $pos = GetImageCenterPosActive($waitimage)
+	ClickPosUntilScreenByPixel($pos, $untilpixel, Default, $interval, $timeout, $timeoutcall, $convertposition)
+EndFunc   ;==>ClickImageUntilScreenByPixel
+
+Func ClickPosUntilScreenByPixel($pos, $untilpixel, $ext = Default, $interval = Default, $timeout = Default, $timeoutcall = Default, $convertposition = Default)
+	Local $untilpixellist = [$untilpixel]
+	ClickPosUntilScreenByMultiPixel($pos,$untilpixellist,$ext,$interval,$timeout,$timeoutcall,$convertposition)
+	If $debug Then WriteLog("ClickPosUntilScreenByPixel found pixel " & _ArrayToString($untilpixel))
+EndFunc   ;==>ClickPosUntilScreenByPixel
+
+Func ClickPosUntilScreenByMultiPixel($pos, $untilpixellist, $ext = Default, $interval = Default, $timeout = Default, $timeoutcall = Default, $convertposition = Default)
+	If $interval = Default Then $interval = 700
+	If $timeout = Default Then $timeout = 60
+	If $convertposition = Default Then $convertposition = True
+
 	Local $mypos = $convertposition = True ? ConvertRelativePosToAbsolutePos($pos) : $pos
 	Local $x = 0, $y = 0
 	Local $hTimer = TimerInit()
-	Local $index = -1
+	Local $foundcount = 0
 	Do
+		$foundcount = 0
 		If TimerDiff($hTimer) > $timeout * 1000 Then
-			If $timeoutcall <> "" Then
-				WriteLog("ClickPosUntilScreenByPixel time out after " & $timeout & " seconds waiting for pixel " & _ArrayToString($untilpixel) & ", $timeoutcall=" & $timeoutcall, $v_exception)
+			If $timeoutcall <> Default Then
+				WriteLog("ClickPosUntilScreenByMultiPixel time out after " & $timeout & " seconds waiting for pixel list " & ConvertArrayInArrayToString($untilpixellist) & ", $timeoutcall=" & $timeoutcall, $v_exception)
 				Call($timeoutcall)
 			Else
-				WriteLog("ClickPosUntilScreenByPixel time out after " & $timeout & " seconds waiting for pixel " & _ArrayToString($untilpixel) & ", exit", $v_exception)
+				WriteLog("ClickPosUntilScreenByMultiPixel time out after " & $timeout & " seconds waiting for pixel list " & ConvertArrayInArrayToString($untilpixellist) & ", exit", $v_exception)
 				;;;;;;;;;;;;;;;;;;;; TIMEOUT EXIT ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 				Exit
 				;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -114,46 +130,64 @@ Func ClickPosUntilScreenByPixel($pos, $untilpixel, $interval = 700, $timeout = 6
 
 		ClickOn($mypos)
 		Sleep($interval)
-		If UBound($untilpixel, $UBOUND_DIMENSIONS) = 2 Then ; two dimensional array
-			For $row = 0 To UBound($untilpixel, $UBOUND_ROWS) - 1
-				Local $elem = []
-				For $col = 0 To UBound($untilpixel, $UBOUND_COLUMNS) - 1
-					_ArrayAdd($elem, $untilpixel[$row][$col])
-				Next
-				_ArrayDelete($elem, 0)
-				Local $pixelresult = SearchPixel($elem)
-
-				If $pixelresult[0] <> $pixel_empty[0] Or $pixelresult[1] <> $pixel_empty[1] Then
-					$index = $row
-					ExitLoop
-				EndIf
-			Next
-		Else ; one dimensional array
-			Local $pixelresult = SearchPixel($untilpixel)
+		If $ext <> Default Then Call($ext)
+		For $count = 0 To UBound($untilpixellist) - 1
+			Local $pixelresult = SearchPixel($untilpixellist[$count])
 			If $pixelresult[0] <> $pixel_empty[0] Or $pixelresult[1] <> $pixel_empty[1] Then
-				$index = 0
+				$foundcount += 1
 			EndIf
-		EndIf
-	Until $index > -1
-	Return $index
-	If $debug Then WriteLog("ClickPosUntilScreenByPixel found pixel " & _ArrayToString($untilpixel))
-EndFunc   ;==>ClickPosUntilScreenByPixel
+
+		Next
+	Until $foundcount = UBound($untilpixellist)
+	If $debug Then WriteLog("ClickPosUntilScreenByMultiPixel found pixel list " & ConvertArrayInArrayToString($untilpixellist))
+EndFunc   ;==>ClickPosUntilScreenByMultiPixel
 
 #comments-start
-	Wait and click on specified image in active window until targe image appear in active window
+	Wait and click on specified pixel in active window until targe pixel appear in active window
 #comments-end
-Func ClickPixelUntilScreenByPixel($waitpixel, $untilpixel, $interval = 700, $timeout = 60, $timeoutcall = "")
+Func ClickPixelUntilScreenByPixel($waitpixel, $untilpixel, $interval = Default, $timeout = Default, $timeoutcall = Default)
 	WaitPixel($waitpixel)
 	Local $pos = [$waitpixel[0], $waitpixel[1]]
-	ClickPosUntilScreenByPixel($pos, $untilpixel, $interval, $timeout, $timeoutcall)
+	ClickPosUntilScreenByPixel($pos, $untilpixel, Default, $interval, $timeout, $timeoutcall)
 	If $debug Then WriteLog("ClickPixelUntilScreenByPixel found pixel " & _ArrayToString($untilpixel))
 EndFunc   ;==>ClickPixelUntilScreenByPixel
+
+#comments-start
+	Check if all the pixels in the list exist
+	return true if all pixels are found, otherwise false
+#comments-end
+Func FindPixelList($pixellist)
+	Local $result = True
+	For $i = 0 To UBound($pixellist) - 1
+		Local $currentitem = $pixellist[$i]
+		Local $pixelresult = SearchPixel($currentitem)
+		If $pixelresult[0] = $pixel_empty[0] And $pixelresult[1] = $pixel_empty[1] Then
+			$result = False
+			ExitLoop
+		EndIf
+	Next
+	Return $result
+EndFunc   ;==>CheckPixelList
+
+Func WaitPixelList($pixellist, $timeoutcall = Default, $timeout = Default)
+	If $timeout = Default Then $timeout = 60
+	Local $hTimer = TimerInit()
+	Do
+		Sleep(500)
+		If TimerDiff($hTimer) > $timeout * 1000 Then
+			$hTimer = TimerInit()
+			Call($timeoutcall)
+		EndIf
+	Until FindPixelList($pixellist) = True
+EndFunc   ;==>WaitPixelList
 
 #comments-start
 	Determine which pixel exist given an array of pixels
 	return the found pixel index or exit program if not found, default time out is 60 seconds
 #comments-end
-Func DeterminePixel($pixellist, $timeout = 60)
+Func DeterminePixel($pixellist, $timeout = Default)
+	If $timeout = Default Then $timeout = 60
+
 	Local $sleepinterval = 500
 	Local $hTimer = TimerInit()
 	While 1

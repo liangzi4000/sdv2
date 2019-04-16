@@ -9,6 +9,7 @@
 #include "Lib/PixelHelper.au3"
 #include "Lib/BasicActions.au3"
 #include "Lib/ProcessHelper.au3"
+#include "Lib/ArrayHelper.au3"
 #include <MsgBoxConstants.au3>
 #include <FileConstants.au3>
 #include <AutoItConstants.au3>
@@ -25,27 +26,4 @@ Func MutexExists($sOccurenceName)
 	$lastError = DllCall("kernel32.dll", "int", "GetLastError")
 	Return $lastError[0] = $ERROR_ALREADY_EXISTS
 EndFunc   ;==>MutexExists
-
-#comments-start
-	Copy const array $arr2 to array $arr1
-#comments-end
-Func CopyArrayData(ByRef $arr1, Const ByRef $arr2)
-	If UBound($arr1,0) = 2 Then
-		For $row = 0 To UBound($arr1,1) - 1
-			For $col = 0 To UBound($arr1,2) - 1
-				$arr1[$row][$col] = $arr2[$row][$col]
-			Next
-		Next
-	Else
-		For $i = 0 To UBound($arr1) - 1
-			$arr1[$i] = $arr2[$i]
-		Next
-	EndIf
-EndFunc   ;==>CopyArrayData
-
-Func AddArrayElem(ByRef $arr1, $elem)
-	If _ArraySearch($arr1, $elem) = -1 Then
-		_ArrayAdd($arr1, $elem)
-	EndIf
-EndFunc   ;==>AddArrayElem
 #EndRegion Misc Helper
