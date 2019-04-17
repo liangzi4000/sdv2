@@ -228,6 +228,19 @@ EndFunc   ;==>Wrapper_ClickUntilNotification_CloseNotification_CompleteLogin
 Func ClickUntilNotification()
 	WaitUntilNextScreen("ui_startscreen.bmp")
 	DownloadFile()
+	If $v_checkaccountstatus And GetAccountInfo("chkstatus") = 1 Then
+		$v_stagevalue = -1
+		ClickImage("btn_ok_fight_effect.bmp", False, 120)
+		Sleep(1500)
+		For $x = 0 To UBound($v_awardstage)
+			Local $elem = $v_awardstage[$x]
+			If GetPixelColor($elem) = $elem[2] Then
+				$v_stagevalue = $x+1
+				CaptureActiveWindow(StringReplace(_NowCalcDate(),"/","")&"_"&GetAccountInfo("uid")&"_"&$v_stagevalue&".jpg",@ScriptDir & "\Assets\accountstatus\")
+				ExitLoop
+			EndIf
+		Next
+	EndIf
 	ClickPosUntilScreenExt($btn_ignore, "btn_close.bmp", Default)
 EndFunc   ;==>ClickUntilNotification
 

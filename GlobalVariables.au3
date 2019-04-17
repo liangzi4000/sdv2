@@ -31,7 +31,9 @@ Global $v_installfile2 = IniRead($cfgfile,"Install","file2","")
 Global $v_installfolder1 = IniRead($cfgfile,"Install","folder1","")
 Global $v_installfolder2 = IniRead($cfgfile,"Install","folder2","")
 Global $v_sqlcmdfile = IniRead($cfgfile,"Install","SQLCMD","C:\Program Files (x86)\Microsoft SQL Server\Client SDK\ODBC\130\Tools\Binn\SQLCMD.exe")
-
+Global $v_checkaccountstatus = False
+If IniRead($cfgfile,"Install","checkaccountstatus","False") = "True" Then $v_checkaccountstatus = True
+Global $v_stagevalue = -1
 Global $v_winctrlclassname = "subWin1"
 Global Const $v_imagepath = @ScriptDir & "\Assets\identifier\"
 
@@ -119,5 +121,24 @@ Global $pfa_length = 105
 Global $pfa_height = 88
 Global $pfa_double_reward = [609,263,0x154CEE,10,8,8]
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;;;;;;;;;;;; Daily award stage ;;;;;;;;;;;;;;;;;;
+Local Const $day1 = [0,0,0xFFFFFF]
+Local Const $day2 = [0,0,0xFFFFFF]
+Local Const $day3 = [0,0,0xFFFFFF]
+Local Const $day4 = [0,0,0xFFFFFF]
+Local Const $day5 = [0,0,0xFFFFFF]
+Local Const $day6 = [0,0,0xFFFFFF]
+Local Const $day7 = [0,0,0xFFFFFF]
+Local Const $day8 = [0,0,0xFFFFFF]
+Local Const $day9 = [0,0,0xFFFFFF]
+Local Const $day10 = [0,0,0xFFFFFF]
+Local Const $day11 = [0,0,0xFFFFFF]
+Local Const $day12 = [0,0,0xFFFFFF]
+Local Const $day13 = [0,0,0xFFFFFF]
+Local Const $day14 = [0,0,0xFFFFFF]
+Local Const $day15 = [0,0,0xFFFFFF]
+Global $v_awardstage = [$day1,$day2,$day3,$day4,$day5,$day6,$day7,$day8,$day9,$day10,$day11,$day12,$day13,$day14,$day15]
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 #include <Configuration.au3>
