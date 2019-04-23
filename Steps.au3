@@ -22,6 +22,7 @@ _ArrayAdd($firstrun, "CreateOrEnterFightRoom")
 _ArrayAdd($firstrun, "WaitForFightStart")
 _ArrayAdd($firstrun, "HandleChangeCards")
 _ArrayAdd($firstrun, "ProcessFight")
+_ArrayAdd($firstrun, "UpdatePassword")
 _ArrayAdd($firstrun, "CheckExit")
 
 
@@ -43,6 +44,7 @@ _ArrayAdd($steps, "CreateOrEnterFightRoom")
 _ArrayAdd($steps, "WaitForFightStart")
 _ArrayAdd($steps, "HandleChangeCards")
 _ArrayAdd($steps, "ProcessFight")
+_ArrayAdd($steps, "UpdatePassword")
 _ArrayAdd($steps, "CheckExit")
 
 
@@ -909,3 +911,32 @@ Func GetPFR()
 	ClickOnRelative($menu_main)
 EndFunc
 #EndRegion
+
+Func UpdatePassword()
+	Local $OldPwd = "Yulei202"
+	Local $NewPwd = "GoodLuck2u"
+	If GetAccountInfo("pwd") = $OldPwd Then
+		ClickMenuOthers()
+		ClickImage("btn_youxiziliaoliandong.bmp")
+		ClickImage("btn_liandongziliao_v2.bmp")
+		Sleep(1000)
+		ClickOnRelative($btn_setpwd)
+		ClickImage("btn_sheding.bmp")
+		_ClipBoard_SetData($NewPwd) ; 读取密码到粘贴板
+		ClickPosUntilScreen($txt_setpwd, "btn_queding.bmp", 800)
+		SendPasteKeys() ; 黏贴
+		Sleep(300)
+		ClickImage("btn_queding.bmp") ;点击确定
+		Sleep(1700)
+		ClickPosUntilScreen($txt_setpwd_confirm, "btn_queding.bmp", 800)
+		SendPasteKeys() ; 黏贴
+		Sleep(300)
+		ClickImage("btn_queding.bmp") ;点击确定
+		Sleep(1300)
+		ClickOnRelative($chk_agreeprivacy)
+		ClickImage("btn_sheding_confirm.bmp",True,5) ; 设置密码
+		ClickImage("btn_copy_uid.bmp",True)
+		ClickImage("btn_ok_beginner.bmp")
+		ExecDBQuery("[dbo].[SP_UpdatePassword] "&GetAccountInfo("uid")&",'"&$NewPwd&"'")
+	EndIf
+EndFunc
