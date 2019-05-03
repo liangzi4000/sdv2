@@ -33,13 +33,13 @@ Func Terminate()
 EndFunc
 
 Func ShutdownAfterFinish()
-	BlockInput($BI_DISABLE)
+	If $v_blockinput Then BlockInput($BI_DISABLE)
 	WriteLog("Ctrl+G pressed.")
 EndFunc
 
 Func Main()
 	StartProcess("Guardian.exe")
-	BlockInput($BI_DISABLE)
+	If $v_blockinput Then BlockInput($BI_DISABLE)
 	ExecDBQuery("[dbo].[SP_ResetDailyTaskStatus] '"&$v_windows[0]&"'")
 	Local $firstrunflag = True
 	While UBound($inactivewindows)-1 <> UBound($v_windows)

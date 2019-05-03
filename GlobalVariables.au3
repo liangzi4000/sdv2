@@ -21,6 +21,7 @@ Global $fightroomnumber = ""					; Fight room number
 Global $v_allowgetpyr = False					; Flag to config execution of function GetPFR
 Global $v_onunexpectederrortoshutdownpc = True	; Flag to config shutdown pc when unexpected error happens
 Global $v_checkaccountstatus = False
+Global $v_blockinput = False
 Global $v_stagevalue = -1
 Global Const $v_winctrlclassname = "subWin1"
 
@@ -37,6 +38,7 @@ Global $v_sqlcmdfile 		= IniRead($cfgfile,"Install","SQLCMD","")
 Local $cfg_chkacctstatus 	= IniRead($cfgfile,"Install","Checkaccountstatus","")
 Global $v_tesseractfile 	= IniRead($cfgfile,"Install","Tesseract","")
 Global $v_graphicsmagickfile= IniRead($cfgfile,"Install","GraphicsMagick","")
+Local $cfg_blockinput		= IniRead($cfgfile,"Install","BlockInput","")
 
 Global $v_db_server 		= IniRead($cfgfile,"Database","Server","")
 Global $v_db_userid 		= IniRead($cfgfile,"Database","UID","")
@@ -69,6 +71,8 @@ Global $v_windows = StringSplit($cfg_namelist,",",2)
 If UBound($v_windows) > 2 Then $morethantwonox = True
 If $cfg_shutdownpc = "True" Then $shutdownpc = True
 If $cfg_chkacctstatus = "True" Then $v_checkaccountstatus = True
+If $cfg_blockinput = "True" Then $v_blockinput = True
+
 
 Global $btn_liandong[2] = [141,28] ; 资料连动
 Global $btn_uidpwd[2] = [334,131] ; 输入用户名和密码
