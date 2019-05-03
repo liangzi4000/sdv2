@@ -6,7 +6,7 @@
 
 ; If host, Start SQL Service
 Local $IsHost = IniRead($cfgfile,"Install","IsHost","")
-If $IsHost="True" Then WaitForSQLService()
+If $v_ishost Then WaitForSQLService()
 
 ; Auto update program
 Local $UpdateFolder = @ScriptDir & "\Assets\Update\"

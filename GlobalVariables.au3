@@ -22,6 +22,7 @@ Global $v_allowgetpyr = False					; Flag to config execution of function GetPFR
 Global $v_onunexpectederrortoshutdownpc = True	; Flag to config shutdown pc when unexpected error happens
 Global $v_checkaccountstatus = False
 Global $v_blockinput = False
+Global $v_ishost = False
 Global $v_stagevalue = -1
 Global Const $v_winctrlclassname = "subWin1"
 
@@ -39,6 +40,7 @@ Local $cfg_chkacctstatus 	= IniRead($cfgfile,"Install","Checkaccountstatus","")
 Global $v_tesseractfile 	= IniRead($cfgfile,"Install","Tesseract","")
 Global $v_graphicsmagickfile= IniRead($cfgfile,"Install","GraphicsMagick","")
 Local $cfg_blockinput		= IniRead($cfgfile,"Install","BlockInput","")
+Local $cfg_ishost			= IniRead($cfgfile,"Install","IsHost","")
 
 Global $v_db_server 		= IniRead($cfgfile,"Database","Server","")
 Global $v_db_userid 		= IniRead($cfgfile,"Database","UID","")
@@ -72,7 +74,7 @@ If UBound($v_windows) > 2 Then $morethantwonox = True
 If $cfg_shutdownpc = "True" Then $shutdownpc = True
 If $cfg_chkacctstatus = "True" Then $v_checkaccountstatus = True
 If $cfg_blockinput = "True" Then $v_blockinput = True
-
+If $cfg_ishost = "True" Then $v_ishost = True
 
 Global $btn_liandong[2] = [141,28] ; 资料连动
 Global $btn_uidpwd[2] = [334,131] ; 输入用户名和密码
@@ -172,4 +174,57 @@ Local Const $day15 = [0,0,0xFFFFFF]
 Global $v_awardstage = [$day1,$day2,$day3,$day4,$day5,$day6,$day7,$day8,$day9,$day10,$day11,$day12,$day13,$day14,$day15]
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-#include <Configuration.au3>
+Global $oDictionary = ObjCreate("Scripting.Dictionary")
+If $v_ishost Then
+	$oDictionary.Add ("NoxPlayer03","62001")
+	$oDictionary.Add ("NoxPlayer04","62025")
+Else
+	Local Const $opt_twopick_ls[2][6] = [[215,204,0xA3321E,35,5,5],[336,190,0xBC3F2F,35,5,5]]
+	Local Const $btn_liandong_ls[2] = [169,31] ; 资料连动
+	Local Const $btn_uidpwd_ls[2] = [395,155] ; 输入用户名和密码
+	Local Const $txt_uid_ls[2] = [395,213] ; 用户名输入文本框
+	Local Const $txt_pwd_ls[2] = [395,282] ; 密码输入文本框
+	Local Const $btn_ignore_ls[2] = [743,30] ; 忽略
+	Local Const $side_gift_ls[2] = [753,97] ; 礼物
+	Local Const $side_task_ls[3] = [753,223,0xEFEBDE] ; 任务
+	Local Const $side_task_chengjiu_ls[2] = [300,97] ; 成就
+
+	Local Const $area_startscreen_ls[4] = [0, 414, 100, 100] ; 开始屏幕图标
+	Local Const $opt_lang_cht_ls[2] = [395,260] ; 繁体中文
+	Local Const $txt_username_ls[2] = [395,202] ; 用户昵称
+	Local Const $sld_card1_ls[4] = [395,313,395,5] ; 交换第一张卡
+	Local Const $btn_setpwd_ls[2] = [395,244] ; 设定连动密码
+	Local Const $txt_setpwd_ls[2] = [395,126] ; password
+	Local Const $txt_setpwd_confirm_ls[2] = [395,205] ; confirm password
+
+	Local Const $menu_other_ls[2] = [742,440] ; 其他菜单
+	Local Const $menu_duizhan_ls[2] = [304,440] ; 对战菜单
+	Local Const $menu_shop_ls[2] = [625,440] ; 商店菜单
+	Local Const $menu_main_ls[2] = [84,440] ; 主菜单
+	Local Const $menu_jjc_ls[2] = [414,440] ; 竞技场
+
+	CopyArrayData($opt_twopick,$opt_twopick_ls)
+
+	CopyArrayData($btn_liandong,$btn_liandong_ls)
+	CopyArrayData($btn_uidpwd,$btn_uidpwd_ls)
+	CopyArrayData($txt_uid,$txt_uid_ls)
+	CopyArrayData($txt_pwd,$txt_pwd_ls)
+	CopyArrayData($btn_ignore,$btn_ignore_ls)
+	CopyArrayData($side_gift,$side_gift_ls)
+	CopyArrayData($side_task,$side_task_ls)
+	CopyArrayData($side_task_chengjiu,$side_task_chengjiu_ls)
+
+	CopyArrayData($area_startscreen,$area_startscreen_ls)
+	CopyArrayData($opt_lang_cht,$opt_lang_cht_ls)
+	CopyArrayData($txt_username,$txt_username_ls)
+	CopyArrayData($sld_card1,$sld_card1_ls)
+	CopyArrayData($btn_setpwd,$btn_setpwd_ls)
+	CopyArrayData($txt_setpwd,$txt_setpwd_ls)
+	CopyArrayData($txt_setpwd_confirm,$txt_setpwd_confirm_ls)
+
+	CopyArrayData($menu_other,$menu_other_ls)
+	CopyArrayData($menu_duizhan,$menu_duizhan_ls)
+	CopyArrayData($menu_shop,$menu_shop_ls)
+	CopyArrayData($menu_main,$menu_main_ls)
+	CopyArrayData($menu_jjc,$menu_jjc_ls)
+EndIf

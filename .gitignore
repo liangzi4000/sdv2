@@ -6,7 +6,6 @@
 /Log
 /Db
 TestCommon.au3
-Configuration.au3
 BackUp/
 *.exe
 start.ini
