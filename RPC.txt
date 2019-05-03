@@ -1,10 +1,10 @@
-NoxPlayer03 command01
-NoxPlayer05 command01
-NoxPlayer41 command01
-NoxPlayer51 command01
-NoxPlayer61 command01
-NoxPlayer71 command01
-NoxPlayer81 command01
+NoxPlayer03 command01 0
+NoxPlayer05 command01 0
+NoxPlayer41 command01 0
+NoxPlayer51 command01 0
+NoxPlayer61 command01 0
+NoxPlayer71 command01 0
+NoxPlayer81 command01 0
 
 1.Reboot
 2.Shutdown
