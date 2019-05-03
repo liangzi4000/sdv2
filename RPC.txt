@@ -3,7 +3,7 @@ NoxPlayer05 command01 0
 NoxPlayer41 command01 0
 NoxPlayer51 command01 0
 NoxPlayer61 command01 0
-NoxPlayer71 command01 0
+NoxPlayer71 command02 1
 NoxPlayer81 command01 0
 
 1.Reboot
