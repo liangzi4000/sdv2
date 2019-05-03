@@ -1,0 +1,11 @@
+NoxPlayer03 1
+NoxPlayer05 1
+NoxPlayer41 1
+NoxPlayer51 1
+NoxPlayer61 1
+NoxPlayer71 1
+NoxPlayer81 1
+
+1. Reboot
+2. Shutdown
+3. Sleep
