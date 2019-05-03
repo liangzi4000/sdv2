@@ -104,15 +104,17 @@ Func ClickPosUntilScreenByPixel($pos, $untilpixel, $ext = Default, $interval = D
 	If $debug Then WriteLog("ClickPosUntilScreenByPixel found pixel " & _ArrayToString($untilpixel))
 EndFunc   ;==>ClickPosUntilScreenByPixel
 
-Func ClickPosUntilScreenByMultiPixel($pos, $untilpixellist, $ext = Default, $interval = Default, $timeout = Default, $timeoutcall = Default, $convertposition = Default)
+Func ClickPosUntilScreenByMultiPixel($pos, $untilpixellist, $ext = Default, $interval = Default, $timeout = Default, $timeoutcall = Default, $convertposition = Default, $condition = Default)
 	If $interval = Default Then $interval = 700
 	If $timeout = Default Then $timeout = 60
 	If $convertposition = Default Then $convertposition = True
+	If $condition = Default Then $condition = "And"
 
 	Local $mypos = $convertposition = True ? ConvertRelativePosToAbsolutePos($pos) : $pos
 	Local $x = 0, $y = 0
 	Local $hTimer = TimerInit()
 	Local $foundcount = 0
+	Local $firstpixelindex = -1
 	Do
 		$foundcount = 0
 		If TimerDiff($hTimer) > $timeout * 1000 Then
@@ -135,11 +137,19 @@ Func ClickPosUntilScreenByMultiPixel($pos, $untilpixellist, $ext = Default, $int
 			Local $pixelresult = SearchPixel($untilpixellist[$count])
 			If $pixelresult[0] <> $pixel_empty[0] Or $pixelresult[1] <> $pixel_empty[1] Then
 				$foundcount += 1
+				If $condition = "Or" Then
+					$firstpixelindex = $count
+					ExitLoop
+				EndIf
 			EndIf
-
 		Next
-	Until $foundcount = UBound($untilpixellist)
+	Until ($condition = "And" And $foundcount = UBound($untilpixellist)) Or ($condition = "Or" And $foundcount > 0)
 	If $debug Then WriteLog("ClickPosUntilScreenByMultiPixel found pixel list " & ConvertArrayInArrayToString($untilpixellist))
+	Return $firstpixelindex
+EndFunc   ;==>ClickPosUntilScreenByMultiPixel
+
+Func ClickPosUntilScreenByMultiPixelWithOrCondition($pos, $untilpixellist)
+	Return ClickPosUntilScreenByMultiPixel($pos,$untilpixellist,Default,Default,Default,Default,Default,"Or")
 EndFunc   ;==>ClickPosUntilScreenByMultiPixel
 
 #comments-start

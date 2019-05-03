@@ -753,9 +753,8 @@ Func GotoCardPage()
 EndFunc
 
 Func GotoJJC()
-	Local $index = ClickPosUntilScreenByPixel($menu_jjc,$opt_twopick) ;点击 竞技场
-	Local $pos[2]=[$opt_twopick[$index][0],$opt_twopick[$index][1]]
-	ClickPosUntilScreen($pos, "btn_back.bmp", 800) ;点击 2 Pick
+	Local $index = ClickPosUntilScreenByMultiPixelWithOrCondition($menu_jjc,$opt_twopick) ;点击 竞技场
+	ClickPosUntilScreen($opt_twopick[$index], "btn_back.bmp", 800) ;点击 2 Pick
 EndFunc
 
 Func RetrieveVariablesCore($item)

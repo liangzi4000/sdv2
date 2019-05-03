@@ -142,7 +142,9 @@ Global $cardready = [525,371]
 
 Global $as_nextcard[2] = [56,279] ;点击切换卡包类别
 Global $opt_buycards[3] = [346,266,0xC6D1C3] ; 购买卡包
-Global $opt_twopick[2][6] = [[336,190,0xBC3F2F,35,5,5],[215,204,0xA3321E,35,5,5]] ; 2 Pick
+Local $opt_twopick_elem1 = [336,190,0xBC3F2F,35,5,5]
+Local $opt_twopick_elem2 = [215,204,0xA3321E,35,5,5]
+Global $opt_twopick = [$opt_twopick_elem1,$opt_twopick_elem2]
 Global $v_card_legend[4] = [499,296,519,310] ; card legend rectangle
 Global $v_card_normal[4] = [498,165,519,180] ; card normal rectangle
 Global $v_jjc[4] = [376,243,400,257] ; jjc rectangle
@@ -179,7 +181,10 @@ If $v_ishost Then
 	$oDictionary.Add ("NoxPlayer03","62001")
 	$oDictionary.Add ("NoxPlayer04","62025")
 Else
-	Local Const $opt_twopick_ls[2][6] = [[215,204,0xA3321E,35,5,5],[336,190,0xBC3F2F,35,5,5]]
+	Local $opt_twopick_elem1_ls = [215,204,0xA3321E,35,5,5]
+	Local $opt_twopick_elem2_ls = [336,190,0xBC3F2F,35,5,5]
+	Global $opt_twopick_ls = [$opt_twopick_elem1_ls,$opt_twopick_elem2_ls]
+
 	Local Const $btn_liandong_ls[2] = [169,31] ; 资料连动
 	Local Const $btn_uidpwd_ls[2] = [395,155] ; 输入用户名和密码
 	Local Const $txt_uid_ls[2] = [395,213] ; 用户名输入文本框
