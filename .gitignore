@@ -8,7 +8,5 @@
 TestCommon.au3
 Configuration.au3
 BackUp/
-AutoStartTrigger.exe
-Start.exe
-Surrogate.exe
+*.exe
 start.ini

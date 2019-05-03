@@ -10,6 +10,7 @@
 #include "Lib/BasicActions.au3"
 #include "Lib/ProcessHelper.au3"
 #include "Lib/ArrayHelper.au3"
+#include "Lib/Http.au3"
 #include <MsgBoxConstants.au3>
 #include <FileConstants.au3>
 #include <AutoItConstants.au3>

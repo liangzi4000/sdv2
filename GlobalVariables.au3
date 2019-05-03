@@ -20,22 +20,55 @@ Global $skipsecondwindowexecution = False		; Skip second window execution flag
 Global $fightroomnumber = ""					; Fight room number
 Global $v_allowgetpyr = False					; Flag to config execution of function GetPFR
 Global $v_onunexpectederrortoshutdownpc = True	; Flag to config shutdown pc when unexpected error happens
-Local Const $cfgfile = @ScriptDir & "\start.ini"
-Global $v_noxpath = IniRead($cfgfile,"Install","NoxPath","C:\Program Files\Nox\bin\")
-Global $v_packagename = "com.cygames.Shadowverse" ; Package name
-Global $v_windows = StringSplit(IniRead($cfgfile,"Install","NameList",""),",",2)
-If UBound($v_windows) > 2 Then $morethantwonox = True
-If IniRead($cfgfile,"Install","ShutdownPC","") = "True" Then $shutdownpc = True
-Global $v_installfile1 = IniRead($cfgfile,"Install","file1","")
-Global $v_installfile2 = IniRead($cfgfile,"Install","file2","")
-Global $v_installfolder1 = IniRead($cfgfile,"Install","folder1","")
-Global $v_installfolder2 = IniRead($cfgfile,"Install","folder2","")
-Global $v_sqlcmdfile = IniRead($cfgfile,"Install","SQLCMD","C:\Program Files (x86)\Microsoft SQL Server\Client SDK\ODBC\130\Tools\Binn\SQLCMD.exe")
 Global $v_checkaccountstatus = False
-If IniRead($cfgfile,"Install","checkaccountstatus","False") = "True" Then $v_checkaccountstatus = True
 Global $v_stagevalue = -1
-Global $v_winctrlclassname = "subWin1"
-Global Const $v_imagepath = @ScriptDir & "\Assets\identifier\"
+Global Const $v_winctrlclassname = "subWin1"
+
+Local Const $cfgfile = @ScriptDir & "\start.ini"
+Global $v_noxpath 			= IniRead($cfgfile,"Install","NoxPath","")
+Global $v_packagename 		= IniRead($cfgfile,"Install","PackageName",""); Package name
+Local $cfg_namelist 		= IniRead($cfgfile,"Install","NameList","")
+Local $cfg_shutdownpc 		= IniRead($cfgfile,"Install","ShutdownPC","")
+Global $v_installfile1 		= IniRead($cfgfile,"Install","File1","")
+Global $v_installfile2 		= IniRead($cfgfile,"Install","File2","")
+Global $v_installfolder1 	= IniRead($cfgfile,"Install","Folder1","")
+Global $v_installfolder2 	= IniRead($cfgfile,"Install","Folder2","")
+Global $v_sqlcmdfile 		= IniRead($cfgfile,"Install","SQLCMD","")
+Local $cfg_chkacctstatus 	= IniRead($cfgfile,"Install","Checkaccountstatus","")
+Global $v_tesseractfile 	= IniRead($cfgfile,"Install","Tesseract","")
+Global $v_graphicsmagickfile= IniRead($cfgfile,"Install","GraphicsMagick","")
+
+Global $v_db_server 		= IniRead($cfgfile,"Database","Server","")
+Global $v_db_userid 		= IniRead($cfgfile,"Database","UID","")
+Global $v_db_password		= IniRead($cfgfile,"Database","Password","")
+Global $v_db 				= IniRead($cfgfile,"Database","DBName","")
+
+Global $v_email_SmtpServer	= IniRead($cfgfile,"Email","SMTP","")				; address for the smtp-server to use - REQUIRED
+Global $v_email_FromName	= IniRead($cfgfile,"Email","FromName","")			; name from who the email was sent
+Global $v_email_FromAddress = IniRead($cfgfile,"Email","FromAddress","")		; address from where the mail should come
+Global $v_email_ToAddress 	= IniRead($cfgfile,"Email","ToAddress","")			; destination address of the email - REQUIRED
+Global $v_email_Subject 	= IniRead($cfgfile,"Email","Subject","")			; subject from the email - can be anything you want it to be
+Global $v_email_Body 		= IniRead($cfgfile,"Email","Body","")				; the messagebody from the mail - can be left blank but then you get a blank mail
+Global $v_email_AttachFiles = IniRead($cfgfile,"Email","Attachment","")			; the file(s) you want to attach seperated with a ; (Semicolon) - leave blank if not needed
+Global $v_email_CcAddress 	= IniRead($cfgfile,"Email","CcAddress","")      	; address for cc - leave blank if not needed
+Global $v_email_BccAddress 	= IniRead($cfgfile,"Email","BccAddress","")    		; address for bcc - leave blank if not needed
+Global $v_email_Importance 	= IniRead($cfgfile,"Email","Importance","")         ; Send message priority: "High", "Normal", "Low"
+Global $v_email_Username 	= IniRead($cfgfile,"Email","Username","")			; username for the account used from where the mail gets sent - REQUIRED
+Global $v_email_Password 	= IniRead($cfgfile,"Email","Password","")			; password for the account used
+Global $v_email_IPPort 		= 465												; port used for sending the mail
+Global $v_email_ssl 		= 1													; enables/disables secure socket layer sending - put to 1 if using httpS
+
+Global $v_db_result = 			@ScriptDir & "\db\dbresult.txt"
+Global $v_room_screenshot = 	@ScriptDir & "\db\privateroom.jpg"
+Global $v_room_file = 			@ScriptDir & "\db\privateroom"
+Global $v_money_ocr = 			@ScriptDir & "\db\money\"
+Global $v_pyf = 				@ScriptDir & "\db\pyf\"
+Global $v_imagepath = 			@ScriptDir & "\Assets\identifier\"
+
+Global $v_windows = StringSplit($cfg_namelist,",",2)
+If UBound($v_windows) > 2 Then $morethantwonox = True
+If $cfg_shutdownpc = "True" Then $shutdownpc = True
+If $cfg_chkacctstatus = "True" Then $v_checkaccountstatus = True
 
 Global $btn_liandong[2] = [141,28] ; 资料连动
 Global $btn_uidpwd[2] = [334,131] ; 输入用户名和密码
@@ -69,13 +102,8 @@ Global $menu_jjc[2] = [347,377] ; 竞技场
 
 ;;;;;;;;----------------;;;;;;;;;
 Global $opt_privatefight[3] = [555,222,0xE6E6E6] ; 私人对战
-Global Const $v_room_screenshot = @ScriptDir & "\db\privateroom.jpg"
-Global Const $v_room_file = @ScriptDir & "\db\privateroom"
-Global Const $v_money_ocr = @ScriptDir & "\db\money\"
 Global $v_room[4] = [295,102,374,123] ; room number rectangle
 Global $v_money[4] = [485,19,532,37] ; money rectangle
-Global Const $v_tesseractfile = "C:\Program Files (x86)\Tesseract-OCR\tesseract.exe"
-Global Const $v_graphicsmagickfile = "C:\Program Files\GraphicsMagick-1.3.30-Q16\gm.exe"
 Global $btn_number[10][2] = [[336,305],[218,161],[336,161],[454,161],[218,209],[336,209],[454,209],[218,257],[336,257],[454,257]]
 Global $btn_readytofight[3] = [337,275,0x00698A] ;准备完成
 Global $btn_changecard[3] = [613,203,0x016C8D] ;交换 决定
@@ -115,7 +143,6 @@ Global $v_jjc[4] = [376,243,400,257] ; jjc rectangle
 
 
 ;;;;;;;;;;;;;;;;;;;;;Privat fight activity;;;;;;;;;;;;
-Global Const $v_pyf = @ScriptDir & "\db\pyf\"
 Global $pfa_reward_start[2] = [130,224]
 Global $pfa_length = 105
 Global $pfa_height = 88
