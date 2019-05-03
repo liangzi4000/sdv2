@@ -1,6 +1,12 @@
 #AutoIt3Wrapper_UseX64 = Y
+#RequireAdmin ;start sql service require administrator right
 #include-once
 #include <FileConstants.au3>
+#include <Common.au3>
+
+; If host, Start SQL Service
+Local $IsHost = IniRead($cfgfile,"Install","IsHost","")
+If $IsHost="True" Then WaitForSQLService()
 
 ; Auto update program
 Local $UpdateFolder = @ScriptDir & "\Assets\Update\"
@@ -17,3 +23,10 @@ Run(@ScriptDir&"\Start.exe")
 Sleep(10000)
 Send("^m")
 Exit
+
+Func WaitForSQLService()
+	While ExecDBQuery("SELECT 1 AS Result") <> "1"
+		WriteLog("Waiting for SQL service ...")
+		Sleep(15000)
+	WEnd
+EndFunc
