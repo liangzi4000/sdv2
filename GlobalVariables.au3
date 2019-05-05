@@ -179,7 +179,7 @@ Global $v_awardstage = [$day1,$day2,$day3,$day4,$day5,$day6,$day7,$day8,$day9,$d
 Global $oDictionary = ObjCreate("Scripting.Dictionary")
 If $v_ishost Then
 	$oDictionary.Add ("NoxPlayer03","62001")
-	$oDictionary.Add ("NoxPlayer04","62025")
+	$oDictionary.Add ("NoxPlayer04","62026")
 Else
 	Local $opt_twopick_elem1_ls = [215,204,0xA3321E,35,5,5]
 	Local $opt_twopick_elem2_ls = [336,190,0xBC3F2F,35,5,5]
