@@ -17,6 +17,8 @@ If FileExists($file_start_exe) Then FileMove($file_start_exe,@ScriptDir,$FC_OVER
 If FileExists($file_start_ini) Then FileMove($file_start_ini,@ScriptDir,$FC_OVERWRITE)
 If FileExists($file_guardian_exe) Then FileMove($file_guardian_exe,@ScriptDir,$FC_OVERWRITE)
 
+; Close program if exist
+CloseProcess("Start.exe")
 ; Launch program
 Sleep(20000)
 Run(@ScriptDir&"\Start.exe")
