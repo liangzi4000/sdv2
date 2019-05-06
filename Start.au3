@@ -38,6 +38,7 @@ Func ShutdownAfterFinish()
 EndFunc
 
 Func Main()
+	WriteLog("Start process Guardian.exe.")
 	StartProcess("Guardian.exe")
 	If $v_blockinput Then BlockInput($BI_DISABLE)
 	ExecDBQuery("[dbo].[SP_ResetDailyTaskStatus] '"&$v_windows[0]&"'")
@@ -80,8 +81,9 @@ Func Main()
 EndFunc
 
 Func OnAutoitExit()
-	CloseProcess("Guardian.exe")
 	WriteLog("OnAutoitExit Called.")
+	WriteLog("Close process Guardian.exe.")
+	CloseProcess("Guardian.exe")
 	Switch $exitaction
 		Case $exitaction_restart
 			Local $errorscreen = $v_screenshotpath & CaptureFullScreen()

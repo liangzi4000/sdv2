@@ -8,15 +8,26 @@ While 1
 	; Check if error happened by check error window
 	If WinExists("AutoIt Error") Or WinExists("VirtualBox Headless Frontend") Or WinExists("Dialog") Then
 		Shutdown(6) ; Force a reboot
+		ExitLoop
 	EndIf
 
 	; Check if log file is modified within specified time period
-	Local $logfile = GetLog()
-	If FileExists($logfile) And (StringInStr($logfile, $v_windows[0]) > 0 Or StringInStr($logfile, $v_windows[1]) > 0) Then
-		Local $lastmodifiedtime = FileGetTime($logfile)
-		Local $diff = _DateDiff("n",$lastmodifiedtime[0]&"/"&$lastmodifiedtime[1]&"/"&$lastmodifiedtime[2]&" "&$lastmodifiedtime[3]&":"&$lastmodifiedtime[4]&":"&$lastmodifiedtime[5],_NowCalc())
-		If $diff > 10 Then
+	Local $triggerrestart = True
+	Local $filelist = _FileListToArray($v_logpath,"*.log",1,True)
+	If @error = 0 Then
+		For $index = 1 To $filelist[0]
+			Local $lastmodifiedtime = FileGetTime($filelist[$index])
+			;ConsoleWrite(FileGetTime($filelist[$index],Default,1) & @CRLF)
+			Local $diff = _DateDiff("n",$lastmodifiedtime[0]&"/"&$lastmodifiedtime[1]&"/"&$lastmodifiedtime[2]&" "&$lastmodifiedtime[3]&":"&$lastmodifiedtime[4]&":"&$lastmodifiedtime[5],_NowCalc())
+			If $diff > 7200 Then ; More than 5 days
+				FileDelete($filelist[$index])
+			ElseIf $diff < 10 Then ; Less than 10 minutes
+				$triggerrestart = False
+			EndIf
+		Next
+		If $triggerrestart Then
 			Shutdown(6) ; Force a reboot
+			ExitLoop
 		EndIf
 	EndIf
 

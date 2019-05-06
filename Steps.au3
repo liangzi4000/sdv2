@@ -193,7 +193,7 @@ Func Wrapper_StartScreen_DoItLater()
 EndFunc   ;==>Wrapper_StartScreen_DoItLater
 
 Func StartScreenEx()
-	WaitImageDesktop("ui_startscreen.bmp", 600, "", False)
+	WaitImageDesktop("ui_startscreen.bmp", 300, "", False)
 EndFunc
 
 Func StartScreen()
