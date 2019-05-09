@@ -11,25 +11,36 @@ While 1
 		ExitLoop
 	EndIf
 
-	; Check if log file is modified within specified time period
-	Local $triggerrestart = True
-	Local $filelist = _FileListToArray($v_logpath,"*.log",1,True)
-	If @error = 0 Then
-		For $index = 1 To $filelist[0]
-			Local $lastmodifiedtime = FileGetTime($filelist[$index])
-			;ConsoleWrite(FileGetTime($filelist[$index],Default,1) & @CRLF)
-			Local $diff = _DateDiff("n",$lastmodifiedtime[0]&"/"&$lastmodifiedtime[1]&"/"&$lastmodifiedtime[2]&" "&$lastmodifiedtime[3]&":"&$lastmodifiedtime[4]&":"&$lastmodifiedtime[5],_NowCalc())
-			If $diff > 7200 Then ; More than 5 days
-				FileDelete($filelist[$index])
-			ElseIf $diff < 10 Then ; Less than 10 minutes
-				$triggerrestart = False
-			EndIf
-		Next
-		If $triggerrestart Then
+	; Check database last login date
+	Local $dblastlogindate = ExecDBQuery("[dbo].[SP_GetNextRecord] '" & $v_windows[0] & "'")
+	If $dblastlogindate <> '' Then
+		Local $diff = _DateDiff("n",$dblastlogindate,_NowCalc())
+		If $diff > 15 Then ; More than 15 minutes
 			Shutdown(6) ; Force a reboot
 			ExitLoop
 		EndIf
 	EndIf
+
+;~	Below way of checking log file not working. There is a scenario where program keep writting log of found ui_startup without further action
+;~  ; Check if log file is modified within specified time period
+;~ 	Local $triggerrestart = True
+;~ 	Local $filelist = _FileListToArray($v_logpath,"*.log",1,True)
+;~ 	If @error = 0 Then
+;~ 		For $index = 1 To $filelist[0]
+;~ 			Local $lastmodifiedtime = FileGetTime($filelist[$index])
+;~ 			;ConsoleWrite(FileGetTime($filelist[$index],Default,1) & @CRLF)
+;~ 			Local $diff = _DateDiff("n",$lastmodifiedtime[0]&"/"&$lastmodifiedtime[1]&"/"&$lastmodifiedtime[2]&" "&$lastmodifiedtime[3]&":"&$lastmodifiedtime[4]&":"&$lastmodifiedtime[5],_NowCalc())
+;~ 			If $diff > 7200 Then ; More than 5 days
+;~ 				FileDelete($filelist[$index])
+;~ 			ElseIf $diff < 10 Then ; Less than 10 minutes
+;~ 				$triggerrestart = False
+;~ 			EndIf
+;~ 		Next
+;~ 		If $triggerrestart Then
+;~ 			Shutdown(6) ; Force a reboot
+;~ 			ExitLoop
+;~ 		EndIf
+;~ 	EndIf
 
 	; Check and execute remote command
 	Local $commandurl = IniRead($cfgfile,"RPC","CommandUrl","")
