@@ -1,6 +1,6 @@
 NoxPlayer03 command01 0
 NoxPlayer05 command01 0
-NoxPlayer41 command01 0
+NoxPlayer41 command02 2
 NoxPlayer51 command01 0
 NoxPlayer61 command01 0
 NoxPlayer71 command02 1
