@@ -939,3 +939,15 @@ Func UpdatePassword()
 		ExecDBQuery("[dbo].[SP_UpdatePassword] "&GetAccountInfo("uid")&",'"&$NewPwd&"'")
 	EndIf
 EndFunc
+
+Func ResetStatusToFight()
+	Local $checkresult = ExecDBQuery("[dbo].[SP_IsReadyToFight] '" & $v_windows[0] & "'")
+	If $checkresult = "-1" Then Return
+	While $checkresult = "0"
+		Sleep(60000) ; sleep 1 min
+		$checkresult = ExecDBQuery("[dbo].[SP_IsReadyToFight] '" & $v_windows[0] & "'")
+	WEnd
+	ExecDBQuery("[dbo].[SP_Enable_Disable_Fight] 1")
+	$exitaction = $exitaction_restart
+	Exit
+EndFunc

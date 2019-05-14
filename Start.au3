@@ -57,20 +57,23 @@ Func Main()
 	WEnd
 	WriteLog("Accounts sign in completed.")
 
-	; Reset inactive window array to default
-	While UBound($inactivewindows) > 1
-		_ArrayPop($inactivewindows)
-	WEnd
-	Sleep(20000) ; sleep 20 seconds for nox to close
-	ExecStep("LaunchNox")
-	Sleep(50000) ; sleep 50 seconds for nox completion
-	While UBound($inactivewindows)-1 <> UBound($v_windows)
-		For $x=0 To UBound($createaccountsteps)-1
-			ExecStep($createaccountsteps[$x])
-		Next
-	WEnd
-	WriteLog("Accounts creation completed.")
-	CloseProcess("Nox.exe")
+	ResetStatusToFight()
+	WriteLog("Reset status to fight completed.")
+
+;~ 	; Reset inactive window array to default
+;~ 	While UBound($inactivewindows) > 1
+;~ 		_ArrayPop($inactivewindows)
+;~ 	WEnd
+;~ 	Sleep(20000) ; sleep 20 seconds for nox to close
+;~ 	ExecStep("LaunchNox")
+;~ 	Sleep(50000) ; sleep 50 seconds for nox completion
+;~ 	While UBound($inactivewindows)-1 <> UBound($v_windows)
+;~ 		For $x=0 To UBound($createaccountsteps)-1
+;~ 			ExecStep($createaccountsteps[$x])
+;~ 		Next
+;~ 	WEnd
+;~ 	WriteLog("Accounts creation completed.")
+;~ 	CloseProcess("Nox.exe")
 
 	If $shutdownpc Then
 		$exitaction = $exitaction_shutdownpc
