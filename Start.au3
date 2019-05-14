@@ -42,6 +42,13 @@ Func Main()
 	StartProcess("Guardian.exe")
 	If $v_blockinput Then BlockInput($BI_DISABLE)
 	ExecDBQuery("[dbo].[SP_ResetDailyTaskStatus] '"&$v_windows[0]&"'")
+
+	If ($v_screenwidth <> @DesktopWidth Or $v_screenheight <> @DesktopHeight) And (Not $v_ishost) Then
+		WriteLog("Incorrect screen resolution detected: "&@DesktopWidth&"x"&@DesktopHeight)
+		$exitaction = $exitaction_shutdownpc
+		Exit
+	EndIf
+
 	Local $firstrunflag = True
 	While UBound($inactivewindows)-1 <> UBound($v_windows)
 		If $firstrunflag Then

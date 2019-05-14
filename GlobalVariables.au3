@@ -41,6 +41,8 @@ Global $v_tesseractfile 	= IniRead($cfgfile,"Install","Tesseract","")
 Global $v_graphicsmagickfile= IniRead($cfgfile,"Install","GraphicsMagick","")
 Local $cfg_blockinput		= IniRead($cfgfile,"Install","BlockInput","")
 Local $cfg_ishost			= IniRead($cfgfile,"Install","IsHost","")
+Global $v_screenwidth 		= IniRead($cfgfile,"Install","ScreenWidth","")
+Global $v_screenheight		= IniRead($cfgfile,"Install","ScreenHeight","")
 
 Global $v_db_server 		= IniRead($cfgfile,"Database","Server","")
 Global $v_db_userid 		= IniRead($cfgfile,"Database","UID","")
