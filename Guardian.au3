@@ -12,7 +12,7 @@ While 1
 	EndIf
 
 	; Check database last login date
-	Local $dblastlogindate = ExecDBQuery("[dbo].[SP_GetLastLoginDate] '" & $v_windows[0] & "'")
+	Local $dblastlogindate = ExecDBQuery("[dbo].[SP_GetLastLoginDate] '" & $v_windows[0] & "'", 7)
 	If $dblastlogindate <> '' Then
 		Local $diff = _DateDiff("n",$dblastlogindate,_NowCalc())
 		If $diff > 15 Then ; More than 15 minutes
@@ -65,5 +65,5 @@ While 1
 		Next
 	EndIf
 
-	Sleep(180000) ; every three minutes
+	Sleep(1800000) ; every 30 mins
 WEnd
