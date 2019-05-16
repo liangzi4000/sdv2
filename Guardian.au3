@@ -5,6 +5,8 @@
 #include <Date.au3>
 
 While 1
+	Sleep(1800000) ; every 30 mins
+
 	; Check if error happened by check error window
 	If WinExists("AutoIt Error") Or WinExists("VirtualBox Headless Frontend") Or WinExists("Dialog") Then
 		Shutdown(6) ; Force a reboot
@@ -65,5 +67,4 @@ While 1
 		Next
 	EndIf
 
-	Sleep(1800000) ; every 30 mins
 WEnd
