@@ -261,7 +261,9 @@ Func WaitUntilNextScreen($currentscreenimage)
 EndFunc
 
 Func CloseNotification()
-	ClickImage("btn_close.bmp", True)
+	Sleep(800)
+	Local $leftbottom = GetCtrlLeftBottom()
+	ClickOnRelative($leftbottom)
 EndFunc   ;==>CloseNotification
 
 Func CloseBPInfo()
