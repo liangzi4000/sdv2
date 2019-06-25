@@ -1,4 +1,4 @@
-NoxPlayer03 command01 0
+NoxPlayer03 command01 1
 NoxPlayer05 command01 0
 NoxPlayer41 command02 2
 NoxPlayer51 command01 0
